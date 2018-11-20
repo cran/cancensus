@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/mountainMath/cancensus.svg?branch=master)](https://travis-ci.org/mountainMath/cancensus)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/cancensus)](https://cran.r-project.org/package=cancensus)
+[![CRAN_Downloads_Badge](https://cranlogs.r-pkg.org/badges/cancensus)](https://cranlogs.r-pkg.org/badges/cancensus)
 
 Access, retrieve, and work with Canadian Census data and geography. 
 
@@ -106,4 +107,27 @@ A BibTeX entry for LaTeX users is
     note = {R package version 0.1.6},
     url = {https://mountainmath.github.io/cancensus/},
   }
+```
+### Related packages
+
+The cancensus package is designed for working with Canadian Census data. In addition to Census data, Statistics Canada provides access to a vast [socio-economic data repository](https://www150.statcan.gc.ca/n1/en/type/data) with thousands of data tables available for public access. 
+
+The [cansim package](https://mountainmath.github.io/cansim/index.html) is designed to retrieve and work with public Statistics Canada data tables. The cansim prepares retrieved data tables as analysis-ready tidy dataframes and provides a number of convenience tools and functions to make it easier to work with Statistics Canada data. 
+
+Data downloaded through the cansim package that comes with standard geographic attributes will typically share a common geographic ID that can be matched to Census data.
+
+### Statistics Canada Attribution
+
+Subject to the Statistics Canada Open Licence Agreement, licensed products using Statistics Canada data should employ the following acknowledgement of source:
+
+```
+Acknowledgment of Source
+
+(a) You shall include and maintain the following notice on all licensed rights of the Information:
+
+  - Source: Statistics Canada, name of product, reference date. Reproduced and distributed on an "as is" basis with the permission of Statistics Canada.
+ 
+(b) Where any Information is contained within a Value-added Product, you shall include on such Value-added Product the following notice:
+
+  - Adapted from Statistics Canada, name of product, reference date. This does not constitute an endorsement by Statistics Canada of this product.
 ```
