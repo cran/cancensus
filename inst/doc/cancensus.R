@@ -1,4 +1,4 @@
-## ----setup, echo=FALSE, message=FALSE, warning=FALSE---------------------
+## ----setup, echo=FALSE, message=FALSE, warning=FALSE--------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -41,13 +41,13 @@ library(dplyr)
 #                            vectors=c("v_CA16_408","v_CA16_409","v_CA16_410"),
 #                            level='CSD', use_cache = FALSE, geo_format = 'sp')
 
-## ----list datasets, message=FALSE, warning=FALSE-------------------------
+## ----list datasets, message=FALSE, warning=FALSE------------------------------
 list_census_datasets()
 
-## ----list regions, message=FALSE, warning=FALSE--------------------------
+## ----list regions, message=FALSE, warning=FALSE-------------------------------
 list_census_regions("CA16")
 
-## ---- message=FALSE, warning=FALSE, eval=FALSE---------------------------
+## ---- message=FALSE, warning=FALSE, eval=FALSE--------------------------------
 #  # Retrieves Vancouver and Toronto
 #  list_census_regions('CA16') %>%
 #    filter(level == "CMA", name %in% c("Vancouver","Toronto"))
@@ -56,27 +56,27 @@ list_census_regions("CA16")
 #                            vectors=c("v_CA16_408","v_CA16_409","v_CA16_410"),
 #                            level='CSD', use_cache = FALSE)
 
-## ----list_vectors, message=FALSE, warning=FALSE--------------------------
+## ----list_vectors, message=FALSE, warning=FALSE-------------------------------
 list_census_vectors("CA16")
 
-## ----search_vectors1, message=FALSE, warning=FALSE-----------------------
+## ----search_vectors1, message=FALSE, warning=FALSE----------------------------
 # Find the variable indicating the number of people of Austrian ethnic origin
 search_census_vectors("Austrian", dataset = 'CA16')
 
-## ----search_vectors2, message=FALSE, warning=FALSE-----------------------
+## ----search_vectors2, message=FALSE, warning=FALSE----------------------------
 # Find the variable indicating the number of people of Austrian ethnic origin
 search_census_vectors("Austraian", dataset = 'CA16')
 
-## ----parent_vectors, message=FALSE, warning=FALSE------------------------
+## ----parent_vectors, message=FALSE, warning=FALSE-----------------------------
 list_census_vectors("CA16") %>% 
   filter(vector == "v_CA16_4092") %>% 
   parent_census_vectors()
 
-## ----child_vectors1, message=FALSE, warning=FALSE------------------------
+## ----child_vectors1, message=FALSE, warning=FALSE-----------------------------
 # Find the variable indicating the Northern European aggregate
 search_census_vectors("Northern European", dataset = 'CA16')
 
-## ----child_vectors2, message=FALSE, warning=FALSE------------------------
+## ----child_vectors2, message=FALSE, warning=FALSE-----------------------------
 # Show all child variable leaves
 list_census_vectors("CA16") %>% 
   filter(vector == "v_CA16_4122") %>% child_census_vectors(leaves = TRUE)
