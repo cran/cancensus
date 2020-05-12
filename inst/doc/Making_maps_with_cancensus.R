@@ -5,6 +5,8 @@ knitr::opts_chunk$set(
   eval = nzchar(Sys.getenv("COMPILE_VIG"))
 )
 
+mb_token <- Sys.getenv("MB_TOKEN")
+
 ## ---- message = FALSE, warning = FALSE----------------------------------------
 library(cancensus)
 library(sf)
@@ -34,7 +36,7 @@ ggplot(toronto) + geom_sf(aes(fill = median_hh_income), colour = "grey") +
   labs(title = "Median Household Income", subtitle = "Toronto Census Subdivisions, 2016 Census")
 
 ## ----message=FALSE, warning=FALSE, include=FALSE------------------------------
-# This chunk disables leaflet output in remaining chunks for PDF vignettes
+# This chunk disables leaflet and mapdeck output in remaining chunks for PDF vignettes
 if(Sys.getenv("COMPILE_VIG")!="TRUE") {
   knitr::opts_chunk$set(eval = FALSE)}
 
