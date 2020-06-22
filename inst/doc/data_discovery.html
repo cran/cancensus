@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Data discovery</title>
+
+<style type="text/css">.pagedtable {
+overflow: auto;
+padding-left: 8px;
+padding-right: 8px;
+}
+.pagedtable-wrapper {
+border: 1px solid #ccc;
+border-radius: 4px;
+margin-bottom: 10px;
+}
+.pagedtable table {
+width: 100%;
+max-width: 100%;
+margin: 0;
+}
+.pagedtable th {
+padding: 0 5px 0 5px;
+border: none;
+border-bottom: 2px solid #dddddd;
+min-width: 45px;
+}
+.pagedtable-empty th {
+display: none;
+}
+.pagedtable td {
+padding: 0 4px 0 4px;
+}
+.pagedtable .even {
+background-color: rgba(140, 140, 140, 0.1);
+}
+.pagedtable-padding-col {
+display: none;
+}
+.pagedtable a {
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+.pagedtable-index-nav {
+cursor: pointer;
+padding: 0 5px 0 5px;
+float: right;
+border: 0;
+}
+.pagedtable-index-nav-disabled {
+cursor: default;
+text-decoration: none;
+color: #999;
+}
+a.pagedtable-index-nav-disabled:hover {
+text-decoration: none;
+color: #999;
+}
+.pagedtable-indexes {
+cursor: pointer;
+float: right;
+border: 0;
+}
+.pagedtable-index-current {
+cursor: default;
+text-decoration: none;
+font-weight: bold;
+color: #333;
+border: 0;
+}
+a.pagedtable-index-current:hover {
+text-decoration: none;
+font-weight: bold;
+color: #333;
+}
+.pagedtable-index {
+width: 30px;
+display: inline-block;
+text-align: center;
+border: 0;
+}
+.pagedtable-index-separator-left {
+display: inline-block;
+color: #333;
+font-size: 9px;
+padding: 0 0 0 0;
+cursor: default;
+}
+.pagedtable-index-separator-right {
+display: inline-block;
+color: #333;
+font-size: 9px;
+padding: 0 4px 0 0;
+cursor: default;
+}
+.pagedtable-footer {
+padding-top: 4px;
+padding-bottom: 5px;
+}
+.pagedtable-not-empty .pagedtable-footer {
+border-top: 2px solid #dddddd;
+}
+.pagedtable-info {
+overflow: hidden;
+color: #999;
+white-space: nowrap;
+text-overflow: ellipsis;
+}
+.pagedtable-header-name {
+overflow: hidden;
+text-overflow: ellipsis;
+}
+.pagedtable-header-type {
+color: #999;
+font-weight: 400;
+}
+.pagedtable-na-cell {
+font-style: italic;
+opacity: 0.3;
+}
+</style>
+<script>// Production steps of ECMA-262, Edition 5, 15.4.4.18
+// Reference: http://es5.github.io/#x15.4.4.18
+if (!Array.prototype.forEach) {
+
+  Array.prototype.forEach = function(callback, thisArg) {
+
+    var T, k;
+
+    if (this === null) {
+      throw new TypeError(' this is null or not defined');
+    }
+
+    // 1. Let O be the result of calling toObject() passing the
+    // |this| value as the argument.
+    var O = Object(this);
+
+    // 2. Let lenValue be the result of calling the Get() internal
+    // method of O with the argument "length".
+    // 3. Let len be toUint32(lenValue).
+    var len = O.length >>> 0;
+
+    // 4. If isCallable(callback) is false, throw a TypeError exception.
+    // See: http://es5.github.com/#x9.11
+    if (typeof callback !== "function") {
+      throw new TypeError(callback + ' is not a function');
+    }
+
+    // 5. If thisArg was supplied, let T be thisArg; else let
+    // T be undefined.
+    if (arguments.length > 1) {
+      T = thisArg;
+    }
+
+    // 6. Let k be 0
+    k = 0;
+
+    // 7. Repeat, while k < len
+    while (k < len) {
+
+      var kValue;
+
+      // a. Let Pk be ToString(k).
+      //    This is implicit for LHS operands of the in operator
+      // b. Let kPresent be the result of calling the HasProperty
+      //    internal method of O with argument Pk.
+      //    This step can be combined with c
+      // c. If kPresent is true, then
+      if (k in O) {
+
+        // i. Let kValue be the result of calling the Get internal
+        // method of O with argument Pk.
+        kValue = O[k];
+
+        // ii. Call the Call internal method of callback with T as
+        // the this value and argument list containing kValue, k, and O.
+        callback.call(T, kValue, k, O);
+      }
+      // d. Increase k by 1.
+      k++;
+    }
+    // 8. return undefined
+  };
+}
+
+// Production steps of ECMA-262, Edition 5, 15.4.4.19
+// Reference: http://es5.github.io/#x15.4.4.19
+if (!Array.prototype.map) {
+
+  Array.prototype.map = function(callback, thisArg) {
+
+    var T, A, k;
+
+    if (this == null) {
+      throw new TypeError(' this is null or not defined');
+    }
+
+    // 1. Let O be the result of calling ToObject passing the |this|
+    //    value as the argument.
+    var O = Object(this);
+
+    // 2. Let lenValue be the result of calling the Get internal
+    //    method of O with the argument "length".
+    // 3. Let len be ToUint32(lenValue).
+    var len = O.length >>> 0;
+
+    // 4. If IsCallable(callback) is false, throw a TypeError exception.
+    // See: http://es5.github.com/#x9.11
+    if (typeof callback !== 'function') {
+      throw new TypeError(callback + ' is not a function');
+    }
+
+    // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.
+    if (arguments.length > 1) {
+      T = thisArg;
+    }
+
+    // 6. Let A be a new array created as if by the expression new Array(len)
+    //    where Array is the standard built-in constructor with that name and
+    //    len is the value of len.
+    A = new Array(len);
+
+    // 7. Let k be 0
+    k = 0;
+
+    // 8. Repeat, while k < len
+    while (k < len) {
+
+      var kValue, mappedValue;
+
+      // a. Let Pk be ToString(k).
+      //   This is implicit for LHS operands of the in operator
+      // b. Let kPresent be the result of calling the HasProperty internal
+      //    method of O with argument Pk.
+      //   This step can be combined with c
+      // c. If kPresent is true, then
+      if (k in O) {
+
+        // i. Let kValue be the result of calling the Get internal
+        //    method of O with argument Pk.
+        kValue = O[k];
+
+        // ii. Let mappedValue be the result of calling the Call internal
+        //     method of callback with T as the this value and argument
+        //     list containing kValue, k, and O.
+        mappedValue = callback.call(T, kValue, k, O);
+
+        // iii. Call the DefineOwnProperty internal method of A with arguments
+        // Pk, Property Descriptor
+        // { Value: mappedValue,
+        //   Writable: true,
+        //   Enumerable: true,
+        //   Configurable: true },
+        // and false.
+
+        // In browsers that support Object.defineProperty, use the following:
+        // Object.defineProperty(A, k, {
+        //   value: mappedValue,
+        //   writable: true,
+        //   enumerable: true,
+        //   configurable: true
+        // });
+
+        // For best browser support, use the following:
+        A[k] = mappedValue;
+      }
+      // d. Increase k by 1.
+      k++;
+    }
+
+    // 9. return A
+    return A;
+  };
+}
+
+var PagedTable = function (pagedTable) {
+  var me = this;
+
+  var source = function(pagedTable) {
+    var sourceElems = [].slice.call(pagedTable.children).filter(function(e) {
+      return e.hasAttribute("data-pagedtable-source");
+    });
+
+    if (sourceElems === null || sourceElems.length !== 1) {
+      throw("A single data-pagedtable-source was not found");
+    }
+
+    return JSON.parse(sourceElems[0].innerHTML);
+  }(pagedTable);
+
+  var options = function(source) {
+    var options = typeof(source.options) !== "undefined" &&
+      source.options !== null ? source.options : {};
+
+    var columns = typeof(options.columns) !== "undefined" ? options.columns : {};
+    var rows = typeof(options.rows) !== "undefined" ? options.rows : {};
+
+    var positiveIntOrNull = function(value) {
+      return parseInt(value) >= 0 ? parseInt(value) : null;
+    };
+
+    return {
+      pages: positiveIntOrNull(options.pages),
+      rows: {
+        min: positiveIntOrNull(rows.min),
+        max: positiveIntOrNull(rows.max),
+        total: positiveIntOrNull(rows.total)
+      },
+      columns: {
+        min: positiveIntOrNull(columns.min),
+        max: positiveIntOrNull(columns.max),
+        total: positiveIntOrNull(columns.total)
+      }
+    };
+  }(source);
+
+  var Measurer = function() {
+
+    // set some default initial values that will get adjusted in runtime
+    me.measures = {
+      padding: 12,
+      character: 8,
+      height: 15,
+      defaults: true
+    };
+
+    me.calculate = function(measuresCell) {
+      if (!me.measures.defaults)
+        return;
+
+      var measuresCellStyle = window.getComputedStyle(measuresCell, null);
+
+      var newPadding = parsePadding(measuresCellStyle.paddingLeft) +
+            parsePadding(measuresCellStyle.paddingRight);
+
+      var sampleString = "ABCDEFGHIJ0123456789";
+      var newCharacter = Math.ceil(measuresCell.clientWidth / sampleString.length);
+
+      if (newPadding <= 0 || newCharacter <= 0)
+        return;
+
+      me.measures.padding = newPadding;
+      me.measures.character = newCharacter;
+      me.measures.height = measuresCell.clientHeight;
+      me.measures.defaults = false;
+    };
+
+    return me;
+  };
+
+  var Page = function(data, options) {
+    var me = this;
+
+    var defaults = {
+      max: 7,
+      rows: 10
+    };
+
+    var totalPages = function() {
+      return Math.ceil(data.length / me.rows);
+    };
+
+    me.number = 0;
+    me.max = options.pages !== null ? options.pages : defaults.max;
+    me.visible = me.max;
+    me.rows = options.rows.min !== null ? options.rows.min : defaults.rows;
+    me.total = totalPages();
+
+    me.setRows = function(newRows) {
+      me.rows = newRows;
+      me.total = totalPages();
+    };
+
+    me.setPageNumber = function(newPageNumber) {
+      if (newPageNumber < 0) newPageNumber = 0;
+      if (newPageNumber >= me.total) newPageNumber = me.total - 1;
+
+      me.number = newPageNumber;
+    };
+
+    me.setVisiblePages = function(visiblePages) {
+      me.visible = Math.min(me.max, visiblePages);
+      me.setPageNumber(me.number);
+    };
+
+    me.getVisiblePageRange = function() {
+      var start = me.number - Math.max(Math.floor((me.visible - 1) / 2), 0);
+      var end = me.number + Math.floor(me.visible / 2) + 1;
+      var pageCount = me.total;
+
+      if (start < 0) {
+        var diffToStart = 0 - start;
+        start += diffToStart;
+        end += diffToStart;
+      }
+
+      if (end > pageCount) {
+        var diffToEnd = end - pageCount;
+        start -= diffToEnd;
+        end -= diffToEnd;
+      }
+
+      start = start < 0 ? 0 : start;
+      end = end >= pageCount ? pageCount : end;
+
+      var first = false;
+      var last = false;
+
+      if (start > 0 && me.visible > 1) {
+        start = start + 1;
+        first = true;
+      }
+
+      if (end < pageCount && me.visible > 2) {
+        end = end - 1;
+        last = true;
+      }
+
+      return {
+        first: first,
+        start: start,
+        end: end,
+        last: last
+      };
+    };
+
+    me.getRowStart = function() {
+      var rowStart = page.number * page.rows;
+      if (rowStart < 0)
+        rowStart = 0;
+
+      return rowStart;
+    };
+
+    me.getRowEnd = function() {
+      var rowStart = me.getRowStart();
+      return Math.min(rowStart + me.rows, data.length);
+    };
+
+    me.getPaddingRows = function() {
+      var rowStart = me.getRowStart();
+      var rowEnd = me.getRowEnd();
+      return data.length > me.rows ? me.rows - (rowEnd - rowStart) : 0;
+    };
+  };
+
+  var Columns = function(data, columns, options) {
+    var me = this;
+
+    me.defaults = {
+      min: 5
+    };
+
+    me.number = 0;
+    me.visible = 0;
+    me.total = columns.length;
+    me.subset = [];
+    me.padding = 0;
+    me.min = options.columns.min !== null ? options.columns.min : me.defaults.min;
+    me.max = options.columns.max !== null ? options.columns.max : null;
+    me.widths = {};
+
+    var widthsLookAhead = Math.max(100, options.rows.min);
+    var paddingColChars = 10;
+
+    me.emptyNames = function() {
+      columns.forEach(function(column) {
+        if (columns.label !== null && columns.label !== "")
+          return false;
+      });
+
+      return true;
+    };
+
+    var parsePadding = function(value) {
+      return parseInt(value) >= 0 ? parseInt(value) : 0;
+    };
+
+    me.calculateWidths = function(measures) {
+      columns.forEach(function(column) {
+        var maxChars = Math.max(
+          column.label.toString().length,
+          column.type.toString().length
+        );
+
+        for (var idxRow = 0; idxRow < Math.min(widthsLookAhead, data.length); idxRow++) {
+          maxChars = Math.max(maxChars, data[idxRow][column.name.toString()].length);
+        }
+
+        me.widths[column.name] = {
+          // width in characters
+          chars: maxChars,
+          // width for the inner html columns
+          inner: maxChars * measures.character,
+          // width adding outer styles like padding
+          outer: maxChars * measures.character + measures.padding
+        };
+      });
+    };
+
+    me.getWidth = function() {
+      var widthOuter = 0;
+      for (var idxCol = 0; idxCol < me.subset.length; idxCol++) {
+        var columnName = me.subset[idxCol].name;
+        widthOuter = widthOuter + me.widths[columnName].outer;
+      }
+
+      widthOuter = widthOuter + me.padding * paddingColChars * measurer.measures.character;
+
+      if (me.hasMoreLeftColumns()) {
+        widthOuter = widthOuter + columnNavigationWidthPX + measurer.measures.padding;
+      }
+
+      if (me.hasMoreRightColumns()) {
+        widthOuter = widthOuter + columnNavigationWidthPX + measurer.measures.padding;
+      }
+
+      return widthOuter;
+    };
+
+    me.updateSlice = function() {
+      if (me.number + me.visible >= me.total)
+        me.number = me.total - me.visible;
+
+      if (me.number < 0) me.number = 0;
+
+      me.subset = columns.slice(me.number, Math.min(me.number + me.visible, me.total));
+
+      me.subset = me.subset.map(function(column) {
+        Object.keys(column).forEach(function(colKey) {
+          column[colKey] = column[colKey] === null ? "" : column[colKey].toString();
+        });
+
+        column.width = null;
+        return column;
+      });
+    };
+
+    me.setVisibleColumns = function(columnNumber, newVisibleColumns, paddingCount) {
+      me.number = columnNumber;
+      me.visible = newVisibleColumns;
+      me.padding = paddingCount;
+
+      me.updateSlice();
+    };
+
+    me.incColumnNumber = function(increment) {
+      me.number = me.number + increment;
+    };
+
+    me.setColumnNumber = function(newNumber) {
+      me.number = newNumber;
+    };
+
+    me.setPaddingCount = function(newPadding) {
+      me.padding = newPadding;
+    };
+
+    me.getPaddingCount = function() {
+      return me.padding;
+    };
+
+    me.hasMoreLeftColumns = function() {
+      return me.number > 0;
+    };
+
+    me.hasMoreRightColumns = function() {
+      return me.number + me.visible < me.total;
+    };
+
+    me.updateSlice(0);
+    return me;
+  };
+
+  var data = source.data;
+  var page = new Page(data, options);
+  var measurer = new Measurer(data, options);
+  var columns = new Columns(data, source.columns, options);
+
+  var table = null;
+  var tableDiv = null;
+  var header = null;
+  var footer = null;
+  var tbody = null;
+
+  // Caches pagedTable.clientWidth, specially for webkit
+  var cachedPagedTableClientWidth = null;
+
+  var onChangeCallbacks = [];
+
+  var clearSelection = function() {
+    if(document.selection && document.selection.empty) {
+      document.selection.empty();
+    } else if(window.getSelection) {
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+    }
+  };
+
+  var columnNavigationWidthPX = 5;
+
+  var renderColumnNavigation = function(increment, backwards) {
+    var arrow = document.createElement("div");
+    arrow.setAttribute("style",
+      "border-top: " + columnNavigationWidthPX + "px solid transparent;" +
+      "border-bottom: " + columnNavigationWidthPX + "px solid transparent;" +
+      "border-" + (backwards ? "right" : "left") + ": " + columnNavigationWidthPX + "px solid;");
+
+    var header = document.createElement("th");
+    header.appendChild(arrow);
+    header.setAttribute("style",
+      "cursor: pointer;" +
+      "vertical-align: middle;" +
+      "min-width: " + columnNavigationWidthPX + "px;" +
+      "width: " + columnNavigationWidthPX + "px;");
+
+    header.onclick = function() {
+      columns.incColumnNumber(backwards ? -1 : increment);
+
+      me.animateColumns(backwards);
+      renderFooter();
+
+      clearSelection();
+      triggerOnChange();
+    };
+
+    return header;
+  };
+
+  var maxColumnWidth = function(width) {
+    var padding = 80;
+    var columnMax = Math.max(cachedPagedTableClientWidth - padding, 0);
+
+    return parseInt(width) > 0 ?
+      Math.min(columnMax, parseInt(width)) + "px" :
+      columnMax + "px";
+  };
+
+  var clearHeader = function() {
+    var thead = pagedTable.querySelectorAll("thead")[0];
+    thead.innerHTML = "";
+  };
+
+  var renderHeader = function(clear) {
+    cachedPagedTableClientWidth = pagedTable.clientWidth;
+
+    var fragment = document.createDocumentFragment();
+
+    header = document.createElement("tr");
+    fragment.appendChild(header);
+
+    if (columns.number > 0)
+      header.appendChild(renderColumnNavigation(-columns.visible, true));
+
+    columns.subset = columns.subset.map(function(columnData) {
+      var column = document.createElement("th");
+      column.setAttribute("align", columnData.align);
+      column.style.textAlign = columnData.align;
+
+      column.style.maxWidth = maxColumnWidth(null);
+      if (columnData.width) {
+        column.style.minWidth =
+          column.style.maxWidth = maxColumnWidth(columnData.width);
+      }
+
+      var columnName = document.createElement("div");
+      columnName.setAttribute("class", "pagedtable-header-name");
+      if (columnData.label === "") {
+        columnName.innerHTML = "&nbsp;";
+      }
+      else {
+        columnName.appendChild(document.createTextNode(columnData.label));
+      }
+      column.appendChild(columnName);
+
+      var columnType = document.createElement("div");
+      columnType.setAttribute("class", "pagedtable-header-type");
+      if (columnData.type === "") {
+        columnType.innerHTML = "&nbsp;";
+      }
+      else {
+        columnType.appendChild(document.createTextNode("<" + columnData.type + ">"));
+      }
+      column.appendChild(columnType);
+
+      header.appendChild(column);
+
+      columnData.element = column;
+
+      return columnData;
+    });
+
+    for (var idx = 0; idx < columns.getPaddingCount(); idx++) {
+      var paddingCol = document.createElement("th");
+      paddingCol.setAttribute("class", "pagedtable-padding-col");
+      header.appendChild(paddingCol);
+    }
+
+    if (columns.number + columns.visible < columns.total)
+      header.appendChild(renderColumnNavigation(columns.visible, false));
+
+    if (typeof(clear) == "undefined" || clear) clearHeader();
+    var thead = pagedTable.querySelectorAll("thead")[0];
+    thead.appendChild(fragment);
+  };
+
+  me.animateColumns = function(backwards) {
+    var thead = pagedTable.querySelectorAll("thead")[0];
+
+    var headerOld = thead.querySelectorAll("tr")[0];
+    var tbodyOld = table.querySelectorAll("tbody")[0];
+
+    me.fitColumns(backwards);
+
+    renderHeader(false);
+
+    header.style.opacity = "0";
+    header.style.transform = backwards ? "translateX(-30px)" : "translateX(30px)";
+    header.style.transition = "transform 200ms linear, opacity 200ms";
+    header.style.transitionDelay = "0";
+
+    renderBody(false);
+
+    if (headerOld) {
+      headerOld.style.position = "absolute";
+      headerOld.style.transform = "translateX(0px)";
+      headerOld.style.opacity = "1";
+      headerOld.style.transition = "transform 100ms linear, opacity 100ms";
+      headerOld.setAttribute("class", "pagedtable-remove-head");
+      if (headerOld.style.transitionEnd) {
+        headerOld.addEventListener("transitionend", function() {
+          var headerOldByClass = thead.querySelector(".pagedtable-remove-head");
+          if (headerOldByClass) thead.removeChild(headerOldByClass);
+        });
+      }
+      else {
+        thead.removeChild(headerOld);
+      }
+    }
+
+    if (tbodyOld) table.removeChild(tbodyOld);
+
+    tbody.style.opacity = "0";
+    tbody.style.transition = "transform 200ms linear, opacity 200ms";
+    tbody.style.transitionDelay = "0ms";
+
+    // force relayout
+    window.getComputedStyle(header).opacity;
+    window.getComputedStyle(tbody).opacity;
+
+    if (headerOld) {
+      headerOld.style.transform = backwards ? "translateX(20px)" : "translateX(-30px)";
+      headerOld.style.opacity = "0";
+    }
+
+    header.style.transform = "translateX(0px)";
+    header.style.opacity = "1";
+
+    tbody.style.opacity = "1";
+  }
+
+  me.onChange = function(callback) {
+    onChangeCallbacks.push(callback);
+  };
+
+  var triggerOnChange = function() {
+    onChangeCallbacks.forEach(function(onChange) {
+      onChange();
+    });
+  };
+
+  var clearBody = function() {
+    if (tbody) {
+      table.removeChild(tbody);
+      tbody = null;
+    }
+  };
+
+  var renderBody = function(clear) {
+    cachedPagedTableClientWidth = pagedTable.clientWidth
+
+    var fragment = document.createDocumentFragment();
+
+    var pageData = data.slice(page.getRowStart(), page.getRowEnd());
+
+    pageData.forEach(function(dataRow, idxRow) {
+      var htmlRow = document.createElement("tr");
+      htmlRow.setAttribute("class", (idxRow % 2 !==0) ? "even" : "odd");
+
+      if (columns.hasMoreLeftColumns())
+        htmlRow.appendChild(document.createElement("td"));
+
+      columns.subset.forEach(function(columnData) {
+        var cellName = columnData.name;
+        var dataCell = dataRow[cellName];
+        var htmlCell = document.createElement("td");
+
+        if (dataCell === "NA") htmlCell.setAttribute("class", "pagedtable-na-cell");
+        if (dataCell === "__NA__") dataCell = "NA";
+
+        var cellText = document.createTextNode(dataCell);
+        htmlCell.appendChild(cellText);
+        if (dataCell.length > 50) {
+          htmlCell.setAttribute("title", dataCell);
+        }
+        htmlCell.setAttribute("align", columnData.align);
+        htmlCell.style.textAlign = columnData.align;
+        htmlCell.style.maxWidth = maxColumnWidth(null);
+        if (columnData.width) {
+          htmlCell.style.minWidth = htmlCell.style.maxWidth = maxColumnWidth(columnData.width);
+        }
+        htmlRow.appendChild(htmlCell);
+      });
+
+      for (var idx = 0; idx < columns.getPaddingCount(); idx++) {
+        var paddingCol = document.createElement("td");
+        paddingCol.setAttribute("class", "pagedtable-padding-col");
+        htmlRow.appendChild(paddingCol);
+      }
+
+      if (columns.hasMoreRightColumns())
+        htmlRow.appendChild(document.createElement("td"));
+
+      fragment.appendChild(htmlRow);
+    });
+
+    for (var idxPadding = 0; idxPadding < page.getPaddingRows(); idxPadding++) {
+      var paddingRow = document.createElement("tr");
+
+      var paddingCellRow = document.createElement("td");
+      paddingCellRow.innerHTML = "&nbsp;";
+      paddingCellRow.setAttribute("colspan", "100%");
+      paddingRow.appendChild(paddingCellRow);
+
+      fragment.appendChild(paddingRow);
+    }
+
+    if (typeof(clear) == "undefined" || clear) clearBody();
+    tbody = document.createElement("tbody");
+    tbody.appendChild(fragment);
+
+    table.appendChild(tbody);
+  };
+
+  var getLabelInfo = function() {
+    var pageStart = page.getRowStart();
+    var pageEnd = page.getRowEnd();
+    var totalRows = data.length;
+
+    var totalRowsLabel = options.rows.total ? options.rows.total : totalRows;
+    var totalRowsLabelFormat = totalRowsLabel.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+
+    var infoText = (pageStart + 1) + "-" + pageEnd + " of " + totalRowsLabelFormat + " rows";
+    if (totalRows < page.rows) {
+      infoText = totalRowsLabel + " row" + (totalRows != 1 ? "s" : "");
+    }
+    if (columns.total > columns.visible) {
+      var totalColumnsLabel = options.columns.total ? options.columns.total : columns.total;
+
+      infoText = infoText + " | " + (columns.number + 1) + "-" +
+        (Math.min(columns.number + columns.visible, columns.total)) +
+        " of " + totalColumnsLabel + " columns";
+    }
+
+    return infoText;
+  };
+
+  var clearFooter = function() {
+    footer = pagedTable.querySelectorAll("div.pagedtable-footer")[0];
+    footer.innerHTML = "";
+
+    return footer;
+  };
+
+  var createPageLink = function(idxPage) {
+    var pageLink = document.createElement("a");
+    pageLinkClass = idxPage === page.number ? "pagedtable-index pagedtable-index-current" : "pagedtable-index";
+    pageLink.setAttribute("class", pageLinkClass);
+    pageLink.setAttribute("data-page-index", idxPage);
+    pageLink.onclick = function() {
+      page.setPageNumber(parseInt(this.getAttribute("data-page-index")));
+      renderBody();
+      renderFooter();
+
+      triggerOnChange();
+    };
+
+    pageLink.appendChild(document.createTextNode(idxPage + 1));
+
+    return pageLink;
+  }
+
+  var renderFooter = function() {
+    footer = clearFooter();
+
+    var next = document.createElement("a");
+    next.appendChild(document.createTextNode("Next"));
+    next.onclick = function() {
+      page.setPageNumber(page.number + 1);
+      renderBody();
+      renderFooter();
+
+      triggerOnChange();
+    };
+    if (data.length > page.rows) footer.appendChild(next);
+
+    var pageNumbers = document.createElement("div");
+    pageNumbers.setAttribute("class", "pagedtable-indexes");
+
+    var pageRange = page.getVisiblePageRange();
+
+    if (pageRange.first) {
+      var pageLink = createPageLink(0);
+      pageNumbers.appendChild(pageLink);
+
+      var pageSeparator = document.createElement("div");
+      pageSeparator.setAttribute("class", "pagedtable-index-separator-left");
+      pageSeparator.appendChild(document.createTextNode("..."))
+      pageNumbers.appendChild(pageSeparator);
+    }
+
+    for (var idxPage = pageRange.start; idxPage < pageRange.end; idxPage++) {
+      var pageLink = createPageLink(idxPage);
+
+      pageNumbers.appendChild(pageLink);
+    }
+
+    if (pageRange.last) {
+      var pageSeparator = document.createElement("div");
+      pageSeparator.setAttribute("class", "pagedtable-index-separator-right");
+      pageSeparator.appendChild(document.createTextNode("..."))
+      pageNumbers.appendChild(pageSeparator);
+
+      var pageLink = createPageLink(page.total - 1);
+      pageNumbers.appendChild(pageLink);
+    }
+
+    if (data.length > page.rows) footer.appendChild(pageNumbers);
+
+    var previous = document.createElement("a");
+    previous.appendChild(document.createTextNode("Previous"));
+    previous.onclick = function() {
+      page.setPageNumber(page.number - 1);
+      renderBody();
+      renderFooter();
+
+      triggerOnChange();
+    };
+    if (data.length > page.rows) footer.appendChild(previous);
+
+    var infoLabel = document.createElement("div");
+    infoLabel.setAttribute("class", "pagedtable-info");
+    infoLabel.setAttribute("title", getLabelInfo());
+    infoLabel.appendChild(document.createTextNode(getLabelInfo()));
+    footer.appendChild(infoLabel);
+
+    var enabledClass = "pagedtable-index-nav";
+    var disabledClass = "pagedtable-index-nav pagedtable-index-nav-disabled";
+    previous.setAttribute("class", page.number <= 0 ? disabledClass : enabledClass);
+    next.setAttribute("class", (page.number + 1) * page.rows >= data.length ? disabledClass : enabledClass);
+  };
+
+  var measuresCell = null;
+
+  var renderMeasures = function() {
+    var measuresTable = document.createElement("table");
+    measuresTable.style.visibility = "hidden";
+    measuresTable.style.position = "absolute";
+    measuresTable.style.whiteSpace = "nowrap";
+    measuresTable.style.height = "auto";
+    measuresTable.style.width = "auto";
+
+    var measuresRow = document.createElement("tr");
+    measuresTable.appendChild(measuresRow);
+
+    measuresCell = document.createElement("td");
+    var sampleString = "ABCDEFGHIJ0123456789";
+    measuresCell.appendChild(document.createTextNode(sampleString));
+
+    measuresRow.appendChild(measuresCell);
+
+    tableDiv.appendChild(measuresTable);
+  }
+
+  me.init = function() {
+    tableDiv = document.createElement("div");
+    pagedTable.appendChild(tableDiv);
+    var pagedTableClass = data.length > 0 ?
+      "pagedtable pagedtable-not-empty" :
+      "pagedtable pagedtable-empty";
+
+    if (columns.total == 0 || (columns.emptyNames() && data.length == 0)) {
+      pagedTableClass = pagedTableClass + " pagedtable-empty-columns";
+    }
+
+    tableDiv.setAttribute("class", pagedTableClass);
+
+    renderMeasures();
+    measurer.calculate(measuresCell);
+    columns.calculateWidths(measurer.measures);
+
+    table = document.createElement("table");
+    table.setAttribute("cellspacing", "0");
+    table.setAttribute("class", "table table-condensed");
+    tableDiv.appendChild(table);
+
+    table.appendChild(document.createElement("thead"));
+
+    var footerDiv = document.createElement("div");
+    footerDiv.setAttribute("class", "pagedtable-footer");
+    tableDiv.appendChild(footerDiv);
+
+    // if the host has not yet provided horizontal space, render hidden
+    if (tableDiv.clientWidth <= 0) {
+      tableDiv.style.opacity = "0";
+    }
+
+    me.render();
+
+    // retry seizing columns later if the host has not provided space
+    function retryFit() {
+      if (tableDiv.clientWidth <= 0) {
+        setTimeout(retryFit, 100);
+      } else {
+        me.render();
+        triggerOnChange();
+      }
+    }
+    if (tableDiv.clientWidth <= 0) {
+      retryFit();
+    }
+  };
+
+  var registerWidths = function() {
+    columns.subset = columns.subset.map(function(column) {
+      column.width = columns.widths[column.name].inner;
+      return column;
+    });
+  };
+
+  var parsePadding = function(value) {
+    return parseInt(value) >= 0 ? parseInt(value) : 0;
+  };
+
+  me.fixedHeight = function() {
+    return options.rows.max != null;
+  }
+
+  me.fitRows = function() {
+    if (me.fixedHeight())
+      return;
+
+    measurer.calculate(measuresCell);
+
+    var rows = options.rows.min !== null ? options.rows.min : 0;
+    var headerHeight = header !== null && header.offsetHeight > 0 ? header.offsetHeight : 0;
+    var footerHeight = footer !== null && footer.offsetHeight > 0 ? footer.offsetHeight : 0;
+
+    if (pagedTable.offsetHeight > 0) {
+      var availableHeight = pagedTable.offsetHeight - headerHeight - footerHeight;
+      rows = Math.floor((availableHeight) / measurer.measures.height);
+    }
+
+    rows = options.rows.min !== null ? Math.max(options.rows.min, rows) : rows;
+
+    page.setRows(rows);
+  }
+
+  // The goal of this function is to add as many columns as possible
+  // starting from left-to-right, when the right most limit is reached
+  // it tries to add columns from the left as well.
+  //
+  // When startBackwards is true columns are added from right-to-left
+  me.fitColumns = function(startBackwards) {
+    measurer.calculate(measuresCell);
+    columns.calculateWidths(measurer.measures);
+
+    if (tableDiv.clientWidth > 0) {
+      tableDiv.style.opacity = 1;
+    }
+
+    var visibleColumns = tableDiv.clientWidth <= 0 ? Math.max(columns.min, 1) : 1;
+    var columnNumber = columns.number;
+    var paddingCount = 0;
+
+    // track a list of added columns as we build the visible ones to allow us
+    // to remove columns when they don't fit anymore.
+    var columnHistory = [];
+
+    var lastTableHeight = 0;
+    var backwards = startBackwards;
+
+    var tableDivStyle = window.getComputedStyle(tableDiv, null);
+    var tableDivPadding = parsePadding(tableDivStyle.paddingLeft) +
+      parsePadding(tableDivStyle.paddingRight);
+
+    var addPaddingCol = false;
+    var currentWidth = 0;
+
+    while (true) {
+      columns.setVisibleColumns(columnNumber, visibleColumns, paddingCount);
+      currentWidth = columns.getWidth();
+
+      if (tableDiv.clientWidth - tableDivPadding < currentWidth) {
+        break;
+      }
+
+      columnHistory.push({
+        columnNumber: columnNumber,
+        visibleColumns: visibleColumns,
+        paddingCount: paddingCount
+      });
+
+      if (columnHistory.length > 100) {
+        console.error("More than 100 tries to fit columns, aborting");
+        break;
+      }
+
+      if (columns.max !== null &&
+        columns.visible + columns.getPaddingCount() >= columns.max) {
+        break;
+      }
+
+      // if we run out of right-columns
+      if (!backwards && columnNumber + columns.visible >= columns.total) {
+        // if we started adding right-columns, try adding left-columns
+        if (!startBackwards && columnNumber > 0) {
+          backwards = true;
+        }
+        else if (columns.min === null || visibleColumns + columns.getPaddingCount() >= columns.min) {
+          break;
+        }
+        else {
+          paddingCount = paddingCount + 1;
+        }
+      }
+
+      // if we run out of left-columns
+      if (backwards && columnNumber == 0) {
+        // if we started adding left-columns, try adding right-columns
+        if (startBackwards && columnNumber + columns.visible < columns.total) {
+          backwards = false;
+        }
+        else if (columns.min === null || visibleColumns + columns.getPaddingCount() >= columns.min) {
+          break;
+        }
+        else {
+          paddingCount = paddingCount + 1;
+        }
+      }
+
+      // when moving backwards try fitting left columns first
+      if (backwards && columnNumber > 0) {
+        columnNumber = columnNumber - 1;
+      }
+
+      if (columnNumber + visibleColumns < columns.total) {
+        visibleColumns = visibleColumns + 1;
+      }
+    }
+
+    var lastRenderableColumn = {
+        columnNumber: columnNumber,
+        visibleColumns: visibleColumns,
+        paddingCount: paddingCount
+    };
+
+    if (columnHistory.length > 0) {
+      lastRenderableColumn = columnHistory[columnHistory.length - 1];
+    }
+
+    columns.setVisibleColumns(
+      lastRenderableColumn.columnNumber,
+      lastRenderableColumn.visibleColumns,
+      lastRenderableColumn.paddingCount);
+
+    if (pagedTable.offsetWidth > 0) {
+      page.setVisiblePages(Math.max(Math.ceil(1.0 * (pagedTable.offsetWidth - 250) / 40), 2));
+    }
+
+    registerWidths();
+  };
+
+  me.fit = function(startBackwards) {
+    me.fitRows();
+    me.fitColumns(startBackwards);
+  }
+
+  me.render = function() {
+    me.fitColumns(false);
+
+    // render header/footer to measure height accurately
+    renderHeader();
+    renderFooter();
+
+    me.fitRows();
+    renderBody();
+
+    // re-render footer to match new rows
+    renderFooter();
+  }
+
+  var resizeLastWidth = -1;
+  var resizeLastHeight = -1;
+  var resizeNewWidth = -1;
+  var resizeNewHeight = -1;
+  var resizePending = false;
+
+  me.resize = function(newWidth, newHeight) {
+
+    function resizeDelayed() {
+      resizePending = false;
+
+      if (
+        (resizeNewWidth !== resizeLastWidth) ||
+        (!me.fixedHeight() && resizeNewHeight !== resizeLastHeight)
+      ) {
+        resizeLastWidth = resizeNewWidth;
+        resizeLastHeight = resizeNewHeight;
+
+        setTimeout(resizeDelayed, 200);
+        resizePending = true;
+      } else {
+        me.render();
+        triggerOnChange();
+
+        resizeLastWidth = -1;
+        resizeLastHeight = -1;
+      }
+    }
+
+    resizeNewWidth = newWidth;
+    resizeNewHeight = newHeight;
+
+    if (!resizePending) resizeDelayed();
+  };
+};
+
+var PagedTableDoc;
+(function (PagedTableDoc) {
+  var allPagedTables = [];
+
+  PagedTableDoc.initAll = function() {
+    allPagedTables = [];
+
+    var pagedTables = [].slice.call(document.querySelectorAll('[data-pagedtable="false"],[data-pagedtable=""]'));
+    pagedTables.forEach(function(pagedTable, idx) {
+      pagedTable.setAttribute("data-pagedtable", "true");
+      pagedTable.setAttribute("pagedtable-page", 0);
+      pagedTable.setAttribute("class", "pagedtable-wrapper");
+
+      var pagedTableInstance = new PagedTable(pagedTable);
+      pagedTableInstance.init();
+
+      allPagedTables.push(pagedTableInstance);
+    });
+  };
+
+  PagedTableDoc.resizeAll = function() {
+    allPagedTables.forEach(function(pagedTable) {
+      pagedTable.render();
+    });
+  };
+
+  window.addEventListener("resize", PagedTableDoc.resizeAll);
+
+  return PagedTableDoc;
+})(PagedTableDoc || (PagedTableDoc = {}));
+
+window.onload = function() {
+  PagedTableDoc.initAll();
+};
+</script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Data discovery</h1>
+<h3 class="subtitle">Resources for finding available and relevant data</h3>
+
+
+
+<div id="census-datasets" class="section level1">
+<h1>Census datasets</h1>
+<p><code>cancensus</code> can access Statistics Canada Census data for the 2001 Census, the 2006 Census, the 2011 Census and National Household Survey, as well as the 2016 Census. You can run <code>list_census_datasets</code> to check what datasets are currently available for access through the CensusMapper API. Additional data for the 2016 Census will be included in Censusmapper within a day or two after public release by Statistics Canada. Statistics Canada maintains a release schedule for the Census 2016 Program which can be viewed on their <a href="http://www12.statcan.gc.ca/census-recensement/2016/ref/release-dates-diffusion-eng.cfm">website</a>.</p>
+<p>Thanks to contributions by the Canada Mortgage and Housing Corporation (CMHC), <code>cancensus</code> now includes additional Census-linked datasets as open-data releases. These include annual taxfiler data at the census tract level for tax years 2000 through 2017, which includes data on incomes and demographics, as well as specialized crosstabs for Structural type of dwelling by Document type, which details occupancy status for residences. These crosstabs are available for the 2001, 2006, 2011, and 2016 Census years at all levels starting with census tract.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">list_census_datasets</span>()</a></code></pre></div>
+<pre><code>## # A tibble: 26 x 6
+##    dataset description     geo_dataset attribution   reference reference_url    
+##    &lt;chr&gt;   &lt;chr&gt;           &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;     &lt;chr&gt;            
+##  1 CA01    2001 Canada Ce… CA01        StatCan 2001… 92-378-X  https://www150.s…
+##  2 CA06    2006 Canada Ce… CA06        StatCan 2006… 92-566-X  https://www150.s…
+##  3 CA11    2011 Canada Ce… CA11        StatCan 2011… 98-301-X… https://www12.st…
+##  4 CA16    2016 Canada Ce… CA16        StatCan 2016… 98-301-X  https://www150.s…
+##  5 CA01xSD 2001 Canada Ce… CA01        StatCan 2001… 92-378-X  https://www150.s…
+##  6 CA06xSD 2006 Canada Ce… CA06        StatCan 2006… 92-566-X  https://www150.s…
+##  7 CA11xSD 2011 Canada Ce… CA11        StatCan 2011… 98-301-X  https://www150.s…
+##  8 CA16xSD 2016 Canada Ce… CA16        StatCan 2016… 98-301-X  https://www150.s…
+##  9 TX2000  2000 T1FF taxf… CA01        StatCan 2000… 72-212-X  https://www150.s…
+## 10 TX2001  2001 T1FF taxf… CA01        StatCan 2001… 72-212-X  https://www150.s…
+## # … with 16 more rows</code></pre>
+<p>The <code>list_census_datasets()</code> function also provides additional background like series reference code, catalogue reference, and attribution details.</p>
+</div>
+<div id="variable-vectors" class="section level1">
+<h1>Variable vectors</h1>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAYAAAAUg66AAAAEGWlDQ1BrQ0dDb2xvclNwYWNlR2VuZXJpY1JHQgAAOI2NVV1oHFUUPrtzZyMkzlNsNIV0qD8NJQ2TVjShtLp/3d02bpZJNtoi6GT27s6Yyc44M7v9oU9FUHwx6psUxL+3gCAo9Q/bPrQvlQol2tQgKD60+INQ6Ium65k7M5lpurHeZe58853vnnvuuWfvBei5qliWkRQBFpquLRcy4nOHj4g9K5CEh6AXBqFXUR0rXalMAjZPC3e1W99Dwntf2dXd/p+tt0YdFSBxH2Kz5qgLiI8B8KdVy3YBevqRHz/qWh72Yui3MUDEL3q44WPXw3M+fo1pZuQs4tOIBVVTaoiXEI/MxfhGDPsxsNZfoE1q66ro5aJim3XdoLFw72H+n23BaIXzbcOnz5mfPoTvYVz7KzUl5+FRxEuqkp9G/Ajia219thzg25abkRE/BpDc3pqvphHvRFys2weqvp+krbWKIX7nhDbzLOItiM8358pTwdirqpPFnMF2xLc1WvLyOwTAibpbmvHHcvttU57y5+XqNZrLe3lE/Pq8eUj2fXKfOe3pfOjzhJYtB/yll5SDFcSDiH+hRkH25+L+sdxKEAMZahrlSX8ukqMOWy/jXW2m6M9LDBc31B9LFuv6gVKg/0Szi3KAr1kGq1GMjU/aLbnq6/lRxc4XfJ98hTargX++DbMJBSiYMIe9Ck1YAxFkKEAG3xbYaKmDDgYyFK0UGYpfoWYXG+fAPPI6tJnNwb7ClP7IyF+D+bjOtCpkhz6CFrIa/I6sFtNl8auFXGMTP34sNwI/JhkgEtmDz14ySfaRcTIBInmKPE32kxyyE2Tv+thKbEVePDfW/byMM1Kmm0XdObS7oGD/MypMXFPXrCwOtoYjyyn7BV29/MZfsVzpLDdRtuIZnbpXzvlf+ev8MvYr/Gqk4H/kV/G3csdazLuyTMPsbFhzd1UabQbjFvDRmcWJxR3zcfHkVw9GfpbJmeev9F08WW8uDkaslwX6avlWGU6NRKz0g/SHtCy9J30o/ca9zX3Kfc19zn3BXQKRO8ud477hLnAfc1/G9mrzGlrfexZ5GLdn6ZZrrEohI2wVHhZywjbhUWEy8icMCGNCUdiBlq3r+xafL549HQ5jH+an+1y+LlYBifuxAvRN/lVVVOlwlCkdVm9NOL5BE4wkQ2SMlDZU97hX86EilU/lUmkQUztTE6mx1EEPh7OmdqBtAvv8HdWpbrJS6tJj3n0CWdM6busNzRV3S9KTYhqvNiqWmuroiKgYhshMjmhTh9ptWhsF7970j/SbMrsPE1suR5z7DMC+P/Hs+y7ijrQAlhyAgccjbhjPygfeBTjzhNqy28EdkUh8C+DU9+z2v/oyeH791OncxHOs5y2AtTc7nb/f73TWPkD/qwBnjX8BoJ98VQNcC+8AAC2lSURBVHgB7Z0HmBRF+sY/ouQcBEXExCmKwgmod3gGUBTjmQD1BAkqigE9MCBK8M47lGDgUfRQT1BRlBNUggGFA8WEAVEQyQgiSZEc+l/vx7/6emZndmt2t2d6hreeZ3e6q6uqq35V8/ZXoWtKeMYJHQmQAAlkgEDJDNyTtyQBEiABJUABYkMgARLIGAEKUMbQ88YkQAIUILYBEiCBjBGgAGUMPW9MAiRAAWIbIAESyBiB0hm7c4Zu/OKLL8r7779f4N2vuuoqad26dYHhggHWrVsntWrVCnoVePzhhx/Ks88+K/fdd5/Ur1+/wPCZDPDJJ5/I008/Lffcc48ccsghmcxK0nuvXbtW/va3v8mnn34qBx54oIwfPz5p2OK6MGDAAKlRo4b06tWruJLMinQ+//xzefLJJ+XOO++URo0aOec52I4E64D2J3f33Xd7Bx98sP9XrVo1rIPy6tSp4/vh+tixY1PC8vrrr3tGfFKKg8BGfPT+X3/9dcpx0x3hhRde0Lx+9tln6b618/3at2/vlS5d2mvXrp13xx13OMcrSsAmTZro/YqSRjbGfeWVV7Q9fPTRRyllP9iO9jsL6IEHHhD8WTdixAi59dZbZcKECXLKKadY75Q/YVVt2rQp5XiMULwE5syZI2effba88cYbxZtwPqm99tprUqZMmXxC5Oaltm3bypdffilHHnlkoQvIMSBHdKtXr5a3335b0MC3bNkSEwtm/6+//qp+S5culY0bN/rXd+zYIfPmzZM333xTvvjiC9m6dat/zfVg1apVfprLly+XqVOnCu4T71auXCk///xzvLeGDYpjMD2k895778lvv/3mx0P5pk+fLhs2bPD94g9QxnfeeUe+/fZb2bt3b/xlPd+zZ4/Mnz9fpkyZkjC/Nh+4N+63efPmhOkEPZPVA7iiLKiH2rVr63F8Pdl0cD+E3bVrl/XSTzCCv3U2fzjPj3ulSpWkQoUKNpr/CX5g9NNPP6kf6sfWg2sebGIFsbTh7OeaNWsE90vkUMb4ukV4PETfffddWbFiRUw0cEQcY+ZoW/7qq6/0OkS3SpUqUqpUqZjwKbX5lGynHAw8fPhwNSNnzZqVsHSmYXvXXnutV6JECc+A1rCVK1f2Ro0a5Ye/8MIL1d/Ugn726dNHrz333HOe7eKVLFlSr6Gb9tZbb/lxXbpgRx99tNezZ0/v4osvjrnPlVde6ZkvkZ/WoYce6l1yySX+OQ527typce666y7f36Z3zjnn+Omh2zJp0iTv5Zdf9sqWLav++Lziiiu83bt3a1xrOt9+++1euXLltKuDMjdv3txbvHixnz4O0E373e9+p+lYbugWmYbuhzviiCO8G2+80UN+kA66wcHy+AHNQUH1MG7cOL8sth7MeF8wCf84GXN0zxHXfIE0rOVUEPf4LhjKcOmll2p7QVtBmmacyDPjJJ6tB9c8ICMuLP3C/f8B2iC4G8GOuTR79mzNz5gxY9T/xx9/9M4991z1s20U+UWZt2/frmEQFn6PP/64fuL4kUce8RJ1wVzafLAd7XdjQDG1YU4KEqBbbrnFM0rvPfHEE/olMNaO17lzZ60IjPvAmaeud/311+sX0gxEe+aJ4ZmnhIbp2LGj98MPP6gfwtesWVMbokY0/5I1RHsdn/giQCAgdDNmzPDMk8275pprNH0zyOoHTUWA0Dgvu+wy7/vvv/cgvocddpiHLwvSwPiXeWrrGAoaGxoanG04CAexgjAhbr169VSEjCWk4davX6/lbNq0qYcyQwSR74MOOsg788wzNQz+QYAgchdccIEHsXj++ef9a/EHBdUDRAPsDzjgAK9Hjx56bIUkPq1kzBMJkAv3eAGCqFasWNGbPHmy3tpYiVpWPMRSFSBXlvFlxD1Rd8OGDYu5dMMNN3hVq1bVtowLeGDhYWKsVG2jiIcHLuJCTOCsAOHhOXLkSM8MW2gbjBcg1zYfbEcUoHwsIDwd0GjQoIIOX7zGjRt7xx57rO992223qUhYD2PKel26dPFMl8h66WfXrl21cu2TPtmXIRgJAgThghVgHSwJNBLboOGfigAZ0zkmPeQf6ZnZOHsLfXrCb+DAgepnGw7KEHTPPPOMxjXdDfXu16+fnpuuYjCYL/YffPCB+kOAkA8Idn4ulXqAAN188835JZdU9BMJkAv3oAChjiDusBKDDl/wYH0lq/f4PLiyDN7LHp900kne73//e3uqlp2ZrVOBhqfp1ulDBg/XoDNdMM2rme1UbytAgwcPDgbLYwG5tvlgO9rvBqFNI3B233zzjfZ7jYkaE8c0MB3oNCapmKe7mKd4zHWcnHHGGfqHcQ0zSyDfffed9p8x3gJnzFvB2IGrM4In5cuX94PXrVtXBz6DYzf+RYeDww8/PCY9IwYa67zzzvNjYywFbtu2bb4fDuJ5oKxwGJA0Fo5getY8VQX8MAZkHcYZ4DCGcOqpp+oxypVo/EQv/v+/otRDMJ3CHKfKHWXDeE38Eg4M2BprKuUspMIyPnFjyYixBrXtme6wjkNi7Mc8GDWo6XLJkCFDtI2bLrTW1YIFC7S9IgDaaNA1a9YseJrnONU2j3aUOpE8t81dDzuIZ8Ym8hQSX040NAx6Jlr7g4E4Y+6K6VaIsZgEgnHiiSfq+pklS5ZopedJNB+P6tWr57mKBmQeSXn8gx7JrmONTCJnnvi+t7H+/OPggXmyBk/FxsE6KDhwQ1ysGYp3xxxzjICNdab7Zg+TfhalHpImmuBCIlapcl+2bJmmjHVBQYe6StSOgmFwHJ+HVFjGp2XG73SG13SpZdCgQdoWIUTB+sPEihlflEWLFumD1Fjb/sMhPi8F1VWqbR75oADF11rgvEGDBnpmugAB332HmCGBqCQSH4TAYj1jZusTBg3BrC3SiGasSEwXJE9D25dq0f6jkcc/tRLlHXdB2MI6zOQEF03ae5guoCaJskJkseCsIOsmmcgF81aUegimY49t2V1Z2Xgun5YBZuuCDl9mK9Dwd81DKiyD98MxZqjMGI9g8W3v3r3VAoIQWYfZ24suukggOmYsTx+QsOZhqT766KN52mhBdZVqm0c7KnwrtKXI4c/jjjtOzJiCmJmhmFKi4U6cOFGCJim6ZZiOtlPSmFbGamEzFuCLjxn3ETMLoWnBeipuhwZnrQWbNrp/xe3M4GpMklhtjMZpn6wtWrTQKXWsrQo6M1Yk6Pp9/PHHQe8Cj1OphwITMwHACS443Qwr1cw2qX9R/sHCMzOfYgZoY5KZNm2adtetp2seisoS3S0zCSJmHE8t9quvvtpmQZeUmDEruemmm3QNnB1KwAMSLtU2mmqbRzuiAPnVkfcAJrNZTStm0EzM4KCaqWikeGr88ssvauXYWGZmQcXnoYce0tcAjjrqKIE5jqXqePJBCMyskz8m4rLmxabt+nnaaafpOIwZmNZxGHSB8HpAcOzINa38wvXv319Gjx6ta0NwDzxVO3XqJGbWS6PhaYsuHsTXDFzqGISZUdHuAJ62LVu2zC/5PNdSqYc8kRN4nHzyydrdwCsEZkmEWqSwUuPFO0HUAr0wrmcG8uXVV1+Ve++9VzC2gnVQ3bt3j4nrmoeiskSbwGsSZtpcxy2D3SgsIMSD46mnnpK5c+cKLFlY7WaSQdf2pNpGU23zaEcws/ZrV9A0PGa8zLtFnmlYOjOAGQ7zVPKM2sdwwzoY83TXMFhDYRqzZ76UOuVpWp5OD2N2xvS5NYydcjYVruf5vYqBWTC8YhDvMONjnl6+N6ZszSCyztzhnkYEPMxEYbYpOFuWKD27xiO4nsc8ATVvNq6dvcA0PWaHcA9MU5svV8yMGjJkxhS8008/PSYvmD0DF+uQLywtcHGu9eAyC4b7Yd0QZoRsGS6//HLPfBH13E7fJ+KEuPHcg7NguA43dOhQnYpH+uYB4D388MMxLBHGJQ8I58IS4ZI5rEFCPuxyimA4lNlY8nodYYwF52E2C2vE0J7h7CyYEalg1DyzYK5tPtiO9nsBiiGazwm+jGgIxvLJJ5Sn60+w7sU6NOaFCxcmXWBnwxXnp+lb51kYWJzpIy3wQLmCSwMS3QNT7Ahn1wglCpOKn2s9uKSJPGEdlJlJdAmechiIJsqONpBoQSgSTCUPxc0yWCBMvWMdVXG4VNp8CdzQKB8dCZBAiAQw/ocxFnSP8bY+3T4CHANiSyABEsgYAU7DZww9b7w/EcAs6f33359ngeL+xCBRWdkFS0SFfiRAAmkhwC5YWjDzJiRAAokIUIASUaEfCZBAWghQgNKCmTchARJIRIAClIgK/UiABNJCgAKUFsy8CQmQQCICFKBEVOhHAiSQFgIUoLRg5k1IgAQSEaAAJaJCPxIggbQQoAClBTNvQgIkkIgABSgRFfqRAAmkhQAFKC2YeRMSIIFEBChAiajQjwRIIC0EKEBpwcybkAAJJCJAAUpEhX4kQAJpIUABSgtm3oQESCARAQpQIir0IwESSAsB7oiYFsy8CQnkT6Bdu3b5B4jwVfzsUGEdLaDCkmM8EiCBIhOgABUZIRMgARIoLAEKUGHJMR4JkECRCVCAioyQCZAACRSWAAWosOQYjwRIoMgEKEBFRsgESIAECkuAAlRYcoxHAiRQZAIUoCIjZAIkQAKFJUABKiw5xiMBEigyAQpQkREyARIggcISoAAVlhzjkQAJFJkABajICJkACZBAYQlQgApLjvFIgASKTCBtAvTTTz/J1KlT5fvvv8830wsWLJBp06bJunXrYsLt2LFDZs2aJbNnz5Zdu3bFXENYpI24dCRAAtlDIC0CNHfuXOnVq5csX75chg0bJkOHDk1ICNeGDBkiCN+1a1cNj4Dbtm2Tzp07y/Tp02XMmDHSp08f8TxP00DYLl26yMKFC9V/woQJCdOmJwmQQPQIpGU/oCeeeEJ69+4tJ510ksCSeeCBB2Tnzp1StmxZn8jSpUtl5syZMn78eClZsqS89NJLMnbsWLnrrrtk3Lhx0qpVK7n11ls1/HXXXSdz5szR9IYPHy6DBw+W448/Xi6//HLp1q2btG/fPiZt/yY8IAESiBSB0C2gLVu2yKJFi6Rx48batfrxxx9l4MCBeQRi8eLF0rRpUxUfEGrevLnMnz9fYSE+zq2z13bv3i0rV67UeLhWt25dqVChgqxatcoG5ScJkECECYQuQGvXrpXy5ctL37595ZtvvpH+/ftrNyyeyerVq6Vq1aq+d5UqVWT9+vV6vmbNGsG5dfYa0q5YsaKUKFHCXtI0NmzY4J/zgARIILoEQu+C7d27V3755RcZNGiQNGvWTLZu3SqXXHKJdpUqV67skylVqpTs2bPHP4d1A+GCS3Yt3h9hEa9cuXI4pCMBEog4gdAtoDp16iiCY445Rj/RRapdu7b88MMPMWjgF7RccFyvXj0NU6tWrTzX6tevLzVr1hR08TCuZB3i4RodCZBA9AmELkCwck444QR5++23lcaSJUsE40BHHXWUfw4BadGihcybN09WrFihVsykSZOkZcuWGqZ169YyefJk2b59u07PYyoe1lTp0qV1cHrixIkabsaMGVK9enX9Uw/+IwESiDSBEmY6e998dojZxPQ7xn4gGFizc/vttwtEBa5NmzYyYsQIadKkibzxxhvy6KOPSo0aNaRhw4Y6u4U46FYNGDBABQozZB06dJDLLrtM4y9btkyn39EdwzXcx4qbBuA/EsgCAvvrr2KkRYBs/W/cuFGqVasWM2g8evRoOf/887VbhnBYZAiLqFKlSjaa/7l582YdF4IoxbtNmzZp2vH+PCeBbCCwvwpQ3m9yiLWF7lG8a9CggS8+uFamTBn9iw+H8+Cgdfx1CBsdCZBAdhEIfQyoIBxt27YtKAivkwAJ5CiBjAtQjnJlsUiABBwIUIAcIDEICZBAOAQoQOFwZaokQAIOBChADpAYhARIIBwCFKBwuDJVEiABBwIUIAdIDEICJBAOAQpQOFyZKgmQgAMBCpADJAYhARIIhwAFKByuTJUESMCBAAXIARKDkAAJhEOAAhQOV6ZKAiTgQIAC5ACJQUiABMIhQAEKhytTJQEScCBAAXKAxCAkQALhEKAAhcOVqZIACTgQoAA5QGIQEiCBcAhQgMLhylRJgAQcCFCAHCAxCAmQQDgEKEDhcGWqJEACDgQoQA6QGIQESCAcAhSgcLgyVRIgAQcCFCAHSAxCAiQQDgEKUDhcmSoJkIADAQqQAyQGIQESCIcABSgcrkyVBEjAgQAFyAESg5AACYRDgAIUDlemSgIk4ECAAuQAiUFIgATCIUABCocrUyUBEnAgQAFygMQgJEAC4RCgAIXDlamSAAk4EKAAOUBiEBIggXAIUIDC4cpUSYAEHAhQgBwgMQgJkEA4BChA4XBlqiRAAg4EKEAOkBiEBEggHAIUoHC4MlUSIAEHAhQgB0gMQgIkEA4BClA4XJkqCZCAAwEKkAMkBiEBEgiHAAUoHK5MlQRIwIEABcgBEoOQAAmEQ4ACFA5XpkoCJOBAgALkAIlBSIAEwiFAAQqHK1MlARJwIEABcoDEICRAAuEQoACFw5WpkgAJOBBIuwBNnz5dNm/enDRrCxYskGnTpsm6detiwuzYsUNmzZols2fPll27dsVcQ9ipU6cK4tKRAAlkD4G0CtCMGTOkf//+smHDhoSEhg0bJkOGDJG5c+dK165dZfny5Rpu27Zt0rlzZ4F4jRkzRvr06SOe5+k1hO3SpYssXLhQ/SdMmJAwbXqSAAlEj0DaBAhWyujRo6VatWoJKSxdulRmzpwpo0aNkr59+0rHjh1l7NixGnbcuHHSqlUr6devn4wcOVK2bt0qc+bM0WvDhw+XwYMHS69evTQu7rFz586E96AnCZBAtAikRYBgrTz44INy0003Sbly5RISWLx4sTRt2lRKltyXpebNm8v8+fM17KJFiwTn1tlru3fvlpUrV2o8XKtbt65UqFBBVq1aZYPykwRIIMIE0iJA48ePlwYNGsiJJ56YFMXq1aulatWq/vUqVarI+vXr9XzNmjWCc+vstbVr10rFihWlRIkS9pKmkayL5wfiAQmQQCQIhC5AS5YskcmTJ8v111+fb4FLlSole/bs8cPAuilfvryeJ7sW74/AiJfMyvIT5wEJkEAkCIQuQO+++64sW7ZMzj//fDnrrLME1ky3bt3k448/jgFQu3btmMFpWDH16tXTMLVq1cpzrX79+lKzZk3ZsmWLYIbMOsTDNToSIIHoEwhdgCA2ECFMrePvwAMPlKefflpatmypdGAhQUBatGgh8+bNkxUrVqgVM2nSJD9M69at1Yravn27Ts9jKr5Zs2ZSunRpHZyeOHGipoVZturVq+tf9NEzhyRAAqUzjaB79+4yYsQIadKkifTo0UOtoxo1akjDhg2lU6dOmr02bdroGiDMjGGQukOHDtKoUSO91rNnT3/6HdcwzU+X2wTatWuXtQWcMmVK1uY9jIyXMDNU+xbUhJG6Q5qYNkf3DF0wOCwyhEVUqVKlPLGxgBHjQrB84t2mTZuSTvHHh+V5dhPIRQHKxTK5tLK832SXWMUYBrNjVnyQbJkyZfQv0S0qV66cyFv9kq0vShqBF0iABDJOIPQxoIJK2LZt24KC8DoJkECOEsi4AOUoVxaLBEjAgQAFyAESg5AACYRDgAIUDlemSgIk4ECAAuQAiUFIgATCIUABCocrUyUBEnAgQAFygMQgJEAC4RCgAIXDlamSAAk4EKAAOUBiEBIggXAIUIDC4cpUSYAEHAhQgBwgMQgJkEA4BChA4XBlqiRAAg4EKEAOkBiEBEggHAIUoHC4MlUSIAEHAhQgB0gMQgIkEA4BClA4XJkqCZCAAwEKkAMkBiEBEgiHAAUoHK5MlQRIwIEABcgBEoOQAAmEQ4ACFA5XpkoCJOBAgALkAIlBSIAEwiFAAQqHK1MlARJwIEABcoDEICRAAuEQoACFw5WpkgAJOBCgADlAYhASIIFwCFCAwuHKVEmABBwIUIAcIDEICZBAOAQoQOFwZaokQAIOBChADpAYhARIIBwCFKBwuDJVEiABBwIUIAdIDEICJBAOAQpQOFyZKgmQgAMBCpADJAYhARIIhwAFKByuTJUESMCBAAXIARKDkAAJhEOAAhQOV6ZKAiTgQIAC5ACJQUiABMIhQAEKhytTJQEScCBAAXKAxCAkQALhEKAAhcOVqZIACTgQoAA5QGIQEiCBcAhQgMLhylRJgAQcCFCAHCAxCAmQQDgEKEDhcGWqJEACDgQoQA6QGIQESCAcAhSgcLgyVRIgAQcCFCAHSAxCAiQQDoHS4STLVKNEoF27dlHKTkp5mTJlSkrhGTi7CKTNAtq4caO88847snr16nwJLViwQKZNmybr1q2LCbdjxw6ZNWuWzJ49W3bt2hVzDWGnTp0qiEtHAiSQPQTSIkCvv/663HzzzbJkyRIZMGCADB8+PCGhYcOGyZAhQ2Tu3LnStWtXWb58uYbbtm2bdO7cWaZPny5jxoyRPn36iOd5eg1hu3TpIgsXLlT/CRMmJEybniRAAtEjELoA7dmzR55//nkZOHCgdO/eXYYOHaqWECyioFu6dKnMnDlTRo0aJX379pWOHTvK2LFjNci4ceOkVatW0q9fPxk5cqRs3bpV5syZo9cgZoMHD5ZevXpp3NGjR8vOnTuDSfOYBEggogRCF6BSpUrJc889J40aNVIE27dvl99++00gTEG3ePFiadq0qZQsuS9LzZs3l/nz52uQRYsWCc6ts9d2794tK1eu1Hi4VrduXalQoYKsWrXKBuUnCZBAhAmELkAoe8WKFRXB3r17ZcSIEYJB0Vq1asVgwdhQ1apVfb8qVarI+vXr9XzNmjWCc+vstbVr12raJUqUsJc0jQ0bNvjnPCABEogugbQIEIqPQeR7771XB5B79+6dhwgspaBVBOumfPnyGi7ZtXh/BEa8cuXK5UmfHiRAAtEjkBYBwpjNHXfcIZUrV5ZBgwZJ2bJl85CoXbu2BC0XHNerV0/DwVqKv1a/fn2pWbOmbNmyRcXNJohwuEZHAiQQfQJpEaD77rtPGjduLHfeeafAagk6zIzBOmrRooXMmzdPVqxYoVbMpEmTpGXLlhq0devWMnnyZMH4EabcMRXfrFkzKV26tA5OT5w4UcPNmDFDqlevrn/Be/CYBEggmgRCX4j47bffykcffaR/L7/8sk/hscce08FjzIxhXKhJkybSo0cP6datm9SoUUMaNmwonTp10vBt2rTRNUCYGcMgdYcOHfxB7Z49e/rT77jWv39//x48IAESiDaB0AXo6KOP1un1ZBggMnXq1NHL5513npx99tlqEVWqVMmPAksHXbfNmzfruBDOrYNQYZp+06ZNUq1aNevNTxIggSwg8L9vcoYy26BBA8H4j3VlypQR/CVyGENK5ig+ycjQnwSiSyAtY0D5Fb9t27b5XeY1EiCBHCaQcQsoamyz+cVNsOTLm1FrUcxPfgQybgHllzleIwESyG0CFKDcrl+WjgQiTYACFOnqYeZIILcJUIByu35ZOhKINAEKUKSrh5kjgdwmQAHK7fpl6Ugg0gQoQJGuHmaOBHKbAAUot+uXpSOBSBOgAEW6epg5EshtAhSg3K5flo4EIk2AAhTp6mHmSCC3CVCAcrt+WToSiDQBClCkq4eZI4HcJkAByu36ZelIINIEKECRrh5mjgRymwAFKLfrl6UjgUgToABFunqYORLIbQIUoNyuX5aOBCJNgAIU6eph5kggtwlQgHK7flk6Eog0AQpQpKuHmSOB3CZAAcrt+mXpSCDSBChAka4eZo4EcpsABSi365elI4FIE6AARbp6mDkSyG0CFKDcrl+WjgQiTYACFOnqYeZIILcJUIByu35ZOhKINAEKUKSrh5kjgdwmQAHK7fpl6Ugg0gQoQJGuHmaOBHKbAAUot+uXpSOBSBOgAEW6epg5EshtAhSg3K5flo4EIk2AAhTp6mHmSCC3CVCAcrt+WToSiDQBClCkq4eZI4HcJkAByu36ZelIINIEKECRrh5mjgRymwAFKLfrl6UjgUgToABFunqYORLIbQIUoNyuX5aOBCJNgAIU6eph5kggtwlQgHK7flk6Eog0AQpQpKuHmSOB3CZAAcrt+mXpSCDSBHJCgNatWydTp06VBQsWRBo2M0cCJBBLIOsFaO7cudKlSxdZuHCh9OnTRyZMmBBbQp6RAAlElkDpyObMMWPDhw+XwYMHy/HHHy+XX365dOvWTdq3by9ly5Z1TIHBSIAEMkUgqy2g3bt3y8qVK6Vp06bKr27dulKhQgVZtWpVpnjyviRAAikQyGoLaO3atVKxYkUpUaKEX+SqVavKhg0bpFGjRr5fKgdTpkxJJXhWhM21MuVaedCIcrFMLl+OrLaASpUqJXv27IkpJ6yicuXKxfjxhARIIJoEslqAatasKVu2bJEdO3b4dGH91K9f3z/nAQmQQHQJZLUAlS5dWlq1aiUTJ05UwjNmzJDq1avrX3SRM2ckQAKWQAnPOHuSjZ/Lli3T6Xd0x0qWLCn9+/eXo446KhuLwjyTwH5HIOsFyNbYpk2bpFq1avaUnyRAAllAIGcEKAtYM4skQAJxBLJ6DCiuLDwlARLIMgIUoCyrMGaXBHKJAAUol2qTZSGBLCNAAcqyCmN2SSCXCFCAcqk2WRYSyDICFKAsqzBmlwRyiQAFKJdqk2UhgSwjQAHKsgpjdkkglwhQgHKpNlkWEsgyAqXuNy7L8hyZ7G7dulU+//xzmT59um4LUrt2bX0fLZhBvCIybdo0Oeigg/Ls0oi9rGfOnKlxa9WqFYymx99995389ttvaX3FBHssIU+fffaZVKlSRbC/Urx75513BNueYDeCoMOuBHPmzNFN4g488EDB+3nW/fTTTzJr1izBq4fx8WyYMD5d6mj+/PnyzTffyKGHHpowC6iDTz75RA455JA8199++21p2LBhnnrPE7CYPPbu3avbD7/77ruyevVqqVOnjhxwwAF5Uk9WRzZgonxnoo5oAdkaSfFzzZo1uhf1a6+9JmgUL730knTq1EnQ4IPujTfekKeeekreeuutoLcUtJf1kiVL5Pbbb5dvv/02Jl6YJ2i03bt3ly+//FJ+/fVXufvuu+Xhhx+OuSV2oBwxYoQMHTo0xn/btm3SuXNnFeMxY8boC8L2PWeUtVevXrJ8+XIZNmxYnrgxCRXjiWsdoYwoD76A8W779u2CZ/Trr78ef0leffVVGThwYJ49qfIELCYPtLMBAwbI3//+d62fL774Qjp27KjiGLxFsjqyYRLlO1N1hCcSXSEImIr3XnzxxZiYpqF6piHH+HXo0MGbPHmyh/BB95e//MUzDUi9zBfFO++88zxjQej5f/7zH+/CCy/UOEa4gtFCOzbWlnf22Wd7S5cu9e/xyy+/eOeff75nGqfv9+STT3r/+te/vMsuu8z7/vvvff9nnnnGM+Lin/fo0cP78MMP9Tx4bL7Q3r333uuX1Y8QwoFLHZkfM/Cuvvpqb+TIkd6oUaNicvHDDz94V1xxhYf8//Wvf/Wv7dq1y7vrrrvU/49//KOHMqXDIX833HCDZ6xP/3YffPCBd+mll8bkIVkd5ZfvTNURLSD7WEjhc8WKFYKulWmcMbHuvPNOuemmm3w/WBLohrRr10790K2BK2gv6/Lly4v5ksuRRx4Zs92sRg7pH7pOZ5xxhnYn7C3QBXvhhRfkhBNOUC/sPmnEVE477TRp27atGKG0QWXRokXSvHlz/xzH6Npgwzhca9y4sXZFf/zxR7Uawv7RANc6evPNN+VPf/qTlgfWKurGOliz99xzj1oZ1g+f4HDSSSfJ448/HvQO/Xj27Nly7bXXxnRtTz31VBk9erTfDcuvjpLlO1N1BGAUoEI0G4zNNGjQII84oC9epkwZP0U07nPOOUfP8Wm/sPntZY3AZ511lj9OYh51fnphHqBMicY4KlWq5N/2448/1nwddthhKqoY27JdTnR3IFjW4Xj9+vWCskJQ+/btq+Ms2K8J3bCwnUsd7dy5UzAWggfEEUccITVq1NDxL5u3Y489Vo477jh76n+ini+44ALBhnjpcsjr4sWLE9ZR5cqV/WzkV0fJ8p2pOkKmKUB+1bkfYNdF0z3JNwK+mBichqWE8SGEx+AuvpRR3MvapUwQVDR2lAcDymjQ+EFIuPgywZKA8GDcAmU3XQe57bbbxHQP1BLavHlzvvyKetGlPP/973918Bj1gjJhP6mo/q4cLEb8AAPaU34uvzpKFi9TdYT8UICS1Uo+/thxETMQGzdujAmFmQk84eHee+89Ofjgg/WpCisGMz94ysLMj+Je1ugiYSYo3uE319DtQsP/6KOP5MQTT9SZLJTplFNO8QdnMYuH/bits3tzY5YG7phjjtFP/GwSZgvN+Iqeh/XPpY5QF9jSF2XBH8o2b948wS6bUXQoE7q1QQdxx+A/rJiC6igYL3icqTpCHihAwZpwPEb34pJLLlGxsZYQZq3wdEf3CQ6NGz+UiFkK+3fllVfq/tX4GaGo7WXdpk0bFRDMYJnBSh0LQfcEJr0ZaFWrBeM6KIMtzy233CIY0/n666+ldevWKlSYNcLyAoxXNGvWTC0mjCEhLThwQpywt80tqI4w44UxOpTBlgdlQ1kTzXhp5jP8D0KDGVX7oEDbe/TRRwVdYogIusT51VGy7MOqzUQdIT/p68QmK32W+t944406Hd21a1ftZsA8NjNX2oDxBMXAKwY3gw6N+6GHHhIzOyQ9e/b0f0ra7mUdDJvuY1gmmN7FFPsrr7yit4fFdt9996mIwLQ3s0Ux2UKc008/Xce2zKyQdsvwZUZ5zOyf/9tsZgZJxRpjYBAnpIm4Ybv86ujZZ5/VgeTg+Anyc+655+og+XXXXecP7IadT9f0IRIQTCwZgPVtB5XRluAKqqNE41n23pmqI27JamugCJ9YMxMcgE0lKZjNUdvLGuM3WFQIUU3VYWwHYz+JBmjxpUFZgz8kmWr6hQ1flDoq7D3DjIeZK/z+XXCxZ3HcL911RAEqjlpjGiRAAoUiwDGgQmFjJBIggeIgQAEqDopMgwRIoFAEKECFwsZIJEACxUGAAlQcFJkGCZBAoQhwGr5Q2LIvEmaBZsyYIe+//74uWMOUbpcuXQo10xXV0j/22GPSsmVL/XPJI15vwCpgzCalw+XaTFxxMKMFVBwUI56GeWtdXwa95pprdBEgpsr79esnxx9/vO43FPHsO2cPi/KwWtvFYbq5adOmukWIS/iihsF2LPal5KKmlUvxKUC5VJsJyoK9Yc4880xdqYzl+ni7fdy4cbJ06VJ9Ux1v8O+PDuuvFixYkLai4xUPrN2hiyVAAYrlkXNnZs8iQVcDS/iDi9awIPDpp58WvO2O69b9+9//1ldI8LY33loPbk+BLg5ePsX2DxdddJGudsYmZtbhS43tK/A6CrYqQfp4xwoOL3z26dPHBtVPrIz+xz/+4fvZTdogmNgYDa+B5Ofw6gFWopu9ifyXYoPhJ02apNtXID2z/5K+KoLrEAKs3IaDJWhfE8Hb5rfeeqtaKn/+859lyJAhMWyee+45LTdWSyN+8N03pJWMndmzRzcvw8MA5YL1RbePAAUox1sCXvs4+eSTE26t2r59e3nwwQf9rWKxzB+7MGIfIrxo+s9//lPMZlc+IYgPXlHAawz4UuNVALOJmf9u0lVXXaU7AGBnyBYtWgiW9yN9OGyPAesr6D799FN9Nw5+eDcL+wxhPAZfUqyW/sMf/qDxgnHs8ZQpU3RLDPsSKfbJCb5Eir16kA+8J4WuJ3YngHBga1Ws0kb3Ew6vJ2D7WLyjhi4ZRAWvnIDBoEGDVKAQDuKCt/nxzhvEFS8b4/056/Jjh/e08GIyXj/BGFXYeyHZPGXFp6lAuhwmYPYrjtnNL1lRTXfEM+9weUYk/CDY8dA0Ys8MXKsfdm00b7V7Rnj0HJ/mzX7PvD+m52YLDO+JJ57w4xsLxDNWjp5jNz+zL7Z/DQfGWvKM0KmfsaQ8IwyeESI9N4PDurukeftbz+P/mbf3PbM9qe9trBeNb/NidiXwsDOgddgN0Fh93iOPPKJeCI+yodxw2LXSiJhfNviZQXrPCA4OdfdDswmbh3zBYbdE7H6J3RBd2BlLzzMCp3H5738EOAuWFY+JwmcSm+Fjs7CCHKwR0yzUQsBb4tahi4Zr9sVabFmBl03h8In0sWk7HCwNvBj5/PPPq7WBl3ObNGmi1wr6h90BDj/8cLU80IXDBm7oNiXawB5dKAysn3HGGX6yjRo1innDHnsnY8sU7NkN6wtlwr7VeFs/kcMAMSwwWDbYhxvbXqB7CesIDi/XIk94QReWlBFj3eca1pQru0T33d/99rWk/Z1CDpcf2zPY7Rvii4kvJrpJq1at0ql5fJmwyRiExf5hM/mgiMS/oBocV8KYEbaywN5CxtIQ7CgYHOSGwAUdtv2wDkKHMR+8kY/uEoQM3Sds6hbvMIuH6fPg+BTCBHejHD58uL6Nj/Qw+I6upN33Jj49nH/11VcaHmNK2J4W3TEruriOt/6xCTyECBuZQbAgmhj3wp8LO6RDF0fgf8YQj3KRALpBRkw8fMY7M9DsGUHxzL4ynhnf0S6J2enQD2a+4LoBPbobcOiCYVP0oDN7/ngPPPCAZ6wSzwxOe+bLrpfRPbvfbNJvRMEzlodnBnA9s2NAMKpubG+7YOjGmL2I/OvIk/mCe2Yw2PcLHhjLRDeGt364rxk30u6gETDPjLP43S2EQVmMuHpmTEqjmDEfLa8RYT2/+OKLPWMBxWz4bsaQPCPget2MOXlBNubnmLTLZ3ZSdGJnxtPYBVOSsf9oAcUJcq6doqtw880360ZimAnDT+NgrQwsm4kTJ+reN9hKBE94WC7Y0REWE7oqRkB0L2eXrUawBYf5ZQm1eGARoLvz888/axcNA8vYgAwL8TCTBMsH98ambUGHDbfGjx+vg9sIi9kidMsSOYTFoDYWViIc9hgyTVuDwhpB1w1dT1hKsKjAAFuM2C4Y9n+Gww8FYGMvdLUwAI18Ix1YcsgL4sChC4fBaXT9cB1pwwJD/lzY4X7oEppf4chjuekN9td/sXrEs1wkgKc/fkYGT3NYQ6ate3Xr1tWfogmWF9aAmTFTSwKWEY4xOGtdfhYQwhhh80y3xTOzPWqBYKDYfMFtdM+Inme6bPqHvGAQ2VpACGS6TR7i4N5GRDyz66RaZ34CgQNYWN26ddN7wbLBzwchTTsIbcahPNOF00Fys+mYZ5YAePiJJPzckXWmG6UsevfurT8xhAFn5N2IhWdm+TQtI56aB1hxiI9Bd+QPadp7Ib2C2OHnf2C1gb39uSKbj/35k/sB7WdPHlgnsAjq16+ftOSwCPB0TzQAnDRS4AIGpWFJYO/neId7YwzHCGD8Jf8c1gXWKbm8IgGLBvdL9MuySBBrb2DdwCpK5JAXTI/bsSz8aACmyeN3SrRxYVFhzAzT6ok2ViuIHfijbHT7CFCA2BJIgAQyRoBjQBlDzxuTAAlQgNgGSIAEMkaAApQx9LwxCZAABYhtgARIIGMEKEAZQ88bkwAJUIDYBkiABDJGgAKUMfS8MQmQAAWIbYAESCBjBP4P9iIpGq21dDAAAAAASUVORK5CYII=" /><!-- --></p>
+<p>The Census datasets that the <code>cancensus</code> package provides access to are rich in detail but they can be complex to navigate. There are thousands of variable vectors, including separate vector indicators for aggregations split by <code>Total</code>, <code>Female</code>, and <code>Male</code> populations. As a result, the total number of vectors per dataset is significant, ranging from 1,715 in the <code>CA01</code> dataset to 6,623 in the <code>CA16</code> one.</p>
+<div id="view-available-census-variable-vectors" class="section level2">
+<h2>View available Census variable vectors</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">list_census_vectors</span>(<span class="st">'CA16'</span>)</a></code></pre></div>
+<pre><code>## # A tibble: 6,623 x 7
+##    vector  type   label       units parent_vector aggregation  details          
+##    &lt;chr&gt;   &lt;fct&gt;  &lt;chr&gt;       &lt;fct&gt; &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;            
+##  1 v_CA16… Total  Population… Numb… &lt;NA&gt;          Additive     CA 2016 Census; …
+##  2 v_CA16… Total  Population… Numb… &lt;NA&gt;          Additive     CA 2016 Census; …
+##  3 v_CA16… Total  Population… Numb… &lt;NA&gt;          Average of … CA 2016 Census; …
+##  4 v_CA16… Total  Total priv… Numb… &lt;NA&gt;          Additive     CA 2016 Census; …
+##  5 v_CA16… Total  Private dw… Numb… v_CA16_404    Additive     CA 2016 Census; …
+##  6 v_CA16… Total  Population… Ratio &lt;NA&gt;          Average of … CA 2016 Census; …
+##  7 v_CA16… Total  Land area … Numb… &lt;NA&gt;          Additive     CA 2016 Census; …
+##  8 v_CA16… Total  Total - Age Numb… &lt;NA&gt;          Additive     CA 2016 Census; …
+##  9 v_CA16… Male   Total - Age Numb… &lt;NA&gt;          Additive     CA 2016 Census; …
+## 10 v_CA16… Female Total - Age Numb… &lt;NA&gt;          Additive     CA 2016 Census; …
+## # … with 6,613 more rows</code></pre>
+<p><code>list_census_vectors(dataset)</code> retrieves an index of all available vectors for a given dataset from the Censusmapper API or local cache if recently called. Each Census variable has a vector code assigned to it with naming pattern that goes <code>v_{dataset}_{index}</code>. This is the code by which vectors are identified through the Censusmapper API. In addition the vector code, there is additional information showing population type, aggregation type, label and details, as well as variable hierarchy. This function can also be used to show the variables for additional datasets made accessible through the Censusmapper API.</p>
+</div>
+<div id="searching-for-census-variable-vectors" class="section level2">
+<h2>Searching for Census variable vectors</h2>
+<p>Due to the large number of Census variables it can be hard to find the right data. There is a function for searching through Census variable metadata in a few different ways. There are three types of searches possible using this function: exact search, which simply looks for exact string matches for a given query against the vector dataset; keyword search, which breaks vector metadata into unigram tokens and then tries to find the vectors with the greatest number of unique matches; and, semantic search which works better with search phrases and has tolerance for inexact searches. Switching between search modes is done using the <code>query_type</code> argument when calling <code>find_census_vectors()</code> function.</p>
+<p>Note that variable search is optimized for the Census variables in the main Census datasets. While searches generally work for variables in additional datasets such as cross-tabs and taxfiler data, they have not been extensively tested against these datasets.</p>
+<div id="exact-search" class="section level3">
+<h3>Exact search</h3>
+<p>Exact search uses exact string matching. It is best used when you know exactly the term you are looking for, and is not robust to spelling errors.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">find_census_vectors</span>(<span class="st">&quot;Oji-cree&quot;</span>, <span class="dt">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;total&quot;</span>, <span class="dt">query_type =</span> <span class="st">&quot;exact&quot;</span>)</a></code></pre></div>
+<pre><code>## # A tibble: 4 x 4
+##   vector     type  label   details                                              
+##   &lt;chr&gt;      &lt;fct&gt; &lt;chr&gt;   &lt;chr&gt;                                                
+## 1 v_CA16_626 Total Oji-Cr… Language; Total - Mother tongue for the total popula…
+## 2 v_CA16_14… Total Oji-Cr… Language; Total - Language spoken most often at home…
+## 3 v_CA16_26… Total Oji-Cr… 25% Data; Total - Knowledge of languages for the pop…
+## 4 v_CA16_59… Total Oji-Cr… 25% Data; Work; Total - Language used most often at …</code></pre>
+<p>This, on the other hand, will return a warning.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">find_census_vectors</span>(<span class="st">&quot;Ojib-cree&quot;</span>, <span class="dt">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;total&quot;</span>, <span class="dt">query_type =</span> <span class="st">&quot;exact&quot;</span>)</a></code></pre></div>
+<pre><code>## Warning: No exact matches found. Please check spelling and try again or consider using semantic or keyword search.
+## See ?find_census_vectors() for more details.
+## 
+## Alternatively, you can launch the Censusmapper web API in a browser by calling explore_census_vectors(dataset)</code></pre>
+<p>Unless otherwise specified, <code>find_census_vectors()</code> will use exact search as the default option.</p>
+</div>
+<div id="keyword-search" class="section level3">
+<h3>Keyword search</h3>
+<p>Keyword search is meant to be used when you know the approximate subject matter of the variable without knowing the exact variable you are looking for. Under the hood, keyword search splits the query and vector details into unique unigram tokens and then looks for the vectors with the greatest number of matches.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">find_census_vectors</span>(<span class="st">'commute mode'</span>, <span class="dt">dataset =</span> <span class="st">'CA16'</span>, <span class="dt">type =</span> <span class="st">'female'</span>, <span class="dt">query_type =</span> <span class="st">'keyword'</span>, <span class="dt">interactive =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<pre><code>## # A tibble: 7 x 4
+##   vector   type   label                          details                        
+##   &lt;chr&gt;    &lt;fct&gt;  &lt;chr&gt;                          &lt;chr&gt;                          
+## 1 v_CA16_… Female Total - Main mode of commutin… 25% Data; Commute; Total - Mai…
+## 2 v_CA16_… Female Car, truck, van - as a driver  25% Data; Commute; Total - Mai…
+## 3 v_CA16_… Female Car, truck, van - as a passen… 25% Data; Commute; Total - Mai…
+## 4 v_CA16_… Female Public transit                 25% Data; Commute; Total - Mai…
+## 5 v_CA16_… Female Walked                         25% Data; Commute; Total - Mai…
+## 6 v_CA16_… Female Bicycle                        25% Data; Commute; Total - Mai…
+## 7 v_CA16_… Female Other method                   25% Data; Commute; Total - Mai…</code></pre>
+<p>Keyword search will show all results that have the highest number of unique keyword matches. What happens if there are other keyword matches that have fewer total matches? By default, the function argument is set as <code>interactive = TRUE</code>, which will prompt the user with a console menu option to see the rest of the matches or not. If using <code>find_census_vectors()</code> in a script or reproducible documentation, we recommend setting this argument to <code>interactive = FALSE</code>.</p>
+</div>
+<div id="semantic-search" class="section level3">
+<h3>Semantic search</h3>
+<p>Semantic search works best with phrases. Rather than the decontextualized unigrams of keyword search, semantic search splits queries and vector details into n-grams and finds matches using approximate string distances based on the generalized Levenshtein distance.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">find_census_vectors</span>(<span class="st">&quot;after tax incomes&quot;</span>, <span class="dt">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;total&quot;</span>, <span class="dt">query_type =</span> <span class="st">&quot;semantic&quot;</span>)</a></code></pre></div>
+<pre><code>## # A tibble: 56 x 4
+##    vector   type  label                          details                        
+##    &lt;chr&gt;    &lt;fct&gt; &lt;chr&gt;                          &lt;chr&gt;                          
+##  1 v_CA16_… Total Number of after-tax income re… Income; Individuals; Total - I…
+##  2 v_CA16_… Total Median after-tax income in 20… Income; Individuals; Total - I…
+##  3 v_CA16_… Total Percentage with after-tax inc… Income; Individuals; Total - I…
+##  4 v_CA16_… Total Total - After-tax income grou… Income; Individuals; Total - A…
+##  5 v_CA16_… Total Without after-tax income       Income; Individuals; Total - A…
+##  6 v_CA16_… Total With after-tax income          Income; Individuals; Total - A…
+##  7 v_CA16_… Total Under $10,000 (including loss) Income; Individuals; Total - A…
+##  8 v_CA16_… Total $10,000 to $19,999             Income; Individuals; Total - A…
+##  9 v_CA16_… Total $20,000 to $29,999             Income; Individuals; Total - A…
+## 10 v_CA16_… Total $30,000 to $39,999             Income; Individuals; Total - A…
+## # … with 46 more rows</code></pre>
+<p>Semantic search is more robust to spelling and punctuation issues that may come up with exact search. For example, while this throws a warning:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">find_census_vectors</span>(<span class="st">&quot;ojib cree&quot;</span>, <span class="dt">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;total&quot;</span>, <span class="dt">query_type =</span> <span class="st">&quot;exact&quot;</span>)</a></code></pre></div>
+<pre><code>## Warning: No exact matches found. Please check spelling and try again or consider using semantic or keyword search.
+## See ?find_census_vectors() for more details.
+## 
+## Alternatively, you can launch the Censusmapper web API in a browser by calling explore_census_vectors(dataset)</code></pre>
+<p>This will find the correct Census vector.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">find_census_vectors</span>(<span class="st">'ojib cree'</span>, <span class="dt">dataset =</span> <span class="st">'CA16'</span>, <span class="dt">type =</span> <span class="st">'total'</span>, <span class="dt">query_type =</span> <span class="st">'semantic'</span>)</a></code></pre></div>
+<pre><code>## Multiple possible matches. Results ordered by closeness.</code></pre>
+<pre><code>## # A tibble: 4 x 4
+##   vector     type  label   details                                              
+##   &lt;chr&gt;      &lt;fct&gt; &lt;chr&gt;   &lt;chr&gt;                                                
+## 1 v_CA16_626 Total Oji-Cr… Language; Total - Mother tongue for the total popula…
+## 2 v_CA16_14… Total Oji-Cr… Language; Total - Language spoken most often at home…
+## 3 v_CA16_26… Total Oji-Cr… 25% Data; Total - Knowledge of languages for the pop…
+## 4 v_CA16_59… Total Oji-Cr… 25% Data; Work; Total - Language used most often at …</code></pre>
+<p>Results are ordered by string proximity if there are multiple possible matches.</p>
+</div>
+</div>
+</div>
+<div id="census-regions" class="section level1">
+<h1>Census regions</h1>
+<div id="standard-geographical-classification" class="section level2">
+<h2>Standard Geographical Classification</h2>
+<p>Statistics Canada uses an official classification of geographic areas known as the <a href="https://www.statcan.gc.ca/eng/subjects/standard/sgc/2016/introduction">Standard Geographical Classification (SGC)</a>, which is updated periodically. The latest version is based on the 2016 Census. Geographic classification codes are standardized across Statistics Canada products, including the Census as well as any other Statistics Canada dataset. In practice, this means that the region ID for the Vancouver Census subdivision is 5915022 across all products. In <code>cancensus</code> the region ID code is used to identify the appropriate spatial vector data to retrieve alongside Census data. These region IDs have a predictable structure, where provinces are two digits, Census divisions are 4 digits (including 2 for the province), and Census subdivisions have 7 digits (including 2 for the province, and 2 for the Census division).</p>
+<pre><code>## # A tibble: 3 x 4
+##      PR    CD   CSD name                         
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;                        
+## 1    35    NA    NA Ontario                      
+## 2    35    18    NA Durham (Regional municipality
+## 3    35    18    13 Oshawa (City)</code></pre>
+<p>These levels are hierarchical and complete in that a province is split in Census divisions, which are then split into Census subdivisions.</p>
+<p>Geographies have standardized names for the province, Census division, and Census subdivision levels, as well as Census metropolitan areas and Census agglomerations. Lower geographic levels such as Census tracts or dissemination areas (DAs) are not named or listed but have unique identifying codes derived from their parent Census subdivision.</p>
+<pre><code>## # A tibble: 6 x 2
+##   level     n
+##   &lt;chr&gt; &lt;int&gt;
+## 1 C         1
+## 2 CA       14
+## 3 CD      293
+## 4 CMA      35
+## 5 CSD    5148
+## 6 PR       13</code></pre>
+<p>There is also an additional region, with the id <code>01</code> and the level code <code>C</code> which represents all of Canada as a whole.</p>
+<div id="a-note-on-census-metropolitan-areas-and-census-agglomerations" class="section level3">
+<h3>A note on Census Metropolitan Areas and Census Agglomerations</h3>
+<p>Data can also be extracted at the Census Metropolitan Area (CMA) or Census Agglomeration (CA) level, which is derived from a variant of the SGC known as the Statistical Area Classification. Hierarchically, CMAs and CAs represent a collection of constituent Census subdivisions.</p>
+<p>A Census metropolitan area consists of adjacent municipalities with a defined core with a total population of at least 100,000 of which 50,000 or more must live in the core based on Census data. Adjacent municipalities must have a high degree of integration with the core, which Statistics Canada measures based on the commuting flows indicated in Census data. Census Agglomeration areas have to have a core population above 10,000.</p>
+<p>All CMAs and CAs consist of Census subdivisions but not all Census subdivisions are a subset of a CMA or a CA. For more details on CMAs and CAs, consult Statistics Canada’s Census Dictionary article for <a href="https://www12.statcan.gc.ca/census-recensement/2016/ref/dict/geo009-eng.cfm">Census metropolitan areas (CMA) and census agglomerations (CA)</a>. All CMAs and some CAs have data at the Census tract level, but most CAs do not. The 2016 Census has 35 CMAs and 14 CAs with Census tracts that have their own defined geography. There are a further 106 CAs without Census tracts that do not have their own distinctly defined geographies.</p>
+</div>
+</div>
+<div id="viewing-available-census-regions" class="section level2">
+<h2>Viewing available Census regions</h2>
+<p>For any valid Census dataset, you can view all available Census regions by calling <code>list_census_regions(dataset)</code>. This will retrieve the <code>region</code> code, the <code>name</code>, and the <code>level</code> code indicating the type of geography. Other information includes population, municipal status, as well as parent geographic ids for lower levels. All CMAs are included with their own defined geography, as well as those CAs which have their own Census tracts.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">list_census_regions</span>(<span class="st">'CA16'</span>)</a></code></pre></div>
+<pre><code>## # A tibble: 5,504 x 8
+##    region name              level     pop municipal_status CMA_UID CD_UID PR_UID
+##    &lt;chr&gt;  &lt;chr&gt;             &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt; 
+##  1 01     Canada            C      3.52e7 &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
+##  2 35     Ontario           PR     1.34e7 &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
+##  3 24     Quebec            PR     8.16e6 &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
+##  4 59     British Columbia  PR     4.65e6 &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
+##  5 48     Alberta           PR     4.07e6 &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
+##  6 46     Manitoba          PR     1.28e6 &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
+##  7 47     Saskatchewan      PR     1.10e6 &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
+##  8 12     Nova Scotia       PR     9.24e5 &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
+##  9 13     New Brunswick     PR     7.47e5 &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
+## 10 10     Newfoundland and… PR     5.20e5 &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
+## # … with 5,494 more rows</code></pre>
+There are 53 CSD and 12 CD municipal status codes based on official designations used by provinces, territories, and federal authorities. These are often used to distinguish Census divisions and subdivisions with similar or identical names. CAs with Census tracts and defined geography have the code K, while those without have type code D.
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["geography"],"name":[1],"type":["chr"],"align":["left"]},{"label":["status_code"],"name":[2],"type":["chr"],"align":["left"]},{"label":["status"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"CD","2":"CDR","3":"Census division / Division de recensement"},{"1":"CD","2":"CT","3":"County / Comté"},{"1":"CD","2":"CTY","3":"County"},{"1":"CD","2":"DIS","3":"District"},{"1":"CD","2":"DM","3":"District municipality"},{"1":"CD","2":"MRC","3":"Municipalité régionale de comté"},{"1":"CD","2":"RD","3":"Regional district"},{"1":"CD","2":"REG","3":"Region"},{"1":"CD","2":"RM","3":"Regional municipality"},{"1":"CD","2":"TÉ","3":"Territoire équivalent"},{"1":"CD","2":"TER","3":"Territory / Territoire"},{"1":"CD","2":"UC","3":"United counties"},{"1":"CSD","2":"C","3":"City / Cité"},{"1":"CSD","2":"CC","3":"Chartered community"},{"1":"CSD","2":"CG","3":"Community government"},{"1":"CSD","2":"CN","3":"Crown colony / Colonie de la couronne"},{"1":"CSD","2":"COM","3":"Community"},{"1":"CSD","2":"CT","3":"Canton (municipalité de)"},{"1":"CSD","2":"CU","3":"Cantons unis (municipalité de)"},{"1":"CSD","2":"CV","3":"City / Ville"},{"1":"CSD","2":"CY","3":"City"},{"1":"CSD","2":"DM","3":"District municipality"},{"1":"CSD","2":"HAM","3":"Hamlet"},{"1":"CSD","2":"ID","3":"Improvement district"},{"1":"CSD","2":"IGD","3":"Indian government district"},{"1":"CSD","2":"IM","3":"Island municipality"},{"1":"CSD","2":"IRI","3":"Indian reserve / Réserve indienne"},{"1":"CSD","2":"LGD","3":"Local government district"},{"1":"CSD","2":"LOT","3":"Township and royalty"},{"1":"CSD","2":"M","3":"Municipality / Municipalité"},{"1":"CSD","2":"MD","3":"Municipal district"},{"1":"CSD","2":"MÉ","3":"Municipalité"},{"1":"CSD","2":"MU","3":"Municipality"},{"1":"CSD","2":"NH","3":"Northern hamlet"},{"1":"CSD","2":"NL","3":"Nisga'a land"},{"1":"CSD","2":"NO","3":"Unorganized / Non organisé"},{"1":"CSD","2":"NV","3":"Northern village"},{"1":"CSD","2":"P","3":"Parish / Paroisse (municipalité de)"},{"1":"CSD","2":"PE","3":"Paroisse (municipalité de)"},{"1":"CSD","2":"RCR","3":"Rural community / Communauté rurale"},{"1":"CSD","2":"RDA","3":"Regional district electoral area"},{"1":"CSD","2":"RGM","3":"Regional municipality"},{"1":"CSD","2":"RM","3":"Rural municipality"},{"1":"CSD","2":"RV","3":"Resort village"},{"1":"CSD","2":"S-É","3":"Indian settlement / Établissement indien"},{"1":"CSD","2":"SA","3":"Special area"},{"1":"CSD","2":"SC","3":"Subdivision of county municipality / Subdivision municipalité de comté"},{"1":"CSD","2":"SÉ","3":"Settlement / Établissement"},{"1":"CSD","2":"SET","3":"Settlement"},{"1":"CSD","2":"SG","3":"Self-government / Autonomie gouvernementale"},{"1":"CSD","2":"SM","3":"Specialized municipality"},{"1":"CSD","2":"SNO","3":"Subdivision of unorganized / Subdivision non organisée"},{"1":"CSD","2":"SV","3":"Summer village"},{"1":"CSD","2":"T","3":"Town"},{"1":"CSD","2":"TC","3":"Terres réservées aux Cris"},{"1":"CSD","2":"TI","3":"Terre inuite"},{"1":"CSD","2":"TK","3":"Terres réservées aux Naskapis"},{"1":"CSD","2":"TL","3":"Teslin land"},{"1":"CSD","2":"TP","3":"Township"},{"1":"CSD","2":"TV","3":"Town / Ville"},{"1":"CSD","2":"V","3":"Ville"},{"1":"CSD","2":"VC","3":"Village cri"},{"1":"CSD","2":"VK","3":"Village naskapi"},{"1":"CSD","2":"VL","3":"Village"},{"1":"CSD","2":"VN","3":"Village nordique"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="searching-through-named-census-regions" class="section level2">
+<h2>Searching through named Census regions</h2>
+<p>We can also search through all named geographies. This will return any geographies that have a name that matches or partially matches the search query.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">search_census_regions</span>(<span class="st">&quot;Vancouver&quot;</span>,<span class="st">&quot;CA16&quot;</span>)</a></code></pre></div>
+<pre><code>## # A tibble: 7 x 8
+##   region  name               level    pop municipal_status CMA_UID CD_UID PR_UID
+##   &lt;chr&gt;   &lt;chr&gt;              &lt;chr&gt;  &lt;int&gt; &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt; 
+## 1 59933   Vancouver          CMA   2.46e6 B                &lt;NA&gt;    &lt;NA&gt;   59    
+## 2 5915    Greater Vancouver  CD    2.46e6 RD               &lt;NA&gt;    &lt;NA&gt;   59    
+## 3 5915022 Vancouver          CSD   6.31e5 CY               59933   5915   59    
+## 4 5915046 North Vancouver    CSD   8.59e4 DM               59933   5915   59    
+## 5 5915051 North Vancouver    CSD   5.29e4 CY               59933   5915   59    
+## 6 5915055 West Vancouver     CSD   4.25e4 DM               59933   5915   59    
+## 7 5915020 Greater Vancouver… CSD   1.61e4 RDA              59933   5915   59</code></pre>
+</div>
+</div>
+<div id="exploring-census-variable-vectors-and-regions-interactively" class="section level1">
+<h1>Exploring Census variable vectors and regions interactively</h1>
+<p>Sometimes it can be easier to find the right vectors or regions by exploring the layout and hierarchy of Census data. This is especially true when we are not sure of what information is available or are not sure where to start. Finding the right Census geographic code on a map will be easier for some than using named search. This is also handy if we want to assemble a custom aggregation of region codes at different hierarchies.</p>
+<p>To facilitate this, we have included a couple of convenience functions that take you directly to an interactive tool with variable and region details on the <a href="https://censusmapper.ca/api">Censusmapper website</a>. To explore the hierarchical variable structure of a given dataset, say the 2006 Census, running <code>explore_census_vectors(dataset = &quot;CA06&quot;)</code>. To view Census geography on an interactive map, there is <code>explore_census_regions(dataset = &quot;CA16&quot;)</code>. As usual, vectors and geographies for different Census datasets can be retrieved by using the appropriate dataset code for the <code>dataset</code> argument.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

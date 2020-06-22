@@ -61,11 +61,11 @@ list_census_vectors("CA16")
 
 ## ----search_vectors1, message=FALSE, warning=FALSE----------------------------
 # Find the variable indicating the number of people of Austrian ethnic origin
-search_census_vectors("Austrian", dataset = 'CA16')
+find_census_vectors("Australia", dataset = "CA16", type = "total", query_type = "exact")
 
-## ----search_vectors2, message=FALSE, warning=FALSE----------------------------
-# Find the variable indicating the number of people of Austrian ethnic origin
-search_census_vectors("Austraian", dataset = 'CA16')
+find_census_vectors("Australia origin", dataset = "CA16", type = "total", query_type = "semantic")
+
+find_census_vectors("Australian ethnic", dataset = "CA16", type = "total", query_type = "keyword", interactive = FALSE)
 
 ## ----parent_vectors, message=FALSE, warning=FALSE-----------------------------
 list_census_vectors("CA16") %>% 
