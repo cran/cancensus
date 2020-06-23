@@ -14,6 +14,22 @@
 
 <title>Data discovery</title>
 
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
 <style type="text/css">.pagedtable {
 overflow: auto;
 padding-left: 8px;
@@ -1289,9 +1305,9 @@ window.onload = function() {
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -1301,14 +1317,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -1317,9 +1335,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -1577,7 +1595,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1>Census datasets</h1>
 <p><code>cancensus</code> can access Statistics Canada Census data for the 2001 Census, the 2006 Census, the 2011 Census and National Household Survey, as well as the 2016 Census. You can run <code>list_census_datasets</code> to check what datasets are currently available for access through the CensusMapper API. Additional data for the 2016 Census will be included in Censusmapper within a day or two after public release by Statistics Canada. Statistics Canada maintains a release schedule for the Census 2016 Program which can be viewed on their <a href="http://www12.statcan.gc.ca/census-recensement/2016/ref/release-dates-diffusion-eng.cfm">website</a>.</p>
 <p>Thanks to contributions by the Canada Mortgage and Housing Corporation (CMHC), <code>cancensus</code> now includes additional Census-linked datasets as open-data releases. These include annual taxfiler data at the census tract level for tax years 2000 through 2017, which includes data on incomes and demographics, as well as specialized crosstabs for Structural type of dwelling by Document type, which details occupancy status for residences. These crosstabs are available for the 2001, 2006, 2011, and 2016 Census years at all levels starting with census tract.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">list_census_datasets</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">list_census_datasets</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 26 x 6
 ##    dataset description     geo_dataset attribution   reference reference_url    
 ##    &lt;chr&gt;   &lt;chr&gt;           &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;     &lt;chr&gt;            
@@ -1600,7 +1618,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>The Census datasets that the <code>cancensus</code> package provides access to are rich in detail but they can be complex to navigate. There are thousands of variable vectors, including separate vector indicators for aggregations split by <code>Total</code>, <code>Female</code>, and <code>Male</code> populations. As a result, the total number of vectors per dataset is significant, ranging from 1,715 in the <code>CA01</code> dataset to 6,623 in the <code>CA16</code> one.</p>
 <div id="view-available-census-variable-vectors" class="section level2">
 <h2>View available Census variable vectors</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">list_census_vectors</span>(<span class="st">'CA16'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">list_census_vectors</span>(<span class="st">&#39;CA16&#39;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 6,623 x 7
 ##    vector  type   label       units parent_vector aggregation  details          
 ##    &lt;chr&gt;   &lt;fct&gt;  &lt;chr&gt;       &lt;fct&gt; &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;            
@@ -1624,7 +1642,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="exact-search" class="section level3">
 <h3>Exact search</h3>
 <p>Exact search uses exact string matching. It is best used when you know exactly the term you are looking for, and is not robust to spelling errors.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">find_census_vectors</span>(<span class="st">&quot;Oji-cree&quot;</span>, <span class="dt">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;total&quot;</span>, <span class="dt">query_type =</span> <span class="st">&quot;exact&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">find_census_vectors</span>(<span class="st">&quot;Oji-cree&quot;</span>, <span class="dt">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;total&quot;</span>, <span class="dt">query_type =</span> <span class="st">&quot;exact&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 4 x 4
 ##   vector     type  label   details                                              
 ##   &lt;chr&gt;      &lt;fct&gt; &lt;chr&gt;   &lt;chr&gt;                                                
@@ -1633,7 +1651,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## 3 v_CA16_26… Total Oji-Cr… 25% Data; Total - Knowledge of languages for the pop…
 ## 4 v_CA16_59… Total Oji-Cr… 25% Data; Work; Total - Language used most often at …</code></pre>
 <p>This, on the other hand, will return a warning.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">find_census_vectors</span>(<span class="st">&quot;Ojib-cree&quot;</span>, <span class="dt">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;total&quot;</span>, <span class="dt">query_type =</span> <span class="st">&quot;exact&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">find_census_vectors</span>(<span class="st">&quot;Ojib-cree&quot;</span>, <span class="dt">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;total&quot;</span>, <span class="dt">query_type =</span> <span class="st">&quot;exact&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: No exact matches found. Please check spelling and try again or consider using semantic or keyword search.
 ## See ?find_census_vectors() for more details.
 ## 
@@ -1643,7 +1661,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="keyword-search" class="section level3">
 <h3>Keyword search</h3>
 <p>Keyword search is meant to be used when you know the approximate subject matter of the variable without knowing the exact variable you are looking for. Under the hood, keyword search splits the query and vector details into unique unigram tokens and then looks for the vectors with the greatest number of matches.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">find_census_vectors</span>(<span class="st">'commute mode'</span>, <span class="dt">dataset =</span> <span class="st">'CA16'</span>, <span class="dt">type =</span> <span class="st">'female'</span>, <span class="dt">query_type =</span> <span class="st">'keyword'</span>, <span class="dt">interactive =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">find_census_vectors</span>(<span class="st">&#39;commute mode&#39;</span>, <span class="dt">dataset =</span> <span class="st">&#39;CA16&#39;</span>, <span class="dt">type =</span> <span class="st">&#39;female&#39;</span>, <span class="dt">query_type =</span> <span class="st">&#39;keyword&#39;</span>, <span class="dt">interactive =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 7 x 4
 ##   vector   type   label                          details                        
 ##   &lt;chr&gt;    &lt;fct&gt;  &lt;chr&gt;                          &lt;chr&gt;                          
@@ -1659,7 +1677,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="semantic-search" class="section level3">
 <h3>Semantic search</h3>
 <p>Semantic search works best with phrases. Rather than the decontextualized unigrams of keyword search, semantic search splits queries and vector details into n-grams and finds matches using approximate string distances based on the generalized Levenshtein distance.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">find_census_vectors</span>(<span class="st">&quot;after tax incomes&quot;</span>, <span class="dt">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;total&quot;</span>, <span class="dt">query_type =</span> <span class="st">&quot;semantic&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">find_census_vectors</span>(<span class="st">&quot;after tax incomes&quot;</span>, <span class="dt">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;total&quot;</span>, <span class="dt">query_type =</span> <span class="st">&quot;semantic&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 56 x 4
 ##    vector   type  label                          details                        
 ##    &lt;chr&gt;    &lt;fct&gt; &lt;chr&gt;                          &lt;chr&gt;                          
@@ -1675,13 +1693,13 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## 10 v_CA16_… Total $30,000 to $39,999             Income; Individuals; Total - A…
 ## # … with 46 more rows</code></pre>
 <p>Semantic search is more robust to spelling and punctuation issues that may come up with exact search. For example, while this throws a warning:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">find_census_vectors</span>(<span class="st">&quot;ojib cree&quot;</span>, <span class="dt">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;total&quot;</span>, <span class="dt">query_type =</span> <span class="st">&quot;exact&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">find_census_vectors</span>(<span class="st">&quot;ojib cree&quot;</span>, <span class="dt">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;total&quot;</span>, <span class="dt">query_type =</span> <span class="st">&quot;exact&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: No exact matches found. Please check spelling and try again or consider using semantic or keyword search.
 ## See ?find_census_vectors() for more details.
 ## 
 ## Alternatively, you can launch the Censusmapper web API in a browser by calling explore_census_vectors(dataset)</code></pre>
 <p>This will find the correct Census vector.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">find_census_vectors</span>(<span class="st">'ojib cree'</span>, <span class="dt">dataset =</span> <span class="st">'CA16'</span>, <span class="dt">type =</span> <span class="st">'total'</span>, <span class="dt">query_type =</span> <span class="st">'semantic'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">find_census_vectors</span>(<span class="st">&#39;ojib cree&#39;</span>, <span class="dt">dataset =</span> <span class="st">&#39;CA16&#39;</span>, <span class="dt">type =</span> <span class="st">&#39;total&#39;</span>, <span class="dt">query_type =</span> <span class="st">&#39;semantic&#39;</span>)</span></code></pre></div>
 <pre><code>## Multiple possible matches. Results ordered by closeness.</code></pre>
 <pre><code>## # A tibble: 4 x 4
 ##   vector     type  label   details                                              
@@ -1727,7 +1745,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="viewing-available-census-regions" class="section level2">
 <h2>Viewing available Census regions</h2>
 <p>For any valid Census dataset, you can view all available Census regions by calling <code>list_census_regions(dataset)</code>. This will retrieve the <code>region</code> code, the <code>name</code>, and the <code>level</code> code indicating the type of geography. Other information includes population, municipal status, as well as parent geographic ids for lower levels. All CMAs are included with their own defined geography, as well as those CAs which have their own Census tracts.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">list_census_regions</span>(<span class="st">'CA16'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="kw">list_census_regions</span>(<span class="st">&#39;CA16&#39;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 5,504 x 8
 ##    region name              level     pop municipal_status CMA_UID CD_UID PR_UID
 ##    &lt;chr&gt;  &lt;chr&gt;             &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt; 
@@ -1752,7 +1770,7 @@ There are 53 CSD and 12 CD municipal status codes based on official designations
 <div id="searching-through-named-census-regions" class="section level2">
 <h2>Searching through named Census regions</h2>
 <p>We can also search through all named geographies. This will return any geographies that have a name that matches or partially matches the search query.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">search_census_regions</span>(<span class="st">&quot;Vancouver&quot;</span>,<span class="st">&quot;CA16&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="kw">search_census_regions</span>(<span class="st">&quot;Vancouver&quot;</span>,<span class="st">&quot;CA16&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 7 x 8
 ##   region  name               level    pop municipal_status CMA_UID CD_UID PR_UID
 ##   &lt;chr&gt;   &lt;chr&gt;              &lt;chr&gt;  &lt;int&gt; &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt; 
