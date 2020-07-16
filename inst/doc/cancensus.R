@@ -74,7 +74,7 @@ list_census_vectors("CA16") %>%
 
 ## ----child_vectors1, message=FALSE, warning=FALSE-----------------------------
 # Find the variable indicating the Northern European aggregate
-search_census_vectors("Northern European", dataset = 'CA16')
+find_census_vectors("Northern European", dataset = "CA16", type = "Total")
 
 ## ----child_vectors2, message=FALSE, warning=FALSE-----------------------------
 # Show all child variable leaves

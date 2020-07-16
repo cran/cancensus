@@ -12,9 +12,12 @@ ca16 <- list_census_vectors("CA16")
 ca11 <- list_census_vectors("CA11")
 ca06 <- list_census_vectors("CA06")
 ca01 <- list_census_vectors("CA01")
+ca96 <- list_census_vectors("CA1996")
 
-tibble(dataset = c("CA16","CA11","CA06","CA01"), vectors = c(length(ca16$vector), length(ca11$vector),
-                                                             length(ca06$vector), length(ca01$vector))) %>% 
+tibble(dataset = c("CA16","CA11","CA06","CA01","CA1996"), 
+       vectors = c(length(ca16$vector), length(ca11$vector),
+                   length(ca06$vector), length(ca01$vector),
+                   length(ca96$vector))) %>% 
   ggplot(., aes(x = dataset, y = vectors)) +
   geom_col() +
   theme_minimal() +
