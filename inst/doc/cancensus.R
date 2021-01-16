@@ -6,7 +6,7 @@ knitr::opts_chunk$set(
 )
 library(cancensus)
 library(dplyr)
-# options(cancensus.api_key = "your_api_key")
+# set_api_key(<your_api_key>, install = TRUE)
 
 ## ----load_package_cran, echo=TRUE, message=FALSE, warning=FALSE, eval = FALSE----
 #  install.packages("cancensus")

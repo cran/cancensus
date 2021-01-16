@@ -323,11 +323,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="cancensus-and-censusmapper" class="section level1">
 <h1>Cancensus and CensusMapper</h1>
 <p>The <strong>cancensus</strong> package was developed to provide users with a way to access Canadian Census in a programmatic way following good <a href="http://vita.had.co.nz/papers/tidy-data.pdf">tidy data</a> practices. While the structure and data in <strong>cancensus</strong> is unique to Canadian Census data, this package is inspired in part by <a href="https://github.com/walkerke/tidycensus">tidycensus</a>, a package to interface with the US Census Bureau data APIs.</p>
-<p>As Statistics Canada does not provide direct API access to Census data, <strong>cancensus</strong> retrieves Census data indirectly through the <a href="https://censusmapper.ca">CensusMapper</a> API. CensusMapper is a project by <a href="https://twitter.com/vb_jens">Jens von Bergmann</a>, one of the authors of <strong>cancensus</strong>, to provide interactive geographic visualizations of Canadian Census data. CensusMapper databases store all publicly available data from Statistics Canada for the 2006, 2011, and 2016 Censuses. Censusmapper data can be accessed via an API and <strong>cancensus</strong> is built to interface directly with it.</p>
+<p>As Statistics Canada does not provide direct API access to Census data, <strong>cancensus</strong> retrieves Census data indirectly through the <a href="https://censusmapper.ca">CensusMapper</a> API. CensusMapper is a project by <a href="https://github.com/mountainMath">Jens von Bergmann</a>, one of the authors of <strong>cancensus</strong>, to provide interactive geographic visualizations of Canadian Census data. CensusMapper databases store all publicly available data from Statistics Canada for the 2006, 2011, and 2016 Censuses. Censusmapper data can be accessed via an API and <strong>cancensus</strong> is built to interface directly with it.</p>
 <div id="api-key" class="section level2">
 <h2>API Key</h2>
 <p><strong>cancensus</strong> requires a valid CensusMapper API key to use. You can obtain a free API key by <a href="https://censusmapper.ca/users/sign_up">signing up</a> for a CensusMapper account. CensusMapper API keys are free and public API quotas are generous; however, due to incremental costs of serving large quantities of data, there limits to API usage in place. For most use cases, these API limits should not be an issue. Production uses with large extracts of fine grained geographies may run into API quota limits. For larger quotas, please get in touch with Jens <a href="mailto:jens@censusmapper.ca">directly</a>.</p>
-<p>To check your API key, just go to “Edit Profile” (in the top-right of the CensusMapper menu bar). Once you have your key, you can store it in your system environment so it is automatically used in API calls. To do so just enter <code>options(cancensus.api_key = &quot;your_api_key&quot;)</code>.</p>
+<p>To check your API key, just go to “Edit Profile” (in the top-right of the CensusMapper menu bar). Once you have your key, you can store it in your system environment so it is automatically used in API calls. To do so just enter <code>set_api_key(&lt;your_api_key&gt;, install = TRUE)</code></p>
 </div>
 <div id="installing-cancensus" class="section level2">
 <h2>Installing cancensus</h2>
@@ -346,8 +346,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb2-5"><a href="#cb2-5"></a></span>
 <span id="cb2-6"><a href="#cb2-6"></a><span class="kw">options</span>(<span class="dt">cancensus.api_key =</span> <span class="st">&quot;your_api_key&quot;</span>)</span>
 <span id="cb2-7"><a href="#cb2-7"></a><span class="kw">options</span>(<span class="dt">cancensus.cache_path =</span> <span class="st">&quot;custom cache path&quot;</span>)</span></code></pre></div>
-<p>For performance reasons, and to avoid unnecessarily drawing down API quotas, <strong>cancensus</strong> caches data queries under the hood. By default, <strong>cancensus</strong> caches in R’s temporary directory, but this cache is not persistent across sessions. In order to speed up performance, reduce quota usage, and reduce the need for unnecessary network calls, we recommend assigning a persistent local cache using <code>options(cancensus.cache_path = &#39;XXX&#39;)</code>, this enables better control over the data. Users will be prompted with a suggestion to change their default cache location when making API calls if one has not been set yet.</p>
-<p>Setting the API key and the cache path in the <code>.Rprofile</code> facilitates the ability to share code without exposing API keys or relying on the local directory structure.</p>
+<p>For performance reasons, and to avoid unnecessarily drawing down API quotas, <strong>cancensus</strong> caches data queries under the hood. By default, <strong>cancensus</strong> caches in R’s temporary directory, but this cache is not persistent across sessions. In order to speed up performance, reduce quota usage, and reduce the need for unnecessary network calls, we recommend assigning a persistent local cache using <code>set_cache_path(&lt;local cache path&gt;, install = TRUE)</code>, this enables more efficient loading and reuse of downloaded data.. Users will be prompted with a suggestion to change their default cache location when making API calls if one has not been set yet.</p>
 </div>
 </div>
 <div id="accessing-census-data" class="section level1">
@@ -376,7 +375,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>Thanks to contributions by the Canada Mortgage and Housing Corporation (CMHC), <strong>cancensus</strong> now includes additional Census-linked datasets as open-data releases. These include annual taxfiler data at the census tract level for tax years 2000 through 2017, which includes data on incomes and demographics, as well as specialized crosstabs for Structural type of dwelling by Document type, which details occupancy status for residences. These crosstabs are available for the 2001, 2006, 2011, and 2016 Census years at all levels starting with census tract.</p>
 <p>The function <code>list_census_datasets()</code> will show all available datasets alongside their metadata.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">list_census_datasets</span>()</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#&gt; # A tibble: 27 x 6</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#&gt; # A tibble: 28 x 6</span></span>
 <span id="cb4-3"><a href="#cb4-3"></a><span class="co">#&gt;    dataset description     geo_dataset attribution   reference reference_url    </span></span>
 <span id="cb4-4"><a href="#cb4-4"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;           &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;     &lt;chr&gt;            </span></span>
 <span id="cb4-5"><a href="#cb4-5"></a><span class="co">#&gt;  1 CA1996  1996 Canada Ce… CA1996      StatCan 1996… 92-351-U  https://www150.s…</span></span>
@@ -389,7 +388,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb4-12"><a href="#cb4-12"></a><span class="co">#&gt;  8 CA11xSD 2011 Canada Ce… CA11        StatCan 2011… 98-301-X  https://www150.s…</span></span>
 <span id="cb4-13"><a href="#cb4-13"></a><span class="co">#&gt;  9 CA16xSD 2016 Canada Ce… CA16        StatCan 2016… 98-301-X  https://www150.s…</span></span>
 <span id="cb4-14"><a href="#cb4-14"></a><span class="co">#&gt; 10 TX2000  2000 T1FF taxf… CA1996      StatCan 2000… 72-212-X  https://www150.s…</span></span>
-<span id="cb4-15"><a href="#cb4-15"></a><span class="co">#&gt; # … with 17 more rows</span></span></code></pre></div>
+<span id="cb4-15"><a href="#cb4-15"></a><span class="co">#&gt; # … with 18 more rows</span></span></code></pre></div>
 <p>As other Census datasets become available via the CensusMapper API, they will be listed as output when calling <code>list_census_datasets()</code>.</p>
 </div>
 <div id="census-regions" class="section level2">

@@ -23,7 +23,7 @@ list_census_datasets() %>%
 list_census_vectors('TX2017')
 
 ## -----------------------------------------------------------------------------
-years <- c(2006,2011,2014,2017)
+years <- c(2006,2011,2014,2018)
 # Attribution for the dataset to be used in graphs
 attribution <- dataset_attribution(paste0("TX",years))
 
