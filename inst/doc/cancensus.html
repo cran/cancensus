@@ -32,8 +32,24 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
-<style type="text/css">code{white-space: pre;}</style>
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
 code.sourceCode > span { display: inline-block; line-height: 1.25; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -121,6 +137,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 })();
 </script>
+
 
 
 
@@ -396,7 +413,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>Census data is aggregated at multiple <a href="###%20Census%20Geographic%20Levels">geographic levels</a>. Census geographies at the national (C), provincial (PR), census metropolitan area (CMA), census agglomeration (CA), census division (CD), and census subdivision (CSD) are defined as named census regions.</p>
 <p>Canadian Census geography can change in between Census periods. <strong>cancensus</strong> provides a function, <code>list_census_regions(dataset)</code>, to display all named census regions and their corresponding id for a given census dataset.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">list_census_regions</span>(<span class="st">&quot;CA16&quot;</span>)</span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="co">#&gt; # A tibble: 5,504 x 8</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="co">#&gt; # A tibble: 5,518 x 8</span></span>
 <span id="cb5-3"><a href="#cb5-3"></a><span class="co">#&gt;    region name              level     pop municipal_status CMA_UID CD_UID PR_UID</span></span>
 <span id="cb5-4"><a href="#cb5-4"></a><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;             &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt; </span></span>
 <span id="cb5-5"><a href="#cb5-5"></a><span class="co">#&gt;  1 01     Canada            C      3.52e7 &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  </span></span>
@@ -409,7 +426,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb5-12"><a href="#cb5-12"></a><span class="co">#&gt;  8 12     Nova Scotia       PR     9.24e5 &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  </span></span>
 <span id="cb5-13"><a href="#cb5-13"></a><span class="co">#&gt;  9 13     New Brunswick     PR     7.47e5 &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  </span></span>
 <span id="cb5-14"><a href="#cb5-14"></a><span class="co">#&gt; 10 10     Newfoundland and… PR     5.20e5 &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  </span></span>
-<span id="cb5-15"><a href="#cb5-15"></a><span class="co">#&gt; # … with 5,494 more rows</span></span></code></pre></div>
+<span id="cb5-15"><a href="#cb5-15"></a><span class="co">#&gt; # … with 5,508 more rows</span></span></code></pre></div>
 <p>The <code>regions</code> parameter in <code>get_census</code> requires as input a list of region id strings that correspond to that regions geoid. You can combine different regions together into region lists.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Retrieves Vancouver and Toronto</span></span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="kw">list_census_regions</span>(<span class="st">&#39;CA16&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
