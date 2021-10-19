@@ -1,3 +1,8 @@
+# cancensus 0.4.4
+
+## Minor changes
+- Added some safety checks on server status to avoid unexpected failures in CI if CensusMapper server unavailable
+
 # cancensus 0.4.3
 
 ## Minor changes
