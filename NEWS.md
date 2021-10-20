@@ -1,3 +1,8 @@
+# cancensus 0.4.5
+
+## Minor changes
+- Fixed unusual bug caught on CRAN Solaris systems that bypassed other checks.
+
 # cancensus 0.4.4
 
 ## Minor changes

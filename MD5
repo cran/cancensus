@@ -1,10 +1,10 @@
-f169d610e8c0914e586ab583fcf202f7 *DESCRIPTION
+062bac86b4c6bba0dc83ea6da3879fc6 *DESCRIPTION
 bb39c9a72c11bbd3be4ae79d47587510 *LICENSE
 789bd2bf721016daa4788bfaba2b14b7 *NAMESPACE
-a386559b4d4c077ef094a74401d1d5eb *NEWS.md
+455f9c57d0bd0f0fd4554ab805e985cf *NEWS.md
 4e7befb54c0342272930fcbe3d5f3929 *R/cancensus.R
 05b32871b9e8f05f8b7caae413695761 *R/census_regions.R
-a2ac69331cc0bba22cdb76282fbd3037 *R/census_vectors.R
+704717e3de155b5a6d5c8a96164e47ee *R/census_vectors.R
 c5ae61b6954c909292e3a0ff65560b29 *R/helpers.R
 a833806da4c8af704d1c6f7f57a124cf *R/intersect_geometry.R
 61ec2ae4bce98520cd3cf42a673eb370 *R/user_settings.R
@@ -19,7 +19,7 @@ a6347d74b3fc51ef5823dc65dcb81a80 *data/CODES_TABLE.rda
 a5b8e9eba273664f1583df0fa740346a *inst/doc/Dwellings_by_document_type_cross_tabulation.html
 ba5098e5b2cadd19babd11e8e84d4408 *inst/doc/Making_maps_with_cancensus.R
 aff8db5e904e49d2096b64237dd1dae5 *inst/doc/Making_maps_with_cancensus.Rmd
-a15265aaa4a21e9ad0646c3defbc0854 *inst/doc/Making_maps_with_cancensus.html
+a135cf3d4cc0ec868550efad4431dd1e *inst/doc/Making_maps_with_cancensus.html
 56452cb156851db3d6036726de5cdeff *inst/doc/Taxfiler_Data.R
 2affb4bd7a6291448aff443ab34a1341 *inst/doc/Taxfiler_Data.Rmd
 c6f01fbdd7c573a864213f368c3976d6 *inst/doc/Taxfiler_Data.html

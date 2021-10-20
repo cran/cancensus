@@ -137,10 +137,11 @@ parent_census_vectors <- function(vector_list){
 #' @export
 #'
 #' @examples
+#'
+#' \dontrun{
 #' # Query parent vectors directly using vector identifier
 #' child_census_vectors("v_CA16_2510")
 #'
-#' \dontrun{
 #'
 #' # Example using multiple vectors coerced into a list
 #' child_census_vectors(c("v_CA16_2510","v_CA16_2511","v_CA16_2512"))
