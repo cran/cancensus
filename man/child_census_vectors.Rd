@@ -31,10 +31,11 @@ variables returned by
 \code{list_census_vectors}, \code{search_census_vectors}, \code{find_census_vectors}, or a direct string reference to the vector code.
 }
 \examples{
+
+\dontrun{
 # Query parent vectors directly using vector identifier
 child_census_vectors("v_CA16_2510")
 
-\dontrun{
 
 # Example using multiple vectors coerced into a list
 child_census_vectors(c("v_CA16_2510","v_CA16_2511","v_CA16_2512"))

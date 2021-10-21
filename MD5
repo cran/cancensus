@@ -1,4 +1,4 @@
-062bac86b4c6bba0dc83ea6da3879fc6 *DESCRIPTION
+58928795edcfecde0ff57d088f2be12e *DESCRIPTION
 bb39c9a72c11bbd3be4ae79d47587510 *LICENSE
 789bd2bf721016daa4788bfaba2b14b7 *NAMESPACE
 455f9c57d0bd0f0fd4554ab805e985cf *NEWS.md
@@ -19,7 +19,7 @@ a6347d74b3fc51ef5823dc65dcb81a80 *data/CODES_TABLE.rda
 a5b8e9eba273664f1583df0fa740346a *inst/doc/Dwellings_by_document_type_cross_tabulation.html
 ba5098e5b2cadd19babd11e8e84d4408 *inst/doc/Making_maps_with_cancensus.R
 aff8db5e904e49d2096b64237dd1dae5 *inst/doc/Making_maps_with_cancensus.Rmd
-a135cf3d4cc0ec868550efad4431dd1e *inst/doc/Making_maps_with_cancensus.html
+12bf23a6ff545e2059c9989b2b4f79b5 *inst/doc/Making_maps_with_cancensus.html
 56452cb156851db3d6036726de5cdeff *inst/doc/Taxfiler_Data.R
 2affb4bd7a6291448aff443ab34a1341 *inst/doc/Taxfiler_Data.Rmd
 c6f01fbdd7c573a864213f368c3976d6 *inst/doc/Taxfiler_Data.html
@@ -36,7 +36,7 @@ a1c86a812bfbed5dcb11e117dd286eb7 *inst/doc/intersecting_geometries.R
 283a39eb2ab78409d2c865f946d0d232 *man/COV_SKYTRAIN_STATIONS.Rd
 9efb61614e5638a4a610310b1dcb2412 *man/as_census_region_list.Rd
 680be983ccc793b6c47fc515392e17b8 *man/census_vectors.Rd
-4db148228b84cadbfbd3138b62ced483 *man/child_census_vectors.Rd
+0affc1628e447d2847b8baae5299a81a *man/child_census_vectors.Rd
 f68dd0b47cef8f3b3e01fab0b27cb271 *man/dataset_attribution.Rd
 d12dab3ff2027deaf225a87c05648d2c *man/explore_census_regions.Rd
 36c48a3f28eefa93b999a9b0ec9dbbb8 *man/explore_census_vectors.Rd
