@@ -18,6 +18,7 @@ variable name, and a column \code{label} describing it.
 Return Census variable names and labels as a tidy data frame
 }
 \examples{
+
 \dontrun{
 # Query census data with truncated labels:
 label_data <- get_census(dataset='CA16', regions=list(CMA="59933"),

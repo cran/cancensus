@@ -34,7 +34,11 @@
 #' @export
 #'
 #' @examples
+#'
+#' \dontrun{
 #' list_census_regions('CA16')
+#' }
+#'
 list_census_regions <- function(dataset, use_cache = TRUE, quiet = FALSE) {
   cache_file <- file.path(tempdir(),paste0(dataset, "_regions.rda"))
 

@@ -269,7 +269,10 @@ VALID_LEVELS <- c("Regions","C","PR", "CMA", "CD", "CSD", "CT", "DA", 'EA', "DB"
 #' @examples
 #'
 #' # List available datasets in CensusMapper
+#'
+#' \dontrun{
 #' list_census_datasets()
+#' }
 list_census_datasets <- function(use_cache = TRUE, quiet = FALSE) {
   cache_file <- file.path(tempdir(),"cancensus_datasets.rda") #cache_path("datasets.rda")
   if (!use_cache || !file.exists(cache_file)) {
@@ -309,7 +312,10 @@ list_census_datasets <- function(use_cache = TRUE, quiet = FALSE) {
 #' @examples
 #'
 #' # Attribution string for the 2006 and 2016 census datasets
+#'
+#' \dontrun{
 #' dataset_attribution(c('CA06','CA16'))
+#' }
 dataset_attribution <- function(datasets){
   attribution <-list_census_datasets(quiet=TRUE) %>%
     dplyr::filter(.data$dataset %in% datasets) %>%
@@ -345,7 +351,8 @@ dataset_attribution <- function(datasets){
 #' variable name, and a column \code{label} describing it.
 #'
 #'@examples
-#'\dontrun{
+#'
+#' \dontrun{
 #' # Query census data with truncated labels:
 #' label_data <- get_census(dataset='CA16', regions=list(CMA="59933"),
 #'                           vectors=c("v_CA16_408","v_CA16_409","v_CA16_410"),
