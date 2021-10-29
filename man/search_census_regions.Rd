@@ -27,9 +27,9 @@ names matching specific queries. Users can optionally specify the target geograp
 the Censusmapper site in a new web page or tab.
 }
 \examples{
-search_census_regions('Victoria', 'CA16')
 
 \dontrun{
+search_census_regions('Victoria', 'CA16')
 # This will return a warning that no match was found, but will suggest similar named regions.
 search_census_regions('Victorea', 'CA16')
 

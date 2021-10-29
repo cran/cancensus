@@ -1,14 +1,14 @@
-1bfdfd84a3627941f8fe4b37d208b549 *DESCRIPTION
+98f8e1500eb9b7927a87e269e3bbc453 *DESCRIPTION
 bb39c9a72c11bbd3be4ae79d47587510 *LICENSE
 789bd2bf721016daa4788bfaba2b14b7 *NAMESPACE
 455f9c57d0bd0f0fd4554ab805e985cf *NEWS.md
 63ebc38fb1a010465760edb02817f251 *R/cancensus.R
-b56c84251e4e6e5126585277ff031e90 *R/census_regions.R
+cf36166f49ad5d68c8ed6b09b8d530eb *R/census_regions.R
 704717e3de155b5a6d5c8a96164e47ee *R/census_vectors.R
 c5ae61b6954c909292e3a0ff65560b29 *R/helpers.R
 a833806da4c8af704d1c6f7f57a124cf *R/intersect_geometry.R
 61ec2ae4bce98520cd3cf42a673eb370 *R/user_settings.R
-ec11e3305e575977de3f9727d039528f *R/vector_discovery.R
+5e72b3e444e9e96dc39a21efb1f1ca4f *R/vector_discovery.R
 d4f2259394efe4e8d341aecd8cf22394 *README.md
 257dfb3279c911ac9a1dde988a0796ae *build/vignette.rds
 a6347d74b3fc51ef5823dc65dcb81a80 *data/CODES_TABLE.rda
@@ -19,7 +19,7 @@ a6347d74b3fc51ef5823dc65dcb81a80 *data/CODES_TABLE.rda
 a5b8e9eba273664f1583df0fa740346a *inst/doc/Dwellings_by_document_type_cross_tabulation.html
 ba5098e5b2cadd19babd11e8e84d4408 *inst/doc/Making_maps_with_cancensus.R
 aff8db5e904e49d2096b64237dd1dae5 *inst/doc/Making_maps_with_cancensus.Rmd
-9824794fc00c57d76179d88f3b580732 *inst/doc/Making_maps_with_cancensus.html
+88a02f5f01422ef58739d8a102418496 *inst/doc/Making_maps_with_cancensus.html
 56452cb156851db3d6036726de5cdeff *inst/doc/Taxfiler_Data.R
 2affb4bd7a6291448aff443ab34a1341 *inst/doc/Taxfiler_Data.Rmd
 c6f01fbdd7c573a864213f368c3976d6 *inst/doc/Taxfiler_Data.html
@@ -41,7 +41,7 @@ a1c86a812bfbed5dcb11e117dd286eb7 *inst/doc/intersecting_geometries.R
 d12dab3ff2027deaf225a87c05648d2c *man/explore_census_regions.Rd
 36c48a3f28eefa93b999a9b0ec9dbbb8 *man/explore_census_vectors.Rd
 4dc19f2810a9415442993ab1f585a84b *man/figures/logo.png
-0c31c89dc3a8f7cd481ba233cf02018f *man/find_census_vectors.Rd
+43ab499f52f70fef5ceb289a95dfc9bf *man/find_census_vectors.Rd
 ed7bfdfa7455e785f27db46dda3df729 *man/get_census.Rd
 d38711eae66dbd7a1302a23aebda6e63 *man/get_census_geometry.Rd
 5668a950e09f1583286654977fbd63d9 *man/get_intersecting_geometries.Rd
@@ -50,8 +50,8 @@ db713f5f0b1889eb9c1b6845b09eb1da *man/label_vectors.Rd
 2c156e9e1bebff2ae2131e49c546b910 *man/list_census_regions.Rd
 b7a751b47f34db86582be9732f48aba6 *man/list_census_vectors.Rd
 e711944c16c74fcccd299f05298946ba *man/parent_census_vectors.Rd
-19cba189b64e270f9a8d83c15302d4e9 *man/search_census_regions.Rd
-6df5d1240ebb51fcaf0e4e452c0753ea *man/search_census_vectors.Rd
+6e654dc9f96a36dd2a6c6e3e26fea0b3 *man/search_census_regions.Rd
+dca0563925de27b650bef28bf9b0f8a1 *man/search_census_vectors.Rd
 544f546007eb361ae8a94941122d6a1d *man/set_api_key.Rd
 08b1fdabbd22d4e08da6fd0d061ebf2e *man/set_cache_path.Rd
 b00ad8c1069410b67cef52fb5f668da5 *man/show_api_key.Rd
