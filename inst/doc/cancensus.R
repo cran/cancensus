@@ -8,15 +8,6 @@ library(cancensus)
 library(dplyr)
 # set_api_key(<your_api_key>, install = TRUE)
 
-# Adding a check for CensusMapper server status. There are occasional cert and other issues affecting CensusMapper servers, and this causes failure of some automated testing - CRAN in particular. If this check passes, we move on and compile the rest of the vignette. If it fails, we compile without evaluating. 
-check <- tryCatch(get_census(dataset='CA16', regions=list(CMA="59933"),
-           vectors=c("v_CA16_408"),
-           level='CMA', use_cache = FALSE, geo_format = NA), error = function(e) {print("Invalid")})
-
-if(class(check)=="character") {
-  eval = FALSE
-}
-
 ## ----load_package_cran, echo=TRUE, message=FALSE, warning=FALSE, eval = FALSE----
 #  install.packages("cancensus")
 #  
@@ -34,21 +25,21 @@ if(class(check)=="character") {
 #  options(cancensus.api_key = "your_api_key")
 #  options(cancensus.cache_path = "custom cache path")
 
-## ----get_census example, echo=TRUE, warning=FALSE, message=FALSE, eval = FALSE----
-#  # Returns a data frame with data only
-#  census_data <- get_census(dataset='CA16', regions=list(CMA="59933"),
-#                            vectors=c("v_CA16_408","v_CA16_409","v_CA16_410"),
-#                            level='CSD', use_cache = FALSE, geo_format = NA)
-#  
-#  # Returns data and geography as an sf-class data frame
-#  census_data <- get_census(dataset='CA16', regions=list(CMA="59933"),
-#                            vectors=c("v_CA16_408","v_CA16_409","v_CA16_410"),
-#                            level='CSD', use_cache = FALSE, geo_format = 'sf')
-#  
-#  # Returns a SpatialPolygonsDataFrame object with data and geography
-#  census_data <- get_census(dataset='CA16', regions=list(CMA="59933"),
-#                            vectors=c("v_CA16_408","v_CA16_409","v_CA16_410"),
-#                            level='CSD', use_cache = FALSE, geo_format = 'sp')
+## ----get_census example, echo=TRUE, warning=FALSE, message=FALSE--------------
+# Returns a data frame with data only
+census_data <- get_census(dataset='CA16', regions=list(CMA="59933"),
+                          vectors=c("v_CA16_408","v_CA16_409","v_CA16_410"),
+                          level='CSD', use_cache = FALSE, geo_format = NA, quiet = TRUE)
+
+# Returns data and geography as an sf-class data frame
+census_data <- get_census(dataset='CA16', regions=list(CMA="59933"),
+                          vectors=c("v_CA16_408","v_CA16_409","v_CA16_410"),
+                          level='CSD', use_cache = FALSE, geo_format = 'sf', quiet = TRUE)
+
+# Returns a SpatialPolygonsDataFrame object with data and geography
+census_data <- get_census(dataset='CA16', regions=list(CMA="59933"),
+                          vectors=c("v_CA16_408","v_CA16_409","v_CA16_410"),
+                          level='CSD', use_cache = FALSE, geo_format = 'sp', quiet = TRUE)
 
 ## ----list datasets, message=FALSE, warning=FALSE------------------------------
 list_census_datasets()
@@ -56,14 +47,14 @@ list_census_datasets()
 ## ----list regions, message=FALSE, warning=FALSE-------------------------------
 list_census_regions("CA16")
 
-## ---- message=FALSE, warning=FALSE, eval=FALSE--------------------------------
-#  # Retrieves Vancouver and Toronto
-#  list_census_regions('CA16') %>%
-#    filter(level == "CMA", name %in% c("Vancouver","Toronto"))
-#  
-#  census_data <- get_census(dataset='CA16', regions=list(CMA=c("59933","35535")),
-#                            vectors=c("v_CA16_408","v_CA16_409","v_CA16_410"),
-#                            level='CSD', use_cache = FALSE)
+## ---- message=FALSE, warning=FALSE--------------------------------------------
+# Retrieves Vancouver and Toronto
+list_census_regions('CA16') %>% 
+  filter(level == "CMA", name %in% c("Vancouver","Toronto"))
+
+census_data <- get_census(dataset='CA16', regions=list(CMA=c("59933","35535")),
+                          vectors=c("v_CA16_408","v_CA16_409","v_CA16_410"),
+                          level='CSD', use_cache = FALSE, quiet = TRUE)
 
 ## ----list_vectors, message=FALSE, warning=FALSE-------------------------------
 list_census_vectors("CA16")

@@ -1,12 +1,9 @@
-# cancensus 0.4.5
+# cancensus - 0.5.0
 
 ## Minor changes
-- Fixed unusual bug caught on CRAN Solaris systems that bypassed other checks.
-
-# cancensus 0.4.4
-
-## Minor changes
-- Added some safety checks on server status to avoid unexpected failures in CI if CensusMapper server unavailable
+- Added cache metadata
+- overview information on cached data
+- allow selective removing of cached data
 
 # cancensus 0.4.3
 

@@ -9,7 +9,7 @@
 #'
 #' @param dataset A CensusMapper dataset identifier.
 #' @param regions A named list of census regions to retrieve. Names must be valid census aggregation levels.
-#' @param level The census aggregation level to retrieve, defaults to \code{"Regions"}. One of \code{"Regions"}, \code{"PR"}, \code{"CMA"}, \code{"CD"}, \code{"CSD"}, \code{"CT"}, \code{"DA"}, \code{"EA"} (for 1996), or \code{"DB"} (for 2001-2016).
+#' @param level The census aggregation level to retrieve, defaults to \code{"Regions"}. One of \code{"Regions"}, \code{"PR"}, \code{"CMA"}, \code{"CD"}, \code{"CSD"}, \code{"CT"}, \code{"DA"}, \code{"EA"} (for 1996), \code{"ADA"} (for 2021), or \code{"DB"} (for 2001-2021).
 #' @param vectors An R vector containing the CensusMapper variable names of the census variables to download. If no vectors are specified only geographic data will get downloaded.
 #' @param geo_format By default is set to \code{NA} and appends no geographic information. To include geographic information with census data, specify one of either \code{"sf"} to return an \code{\link[sf]{sf}} object (requires the \code{sf} package) or \code{"sp"} to return a \code{\link[sp]{SpatialPolygonsDataFrame-class}} object (requires the \code{rgdal} package).
 #' @param labels Set to "detailed" by default, but truncated Census variable names can be selected by setting labels = "short". Use \code{label_vectors(...)} to return variable label information in detail.
@@ -18,7 +18,7 @@
 #' @param api_key An API key for the CensusMapper API. Defaults to \code{options()} and then the \code{CM_API_KEY} environment variable.
 #'
 #' @source Census data and boundary geographies are reproduced and distributed on
-#' an "as is" basis with the permission of Statistics Canada (Statistics Canada 1996; 2001; 2006; 2011; 2016).
+#' an "as is" basis with the permission of Statistics Canada (Statistics Canada 1996; 2001; 2006; 2011; 2016, 2021).
 #'
 #' @export
 #'
@@ -49,6 +49,8 @@ get_census <- function (dataset, regions, level=NA, vectors=c(), geo_format = NA
   api_key <- robust_api_key(api_key)
   have_api_key <- valid_api_key(api_key)
   result <- NULL
+  data_version<-NULL
+  geo_version<-NULL
 
   if (is.na(level)) level="Regions"
 
@@ -91,8 +93,9 @@ get_census <- function (dataset, regions, level=NA, vectors=c(), geo_format = NA
                            "&level=", level, "&dataset=", dataset)
     if (is.na(geo_format)) param_string=paste0(param_string,"&geo_hierarchy=true")
     if (is.na(geo_format)) params["geo_hierarchy"]="true"
-    data_file <- cache_path("CM_data_",
-                            digest::digest(param_string, algo = "md5"), ".rda")
+    data_base_name <- paste0("CM_data_",digest::digest(param_string, algo = "md5"))
+    data_file <- cache_path(data_base_name, ".rda")
+    meta_file <- paste0(data_file, ".meta")
     if (!use_cache || !file.exists(data_file)) {
       if (!have_api_key) {
         stop(paste("No API key set. Use set_api_key('<your API ket>`) to set one, or set_api_key('<your API ket>`, install = TRUE) to save is permanently in our .Renviron."))
@@ -105,6 +108,7 @@ get_census <- function (dataset, regions, level=NA, vectors=c(), geo_format = NA
         httr::POST(url, body=params)
       }
       handle_cm_status_code(response, NULL)
+      data_version <- response$headers$`data-version`
 
 
       # Read the data file and transform to proper data types
@@ -128,11 +132,19 @@ get_census <- function (dataset, regions, level=NA, vectors=c(), geo_format = NA
       if (is.na(geo_format)) result <- result %>% transform_geo(level)
       attr(result, "last_updated") <- Sys.time()
       save(result, file = data_file)
+      file_info <- file.info(data_file)
+      metadata <- dplyr::tibble(dataset=dataset,regions=as.character(jsonlite::toJSON(regions)),
+                                 level=level,
+                                 vectors=jsonlite::toJSON(as.character(vectors))  %>% as.character(),
+                                 created_at=Sys.time(),
+                         version=data_version,size=file_info$size)
+      saveRDS(metadata, file = meta_file)
     } else {
       if (!quiet) message("Reading vectors data from local cache.")
       # Load `result` object from cache.
       load(file = data_file)
     }
+    touch_metadata(meta_file)
   }
 
   if (!is.na(geo_format)) {
@@ -144,6 +156,7 @@ get_census <- function (dataset, regions, level=NA, vectors=c(), geo_format = NA
                            dataset)
     geo_base_name <- paste0("CM_geo_", digest::digest(param_string, algo = "md5"))
     geo_file <- cache_path(geo_base_name, ".geojson")
+    meta_file <- paste0(geo_file, ".meta")
     if (!use_cache || !file.exists(geo_file)) {
       if (!have_api_key) {
         stop(paste("No API key set. Use set_api_key('<your API ket>`) to set one, or set_api_key('<your API ket>`, install = TRUE) to save is permanently in our .Renviron."))
@@ -156,7 +169,12 @@ get_census <- function (dataset, regions, level=NA, vectors=c(), geo_format = NA
         httr::POST(url,body=params)
       }
       handle_cm_status_code(response, NULL)
+      geo_version <- response$headers$`data-version`
       write(httr::content(response, type = "text", encoding = "UTF-8"), file = geo_file) # cache result
+      file_info <- file.info(geo_file)
+      metadata <- dplyr::tibble(dataset=dataset,regions=as.character(regions),level=level,created_at=Sys.time(),
+                         version=data_version,size=file_info$size)
+      saveRDS(metadata, file = meta_file)
     } else {
       if (!quiet) message("Reading geo data from local cache.")
     }
@@ -174,6 +192,7 @@ get_census <- function (dataset, regions, level=NA, vectors=c(), geo_format = NA
       dplyr::select(result, -dplyr::one_of(to_remove)) %>%
         dplyr::inner_join(geos, ., by = "GeoUID")
     }
+    touch_metadata(meta_file)
   }
 
   # ensure sf format even if library not loaded and set agr columns
@@ -223,9 +242,8 @@ get_census <- function (dataset, regions, level=NA, vectors=c(), geo_format = NA
 #'
 #' @source Census data and boundary geographies are reproduced and distributed on
 #' an "as is" basis with the permission of Statistics Canada (Statistics Canada
-#' 2006; 2011; 2016).
+#' 2006; 2011; 2016, 2021).
 #'
-#' @export
 #'
 #' @examples
 #' # Query the API for data geographies in Vancouver, at the census subdivision
@@ -246,7 +264,7 @@ get_census_geometry <- function (dataset, regions, level=NA, geo_format = "sf", 
 
 # This is the set of valid census aggregation levels, also used in the named
 # elements of the `regions` parameter.
-VALID_LEVELS <- c("Regions","C","PR", "CMA", "CD", "CSD", "CT", "DA", 'EA', "DB")
+VALID_LEVELS <- c("Regions","C","PR", "CMA", "CD", "CSD", "ADA","CT", "DA", 'EA', "DB")
 
 #' Query the CensusMapper API for available datasets.
 #'
@@ -269,10 +287,7 @@ VALID_LEVELS <- c("Regions","C","PR", "CMA", "CD", "CSD", "CT", "DA", 'EA', "DB"
 #' @examples
 #'
 #' # List available datasets in CensusMapper
-#'
-#' \dontrun{
 #' list_census_datasets()
-#' }
 list_census_datasets <- function(use_cache = TRUE, quiet = FALSE) {
   cache_file <- file.path(tempdir(),"cancensus_datasets.rda") #cache_path("datasets.rda")
   if (!use_cache || !file.exists(cache_file)) {
@@ -312,10 +327,7 @@ list_census_datasets <- function(use_cache = TRUE, quiet = FALSE) {
 #' @examples
 #'
 #' # Attribution string for the 2006 and 2016 census datasets
-#'
-#' \dontrun{
 #' dataset_attribution(c('CA06','CA16'))
-#' }
 dataset_attribution <- function(datasets){
   attribution <-list_census_datasets(quiet=TRUE) %>%
     dplyr::filter(.data$dataset %in% datasets) %>%
@@ -351,8 +363,7 @@ dataset_attribution <- function(datasets){
 #' variable name, and a column \code{label} describing it.
 #'
 #'@examples
-#'
-#' \dontrun{
+#'\dontrun{
 #' # Query census data with truncated labels:
 #' label_data <- get_census(dataset='CA16', regions=list(CMA="59933"),
 #'                           vectors=c("v_CA16_408","v_CA16_409","v_CA16_410"),

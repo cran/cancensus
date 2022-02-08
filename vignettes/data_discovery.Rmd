@@ -10,21 +10,8 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(collapse = TRUE,
-  comment = "#>",
-  message = FALSE,
-  warning = FALSE,
-  eval = nzchar(Sys.getenv("COMPILE_VIG")))
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 library(cancensus)
-
-# Adding a check for CensusMapper server status. There are occasional cert and other issues affecting CensusMapper servers, and this causes failure of some automated testing - CRAN in particular. If this check passes, we move on and compile the rest of the vignette. If it fails, we compile without evaluating. 
-check <- tryCatch(get_census(dataset='CA16', regions=list(CMA="59933"),
-           vectors=c("v_CA16_408"),
-           level='CMA', use_cache = FALSE, geo_format = NA), error = function(e) {print("Invalid")})
-
-if(class(check)=="character") {
-  eval = FALSE
-}
 ```
 
 # Census datasets

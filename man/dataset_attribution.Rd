@@ -18,8 +18,5 @@ Get attribution for datasets
 \examples{
 
 # Attribution string for the 2006 and 2016 census datasets
-
-\dontrun{
 dataset_attribution(c('CA06','CA16'))
-}
 }

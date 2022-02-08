@@ -5,7 +5,7 @@
 \title{Access to Canadian census data through the CensusMapper API}
 \source{
 Census data and boundary geographies are reproduced and distributed on
-an "as is" basis with the permission of Statistics Canada (Statistics Canada 1996; 2001; 2006; 2011; 2016).
+an "as is" basis with the permission of Statistics Canada (Statistics Canada 1996; 2001; 2006; 2011; 2016, 2021).
 }
 \usage{
 get_census(
@@ -25,7 +25,7 @@ get_census(
 
 \item{regions}{A named list of census regions to retrieve. Names must be valid census aggregation levels.}
 
-\item{level}{The census aggregation level to retrieve, defaults to \code{"Regions"}. One of \code{"Regions"}, \code{"PR"}, \code{"CMA"}, \code{"CD"}, \code{"CSD"}, \code{"CT"}, \code{"DA"}, \code{"EA"} (for 1996), or \code{"DB"} (for 2001-2016).}
+\item{level}{The census aggregation level to retrieve, defaults to \code{"Regions"}. One of \code{"Regions"}, \code{"PR"}, \code{"CMA"}, \code{"CD"}, \code{"CSD"}, \code{"CT"}, \code{"DA"}, \code{"EA"} (for 1996), \code{"ADA"} (for 2021), or \code{"DB"} (for 2001-2021).}
 
 \item{vectors}{An R vector containing the CensusMapper variable names of the census variables to download. If no vectors are specified only geographic data will get downloaded.}
 
