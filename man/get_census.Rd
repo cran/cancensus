@@ -5,7 +5,7 @@
 \title{Access to Canadian census data through the CensusMapper API}
 \source{
 Census data and boundary geographies are reproduced and distributed on
-an "as is" basis with the permission of Statistics Canada (Statistics Canada 1996; 2001; 2006; 2011; 2016, 2021).
+an "as is" basis with the permission of Statistics Canada (Statistics Canada 1996; 2001; 2006; 2011; 2016).
 }
 \usage{
 get_census(
@@ -14,6 +14,7 @@ get_census(
   level = NA,
   vectors = c(),
   geo_format = NA,
+  resolution = "simplified",
   labels = "detailed",
   use_cache = TRUE,
   quiet = FALSE,
@@ -25,11 +26,16 @@ get_census(
 
 \item{regions}{A named list of census regions to retrieve. Names must be valid census aggregation levels.}
 
-\item{level}{The census aggregation level to retrieve, defaults to \code{"Regions"}. One of \code{"Regions"}, \code{"PR"}, \code{"CMA"}, \code{"CD"}, \code{"CSD"}, \code{"CT"}, \code{"DA"}, \code{"EA"} (for 1996), \code{"ADA"} (for 2021), or \code{"DB"} (for 2001-2021).}
+\item{level}{The census aggregation level to retrieve, defaults to \code{"Regions"}. One of \code{"Regions"}, \code{"PR"}, \code{"CMA"}, \code{"CD"}, \code{"CSD"}, \code{"CT"}, \code{"DA"}, \code{"EA"} (for 1996), or \code{"DB"} (for 2001-2016).}
 
 \item{vectors}{An R vector containing the CensusMapper variable names of the census variables to download. If no vectors are specified only geographic data will get downloaded.}
 
 \item{geo_format}{By default is set to \code{NA} and appends no geographic information. To include geographic information with census data, specify one of either \code{"sf"} to return an \code{\link[sf]{sf}} object (requires the \code{sf} package) or \code{"sp"} to return a \code{\link[sp]{SpatialPolygonsDataFrame-class}} object (requires the \code{rgdal} package).}
+
+\item{resolution}{Resolution of the geographic data. {cancensus} will download simplified geometries by default. For lower level geometries like DB or DA this will be very close to the high resolution data.
+Simplification generally increases as the geographic aggregation level increases.
+If high resolution geometries are required
+then this option can be set to 'high'. By default this setting is set to \code{'simplified'}.}
 
 \item{labels}{Set to "detailed" by default, but truncated Census variable names can be selected by setting labels = "short". Use \code{label_vectors(...)} to return variable label information in detail.}
 

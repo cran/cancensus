@@ -8,16 +8,14 @@ list_census_datasets()
 ## ----echo=FALSE---------------------------------------------------------------
 library(ggplot2)
 library(dplyr)
-ca16 <- list_census_vectors("CA16")
-ca11 <- list_census_vectors("CA11")
-ca06 <- list_census_vectors("CA06")
-ca01 <- list_census_vectors("CA01")
-ca96 <- list_census_vectors("CA1996")
+datasets <- c("CA1996","CA01","CA06","CA11","CA16","CA21")
 
-tibble(dataset = c("CA16","CA11","CA06","CA01","CA1996"), 
-       vectors = c(length(ca16$vector), length(ca11$vector),
-                   length(ca06$vector), length(ca01$vector),
-                   length(ca96$vector))) %>% 
+datasets %>%
+  lapply(function(ds){
+    dplyr::tibble(dataset=ds, vectors=nrow(list_census_vectors(ds)))
+  }) %>%
+  bind_rows() %>%
+  mutate(dataset=factor(dataset,levels=datasets)) %>%
   ggplot(., aes(x = dataset, y = vectors)) +
   geom_col() +
   theme_minimal() +
@@ -27,7 +25,7 @@ tibble(dataset = c("CA16","CA11","CA06","CA01","CA1996"),
   scale_y_continuous(labels = scales::comma)
 
 ## ----message=FALSE, warning=FALSE---------------------------------------------
-list_census_vectors('CA16')
+list_census_vectors('CA21')
 
 ## ---- warning=TRUE, message=TRUE----------------------------------------------
 find_census_vectors("Oji-cree", dataset = "CA16", type = "total", query_type = "exact")
@@ -56,7 +54,7 @@ list_census_regions('CA16') %>%
   tally()
 
 ## -----------------------------------------------------------------------------
-list_census_regions('CA16')
+list_census_regions('CA21')
 
 ## ----echo=FALSE, paged.print=TRUE---------------------------------------------
 if(Sys.getenv("COMPILE_VIG")=="TRUE") {
@@ -64,5 +62,5 @@ if(Sys.getenv("COMPILE_VIG")=="TRUE") {
 }
 
 ## -----------------------------------------------------------------------------
-search_census_regions("Vancouver","CA16")
+search_census_regions("Vancouver","CA21")
 
