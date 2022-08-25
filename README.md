@@ -139,7 +139,7 @@ There are several other jurisdiction where census data is available via R packag
 If you wish to cite cancensus:
 
   von Bergmann, J., Aaron Jacobs, Dmitry Shkolnik (2022). cancensus: R package to
-  access, retrieve, and work with Canadian Census data and geography. v0.5.2.
+  access, retrieve, and work with Canadian Census data and geography. v0.5.3.
 
 
 A BibTeX entry for LaTeX users is
@@ -148,7 +148,7 @@ A BibTeX entry for LaTeX users is
     author = {Jens {von Bergmann} and Dmitry Shkolnik and Aaron Jacobs},
     title = {cancensus: R package to access, retrieve, and work with Canadian Census data and geography},
     year = {2022},
-    note = {R package version 0.5.2},
+    note = {R package version 0.5.3},
     url = {https://mountainmath.github.io/cancensus/},
   }
 ```
@@ -160,7 +160,7 @@ The [cansim package](https://mountainmath.github.io/cansim/index.html) is design
 
 Data downloaded through the cansim package that comes with standard geographic attributes will typically share a common geographic ID that can be matched to Census data.
 
-The [tongfen package](https://mountainmath.github.io/tongfen/index.html) automates the task of obtaining cenusus variables from different census years on a common geography. It is available on [Github](https://github.com/mountainMath/tongfen).
+The [tongfen package](https://mountainmath.github.io/tongfen/index.html) automates the task of obtaining census variables from different census years on a common geography. It is available on [Github](https://github.com/mountainMath/tongfen).
 
 ### Statistics Canada Attribution
 

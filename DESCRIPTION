@@ -2,7 +2,7 @@ Package: cancensus
 Type: Package
 Title: Access, Retrieve, and Work with Canadian Census Data and
         Geography
-Version: 0.5.2
+Version: 0.5.3
 Authors@R: c(
     person("Jens", "von Bergmann", email = "jens@mountainmath.ca", role = c("aut"), comment = "API creator and maintainer"),
     person("Dmitry", "Shkolnik", email = "shkolnikd@gmail.com", role = c("aut", "cre"), comment = "Package maintainer, responsible for correspondence"),
@@ -31,11 +31,11 @@ URL: https://github.com/mountainMath/cancensus,
         https://censusmapper.ca/api
 BugReports: https://github.com/mountainMath/cancensus/issues
 Depends: R (>= 2.10)
-Packaged: 2022-08-18 16:03:38 UTC; saravu
+Packaged: 2022-08-25 14:00:50 UTC; saravu
 Author: Jens von Bergmann [aut] (API creator and maintainer),
   Dmitry Shkolnik [aut, cre] (Package maintainer, responsible for
     correspondence),
   Aaron Jacobs [aut]
 Maintainer: Dmitry Shkolnik <shkolnikd@gmail.com>
 Repository: CRAN
-Date/Publication: 2022-08-19 09:00:18 UTC
+Date/Publication: 2022-08-25 14:52:38 UTC
