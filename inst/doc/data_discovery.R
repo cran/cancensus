@@ -49,7 +49,7 @@ find_census_vectors('ojib cree', dataset = 'CA16', type = 'total', query_type = 
 tibble(PR = c(35,35,35), CD = c(NA, 18, 18), CSD = c(NA, NA, 013), name = c("Ontario","Durham (Regional municipality","Oshawa (City)"))
 
 ## ----echo=FALSE---------------------------------------------------------------
-list_census_regions('CA16') %>% 
+list_census_regions('CA21') %>% 
   group_by(level) %>% 
   tally()
 
