@@ -119,13 +119,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -333,8 +340,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cancensus)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(cancensus)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
 <div id="background" class="section level2">
 <h2>Background</h2>
 <p>Attribute files describe the detailed relationship of various
@@ -353,60 +360,60 @@ municipal boundaries and which ones don’t in 2021 we can consult the
 geographic attributes file. It contains a row for each Census Block, the
 basic building block of census geographies, and tags other levels of
 geography the Census Block lies in.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>attributes <span class="ot">&lt;-</span> <span class="fu">get_statcan_geographic_attributes</span>(<span class="st">&quot;2021&quot;</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>attributes <span class="sc">%&gt;%</span> <span class="fu">colnames</span>()</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;PRUID_PRIDU&quot;                   &quot;PRDGUID_PRIDUGD&quot;              </span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [3] &quot;PRNAME_PRNOM&quot;                  &quot;PRENAME_PRANOM&quot;               </span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [5] &quot;PRFNAME_PRFNOM&quot;                &quot;PREABBR_PRAABBREV&quot;            </span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [7] &quot;PRFABBR_PRFABBREV&quot;             &quot;CDUID_DRIDU&quot;                  </span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [9] &quot;CDDGUID_DRIDUGD&quot;               &quot;CDNAME_DRNOM&quot;                 </span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [11] &quot;CDTYPE_DRGENRE&quot;                &quot;FEDUID_CEFIDU&quot;                </span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] &quot;FEDDGUID_CEFIDUGD&quot;             &quot;FEDNAME_CEFNOM&quot;               </span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [15] &quot;CSDUID_SDRIDU&quot;                 &quot;CSDDGUID_SDRIDUGD&quot;            </span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [17] &quot;CSDNAME_SDRNOM&quot;                &quot;CSDTYPE_SDRGENRE&quot;             </span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [19] &quot;DPLUID_LDIDU&quot;                  &quot;DPLDGUID_LDIDUGD&quot;             </span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [21] &quot;DPLNAME_LDNOM&quot;                 &quot;DPLTYPE_LDGENRE&quot;              </span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [23] &quot;ERUID_REIDU&quot;                   &quot;ERDGUID_REIDUGD&quot;              </span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [25] &quot;ERNAME_RENOM&quot;                  &quot;CCSUID_SRUIDU&quot;                </span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [27] &quot;CCSDGUID_SRUIDUGD&quot;             &quot;CCSNAME_SRUNOM&quot;               </span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [29] &quot;SACTYPE_CSSGENRE&quot;              &quot;SACCODE_CSSCODE&quot;              </span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [31] &quot;CMAPUID_RMRPIDU&quot;               &quot;CMAPDGUID_RMRPIDUGD&quot;          </span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [33] &quot;CMAUID_RMRIDU&quot;                 &quot;CMADGUID_RMRIDUGD&quot;            </span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [35] &quot;CMANAME_RMRNOM&quot;                &quot;CMATYPE_RMRGENRE&quot;             </span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [37] &quot;CTUID_SRIDU&quot;                   &quot;CTDGUID_SRIDUGD&quot;              </span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [39] &quot;CTCODE_SRCODE&quot;                 &quot;CTNAME_SRNOM&quot;                 </span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [41] &quot;POPCTRRAPUID_CTRPOPRRPIDU&quot;     &quot;POPCTRRAPDGUID_CTRPOPRRPIDUGD&quot;</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [43] &quot;POPCTRRAUID_CTRPOPRRIDU&quot;       &quot;POPCTRRADGUID_CTRPOPRRIDUGD&quot;  </span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [45] &quot;POPCTRRANAME_CTRPOPRRNOM&quot;      &quot;POPCTRRATYPE_CTRPOPRRGENRE&quot;   </span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [47] &quot;POPCTRRACLASS_CTRPOPRRCLASSE&quot;  &quot;DAUID_ADIDU&quot;                  </span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [49] &quot;DADGUID_ADIDUGD&quot;               &quot;DARPLAMX_ADLAMX&quot;              </span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [51] &quot;DARPLAMY_ADLAMY&quot;               &quot;DARPLAT_ADLAT&quot;                </span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [53] &quot;DARPLONG_ADLONG&quot;               &quot;DBUID_IDIDU&quot;                  </span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [55] &quot;DBDGUID_IDIDUGD&quot;               &quot;DBPOP2021_IDPOP2021&quot;          </span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [57] &quot;DBTDWELL2021_IDTLOG2021&quot;       &quot;DBURDWELL2021_IDRHLOG2021&quot;    </span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [59] &quot;DBAREA2021_IDSUP2021&quot;          &quot;DBIR2021_IDRI2021&quot;            </span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [61] &quot;ADAUID_ADAIDU&quot;                 &quot;ADADGUID_ADAIDUGD&quot;            </span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [63] &quot;ADACODE_ADACODE&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>attributes <span class="ot">&lt;-</span> <span class="fu">get_statcan_geographic_attributes</span>(<span class="st">&quot;2021&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>attributes <span class="sc">%&gt;%</span> <span class="fu">colnames</span>()</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;PRUID_PRIDU&quot;                   &quot;PRDGUID_PRIDUGD&quot;              </span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt;  [3] &quot;PRNAME_PRNOM&quot;                  &quot;PRENAME_PRANOM&quot;               </span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt;  [5] &quot;PRFNAME_PRFNOM&quot;                &quot;PREABBR_PRAABBREV&quot;            </span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">#&gt;  [7] &quot;PRFABBR_PRFABBREV&quot;             &quot;CDUID_DRIDU&quot;                  </span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt;  [9] &quot;CDDGUID_DRIDUGD&quot;               &quot;CDNAME_DRNOM&quot;                 </span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt; [11] &quot;CDTYPE_DRGENRE&quot;                &quot;FEDUID_CEFIDU&quot;                </span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">#&gt; [13] &quot;FEDDGUID_CEFIDUGD&quot;             &quot;FEDNAME_CEFNOM&quot;               </span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt; [15] &quot;CSDUID_SDRIDU&quot;                 &quot;CSDDGUID_SDRIDUGD&quot;            </span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">#&gt; [17] &quot;CSDNAME_SDRNOM&quot;                &quot;CSDTYPE_SDRGENRE&quot;             </span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="co">#&gt; [19] &quot;DPLUID_LDIDU&quot;                  &quot;DPLDGUID_LDIDUGD&quot;             </span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co">#&gt; [21] &quot;DPLNAME_LDNOM&quot;                 &quot;DPLTYPE_LDGENRE&quot;              </span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt; [23] &quot;ERUID_REIDU&quot;                   &quot;ERDGUID_REIDUGD&quot;              </span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="co">#&gt; [25] &quot;ERNAME_RENOM&quot;                  &quot;CCSUID_SRUIDU&quot;                </span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="co">#&gt; [27] &quot;CCSDGUID_SRUIDUGD&quot;             &quot;CCSNAME_SRUNOM&quot;               </span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt; [29] &quot;SACTYPE_CSSGENRE&quot;              &quot;SACCODE_CSSCODE&quot;              </span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co">#&gt; [31] &quot;CMAPUID_RMRPIDU&quot;               &quot;CMAPDGUID_RMRPIDUGD&quot;          </span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="co">#&gt; [33] &quot;CMAUID_RMRIDU&quot;                 &quot;CMADGUID_RMRIDUGD&quot;            </span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co">#&gt; [35] &quot;CMANAME_RMRNOM&quot;                &quot;CMATYPE_RMRGENRE&quot;             </span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="co">#&gt; [37] &quot;CTUID_SRIDU&quot;                   &quot;CTDGUID_SRIDUGD&quot;              </span></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="co">#&gt; [39] &quot;CTCODE_SRCODE&quot;                 &quot;CTNAME_SRNOM&quot;                 </span></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co">#&gt; [41] &quot;POPCTRRAPUID_CTRPOPRRPIDU&quot;     &quot;POPCTRRAPDGUID_CTRPOPRRPIDUGD&quot;</span></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co">#&gt; [43] &quot;POPCTRRAUID_CTRPOPRRIDU&quot;       &quot;POPCTRRADGUID_CTRPOPRRIDUGD&quot;  </span></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co">#&gt; [45] &quot;POPCTRRANAME_CTRPOPRRNOM&quot;      &quot;POPCTRRATYPE_CTRPOPRRGENRE&quot;   </span></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt; [47] &quot;POPCTRRACLASS_CTRPOPRRCLASSE&quot;  &quot;DAUID_ADIDU&quot;                  </span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt; [49] &quot;DADGUID_ADIDUGD&quot;               &quot;DARPLAMX_ADLAMX&quot;              </span></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="co">#&gt; [51] &quot;DARPLAMY_ADLAMY&quot;               &quot;DARPLAT_ADLAT&quot;                </span></span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="co">#&gt; [53] &quot;DARPLONG_ADLONG&quot;               &quot;DBUID_IDIDU&quot;                  </span></span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a><span class="co">#&gt; [55] &quot;DBDGUID_IDIDUGD&quot;               &quot;DBPOP2021_IDPOP2021&quot;          </span></span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="co">#&gt; [57] &quot;DBTDWELL2021_IDTLOG2021&quot;       &quot;DBURDWELL2021_IDRHLOG2021&quot;    </span></span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a><span class="co">#&gt; [59] &quot;DBAREA2021_IDSUP2021&quot;          &quot;DBIR2021_IDRI2021&quot;            </span></span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a><span class="co">#&gt; [61] &quot;ADAUID_ADAIDU&quot;                 &quot;ADADGUID_ADAIDUGD&quot;            </span></span>
+<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a><span class="co">#&gt; [63] &quot;ADACODE_ADACODE&quot;</span></span></code></pre></div>
 <p>To answer our question, we filter Census Block by the ones that lie
 within a Census Tract, and check for the collection of Census Blocks
 within each Census Tract how many municipalities they lie in.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>attributes <span class="sc">%&gt;%</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(CMATYPE_RMRGENRE <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;B&quot;</span>,<span class="st">&quot;K&quot;</span>)) <span class="sc">|&gt;</span> <span class="co"># filter areas not in CTs</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(CTCODE_SRCODE,CMATYPE_RMRGENRE) <span class="sc">|&gt;</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="st">`</span><span class="at">Number of municipalities</span><span class="st">`</span><span class="ot">=</span><span class="fu">length</span>(<span class="fu">unique</span>(CSDUID_SDRIDU)),<span class="at">.groups=</span><span class="st">&quot;drop&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(<span class="st">`</span><span class="at">Number of municipalities</span><span class="st">`</span>,CMATYPE_RMRGENRE) <span class="sc">|&gt;</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(CMATYPE_RMRGENRE,<span class="st">`</span><span class="at">Number of municipalities</span><span class="st">`</span>)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 7 × 3</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   `Number of municipalities` CMATYPE_RMRGENRE     n</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                        &lt;int&gt; &lt;chr&gt;            &lt;int&gt;</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1                          1 B                 5997</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2                          2 B                   33</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3                          3 B                   13</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4                          4 B                    5</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5                          6 B                    4</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6                          1 K                  194</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7                          2 K                    1</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>attributes <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">filter</span>(CMATYPE_RMRGENRE <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;B&quot;</span>,<span class="st">&quot;K&quot;</span>)) <span class="sc">|&gt;</span> <span class="co"># filter areas not in CTs</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">group_by</span>(CTCODE_SRCODE,CMATYPE_RMRGENRE) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="st">`</span><span class="at">Number of municipalities</span><span class="st">`</span><span class="ot">=</span><span class="fu">length</span>(<span class="fu">unique</span>(CSDUID_SDRIDU)),<span class="at">.groups=</span><span class="st">&quot;drop&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="fu">count</span>(<span class="st">`</span><span class="at">Number of municipalities</span><span class="st">`</span>,CMATYPE_RMRGENRE) <span class="sc">|&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="fu">arrange</span>(CMATYPE_RMRGENRE,<span class="st">`</span><span class="at">Number of municipalities</span><span class="st">`</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; # A tibble: 7 × 3</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt;   `Number of municipalities` CMATYPE_RMRGENRE     n</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt;                        &lt;int&gt; &lt;chr&gt;            &lt;int&gt;</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt; 1                          1 B                 5997</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt; 2                          2 B                   33</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt; 3                          3 B                   13</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt; 4                          4 B                    5</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; 5                          6 B                    4</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; 6                          1 K                  194</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; 7                          2 K                    1</span></span></code></pre></div>
 <p>This shows that most census tracts for both Census Metropolitan Areas
 (CMATYPE_RMRGENRE=“B”) and tracted Census Agglomerations
 (CMATYPE_RMRGENRE=“K”), with some census tracts spanning several

@@ -1390,13 +1390,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -1622,22 +1629,21 @@ specialized crosstabs for Structural type of dwelling by Document type,
 which details occupancy status for residences. These crosstabs are
 available for the 2001, 2006, 2011, and 2016 Census years at all levels
 starting with census tract.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list_census_datasets</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">list_census_datasets</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 29 × 6
-##    dataset description                           geo_d…¹ attri…² refer…³ refer…⁴
-##    &lt;chr&gt;   &lt;chr&gt;                                 &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
-##  1 CA1996  1996 Canada Census                    CA1996  StatCa… 92-351… https:…
-##  2 CA01    2001 Canada Census                    CA01    StatCa… 92-378… https:…
-##  3 CA06    2006 Canada Census                    CA06    StatCa… 92-566… https:…
-##  4 CA11    2011 Canada Census and NHS            CA11    StatCa… 98-301… https:…
-##  5 CA16    2016 Canada Census                    CA16    StatCa… 98-301… https:…
-##  6 CA21    2021 Canada Census                    CA21    StatCa… 98-301… https:…
-##  7 CA01xSD 2001 Canada Census xtab - Structural… CA01    StatCa… 92-378… https:…
-##  8 CA06xSD 2006 Canada Census xtab - Structural… CA06    StatCa… 92-566… https:…
-##  9 CA11xSD 2011 Canada Census xtab - Structural… CA11    StatCa… 98-301… https:…
-## 10 CA16xSD 2016 Canada Census xtab - Structural… CA16    StatCa… 98-301… https:…
-## # … with 19 more rows, and abbreviated variable names ¹​geo_dataset,
-## #   ²​attribution, ³​reference, ⁴​reference_url</code></pre>
+##    dataset description           geo_dataset attribution reference reference_url
+##    &lt;chr&gt;   &lt;chr&gt;                 &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;        
+##  1 CA1996  1996 Canada Census    CA1996      StatCan 19… 92-351-U  https://www1…
+##  2 CA01    2001 Canada Census    CA01        StatCan 20… 92-378-X  https://www1…
+##  3 CA06    2006 Canada Census    CA06        StatCan 20… 92-566-X  https://www1…
+##  4 CA11    2011 Canada Census a… CA11        StatCan 20… 98-301-X… https://www1…
+##  5 CA16    2016 Canada Census    CA16        StatCan 20… 98-301-X  https://www1…
+##  6 CA21    2021 Canada Census    CA21        StatCan 20… 98-301-X  https://www1…
+##  7 CA01xSD 2001 Canada Census x… CA01        StatCan 20… 92-378-X  https://www1…
+##  8 CA06xSD 2006 Canada Census x… CA06        StatCan 20… 92-566-X  https://www1…
+##  9 CA11xSD 2011 Canada Census x… CA11        StatCan 20… 98-301-X  https://www1…
+## 10 CA16xSD 2016 Canada Census x… CA16        StatCan 20… 98-301-X  https://www1…
+## # ℹ 19 more rows</code></pre>
 <p>The <code>list_census_datasets()</code> function also provides
 additional background like series reference code, catalogue reference,
 and attribution details.</p>
@@ -1654,22 +1660,21 @@ per dataset is significant, ranging from 1,715 in the <code>CA01</code>
 dataset to 6,623 in the <code>CA16</code> one.</p>
 <div id="view-available-census-variable-vectors" class="section level2">
 <h2>View available Census variable vectors</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list_census_vectors</span>(<span class="st">&#39;CA21&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">list_census_vectors</span>(<span class="st">&#39;CA21&#39;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 7,709 × 7
-##    vector    type   label                          units paren…¹ aggre…² details
-##    &lt;chr&gt;     &lt;fct&gt;  &lt;chr&gt;                          &lt;fct&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
-##  1 v_CA21_1  Total  Population, 2021               Numb… &lt;NA&gt;    Additi… CA 202…
-##  2 v_CA21_2  Total  Population, 2016               Numb… &lt;NA&gt;    Additi… CA 202…
-##  3 v_CA21_3  Total  Population percentage change,… Numb… &lt;NA&gt;    Averag… CA 202…
-##  4 v_CA21_4  Total  Total private dwellings        Numb… &lt;NA&gt;    Additi… CA 202…
-##  5 v_CA21_5  Total  Private dwellings occupied by… Numb… v_CA21… Additi… CA 202…
-##  6 v_CA21_6  Total  Population density per square… Ratio &lt;NA&gt;    Averag… CA 202…
-##  7 v_CA21_7  Total  Land area in square kilometres Numb… &lt;NA&gt;    Additi… CA 202…
-##  8 v_CA21_8  Total  Total - Age                    Numb… &lt;NA&gt;    Additi… CA 202…
-##  9 v_CA21_9  Male   Total - Age                    Numb… &lt;NA&gt;    Additi… CA 202…
-## 10 v_CA21_10 Female Total - Age                    Numb… &lt;NA&gt;    Additi… CA 202…
-## # … with 7,699 more rows, and abbreviated variable names ¹​parent_vector,
-## #   ²​aggregation</code></pre>
+##    vector    type   label                units parent_vector aggregation details
+##    &lt;chr&gt;     &lt;fct&gt;  &lt;chr&gt;                &lt;fct&gt; &lt;chr&gt;         &lt;chr&gt;       &lt;chr&gt;  
+##  1 v_CA21_1  Total  Population, 2021     Numb… &lt;NA&gt;          Additive    CA 202…
+##  2 v_CA21_2  Total  Population, 2016     Numb… &lt;NA&gt;          Additive    CA 202…
+##  3 v_CA21_3  Total  Population percenta… Numb… &lt;NA&gt;          Average of… CA 202…
+##  4 v_CA21_4  Total  Total private dwell… Numb… &lt;NA&gt;          Additive    CA 202…
+##  5 v_CA21_5  Total  Private dwellings o… Numb… v_CA21_4      Additive    CA 202…
+##  6 v_CA21_6  Total  Population density … Ratio &lt;NA&gt;          Average of… CA 202…
+##  7 v_CA21_7  Total  Land area in square… Numb… &lt;NA&gt;          Additive    CA 202…
+##  8 v_CA21_8  Total  Total - Age          Numb… &lt;NA&gt;          Additive    CA 202…
+##  9 v_CA21_9  Male   Total - Age          Numb… &lt;NA&gt;          Additive    CA 202…
+## 10 v_CA21_10 Female Total - Age          Numb… &lt;NA&gt;          Additive    CA 202…
+## # ℹ 7,699 more rows</code></pre>
 <p><code>list_census_vectors(dataset)</code> retrieves an index of all
 available vectors for a given dataset from the CensusMapper API or local
 cache if recently called. Each Census variable has a vector code
@@ -1703,7 +1708,7 @@ been extensively tested against these datasets.</p>
 <p>Exact search uses exact string matching. It is best used when you
 know exactly the term you are looking for, and is not robust to spelling
 errors.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find_census_vectors</span>(<span class="st">&quot;Oji-cree&quot;</span>, <span class="at">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="at">type =</span> <span class="st">&quot;total&quot;</span>, <span class="at">query_type =</span> <span class="st">&quot;exact&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">find_census_vectors</span>(<span class="st">&quot;Oji-cree&quot;</span>, <span class="at">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="at">type =</span> <span class="st">&quot;total&quot;</span>, <span class="at">query_type =</span> <span class="st">&quot;exact&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 4 × 4
 ##   vector      type  label    details                                            
 ##   &lt;chr&gt;       &lt;fct&gt; &lt;chr&gt;    &lt;chr&gt;                                              
@@ -1712,7 +1717,7 @@ errors.</p>
 ## 3 v_CA16_2676 Total Oji-Cree 25% Data; Total - Knowledge of languages for the p…
 ## 4 v_CA16_5930 Total Oji-Cree 25% Data; Work; Total - Language used most often a…</code></pre>
 <p>This, on the other hand, will return a warning.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find_census_vectors</span>(<span class="st">&quot;Ojib-cree&quot;</span>, <span class="at">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="at">type =</span> <span class="st">&quot;total&quot;</span>, <span class="at">query_type =</span> <span class="st">&quot;exact&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">find_census_vectors</span>(<span class="st">&quot;Ojib-cree&quot;</span>, <span class="at">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="at">type =</span> <span class="st">&quot;total&quot;</span>, <span class="at">query_type =</span> <span class="st">&quot;exact&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: No exact matches found. Please check spelling and try again or consider using semantic or keyword search.
 ## See ?find_census_vectors() for more details.
 ## 
@@ -1727,7 +1732,7 @@ subject matter of the variable without knowing the exact variable you
 are looking for. Under the hood, keyword search splits the query and
 vector details into unique unigram tokens and then looks for the vectors
 with the greatest number of matches.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find_census_vectors</span>(<span class="st">&#39;commute mode&#39;</span>, <span class="at">dataset =</span> <span class="st">&#39;CA16&#39;</span>, <span class="at">type =</span> <span class="st">&#39;female&#39;</span>, <span class="at">query_type =</span> <span class="st">&#39;keyword&#39;</span>, <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">find_census_vectors</span>(<span class="st">&#39;commute mode&#39;</span>, <span class="at">dataset =</span> <span class="st">&#39;CA16&#39;</span>, <span class="at">type =</span> <span class="st">&#39;female&#39;</span>, <span class="at">query_type =</span> <span class="st">&#39;keyword&#39;</span>, <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 7 × 4
 ##   vector      type   label                                               details
 ##   &lt;chr&gt;       &lt;fct&gt;  &lt;chr&gt;                                               &lt;chr&gt;  
@@ -1754,7 +1759,7 @@ decontextualized unigrams of keyword search, semantic search splits
 queries and vector details into n-grams and finds matches using
 approximate string distances based on the generalized Levenshtein
 distance.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find_census_vectors</span>(<span class="st">&quot;after tax incomes&quot;</span>, <span class="at">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="at">type =</span> <span class="st">&quot;total&quot;</span>, <span class="at">query_type =</span> <span class="st">&quot;semantic&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">find_census_vectors</span>(<span class="st">&quot;after tax incomes&quot;</span>, <span class="at">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="at">type =</span> <span class="st">&quot;total&quot;</span>, <span class="at">query_type =</span> <span class="st">&quot;semantic&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 56 × 4
 ##    vector      type  label                                               details
 ##    &lt;chr&gt;       &lt;fct&gt; &lt;chr&gt;                                               &lt;chr&gt;  
@@ -1768,17 +1773,17 @@ distance.</p>
 ##  8 v_CA16_2312 Total $10,000 to $19,999                                  Income…
 ##  9 v_CA16_2315 Total $20,000 to $29,999                                  Income…
 ## 10 v_CA16_2318 Total $30,000 to $39,999                                  Income…
-## # … with 46 more rows</code></pre>
+## # ℹ 46 more rows</code></pre>
 <p>Semantic search is more robust to spelling and punctuation issues
 that may come up with exact search. For example, while this throws a
 warning:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find_census_vectors</span>(<span class="st">&quot;ojib cree&quot;</span>, <span class="at">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="at">type =</span> <span class="st">&quot;total&quot;</span>, <span class="at">query_type =</span> <span class="st">&quot;exact&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">find_census_vectors</span>(<span class="st">&quot;ojib cree&quot;</span>, <span class="at">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="at">type =</span> <span class="st">&quot;total&quot;</span>, <span class="at">query_type =</span> <span class="st">&quot;exact&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: No exact matches found. Please check spelling and try again or consider using semantic or keyword search.
 ## See ?find_census_vectors() for more details.
 ## 
 ## Alternatively, you can launch the Censusmapper web API in a browser by calling explore_census_vectors(dataset)</code></pre>
 <p>This will find the correct Census vector.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find_census_vectors</span>(<span class="st">&#39;ojib cree&#39;</span>, <span class="at">dataset =</span> <span class="st">&#39;CA16&#39;</span>, <span class="at">type =</span> <span class="st">&#39;total&#39;</span>, <span class="at">query_type =</span> <span class="st">&#39;semantic&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">find_census_vectors</span>(<span class="st">&#39;ojib cree&#39;</span>, <span class="at">dataset =</span> <span class="st">&#39;CA16&#39;</span>, <span class="at">type =</span> <span class="st">&#39;total&#39;</span>, <span class="at">query_type =</span> <span class="st">&#39;semantic&#39;</span>)</span></code></pre></div>
 <pre><code>## Multiple possible matches. Results ordered by closeness.</code></pre>
 <pre><code>## # A tibble: 4 × 4
 ##   vector      type  label    details                                            
@@ -1901,21 +1906,21 @@ information includes population, municipal status, as well as parent
 geographic ids for lower levels. All CMAs are included with their own
 defined geography, as well as those CAs which have their own Census
 tracts.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list_census_regions</span>(<span class="st">&#39;CA21&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">list_census_regions</span>(<span class="st">&#39;CA21&#39;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 5,518 × 8
-##    region name                      level      pop munic…¹ CMA_UID CD_UID PR_UID
-##    &lt;chr&gt;  &lt;chr&gt;                     &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt; 
-##  1 01     Canada                    C     36991981 &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
-##  2 35     Ontario                   PR    14223942 Ont.    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
-##  3 24     Quebec                    PR     8501833 Que.    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
-##  4 59     British Columbia          PR     5000879 B.C.    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
-##  5 48     Alberta                   PR     4262635 Alta.   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
-##  6 46     Manitoba                  PR     1342153 Man.    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
-##  7 47     Saskatchewan              PR     1132505 Sask.   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
-##  8 12     Nova Scotia               PR      969383 N.S.    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
-##  9 13     New Brunswick             PR      775610 N.B.    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
-## 10 10     Newfoundland and Labrador PR      510550 N.L.    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
-## # … with 5,508 more rows, and abbreviated variable name ¹​municipal_status</code></pre>
+##    region name               level    pop municipal_status CMA_UID CD_UID PR_UID
+##    &lt;chr&gt;  &lt;chr&gt;              &lt;chr&gt;  &lt;int&gt; &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt; 
+##  1 01     Canada             C     3.70e7 &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
+##  2 35     Ontario            PR    1.42e7 Ont.             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
+##  3 24     Quebec             PR    8.50e6 Que.             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
+##  4 59     British Columbia   PR    5.00e6 B.C.             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
+##  5 48     Alberta            PR    4.26e6 Alta.            &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
+##  6 46     Manitoba           PR    1.34e6 Man.             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
+##  7 47     Saskatchewan       PR    1.13e6 Sask.            &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
+##  8 12     Nova Scotia        PR    9.69e5 N.S.             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
+##  9 13     New Brunswick      PR    7.76e5 N.B.             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
+## 10 10     Newfoundland and … PR    5.11e5 N.L.             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;  
+## # ℹ 5,508 more rows</code></pre>
 There are 53 CSD and 12 CD municipal status codes based on official
 designations used by provinces, territories, and federal authorities.
 These are often used to distinguish Census divisions and subdivisions
@@ -1932,7 +1937,7 @@ geography have the code K, while those without have type code D.
 <p>We can also search through all named geographies. This will return
 any geographies that have a name that matches or partially matches the
 search query.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">search_census_regions</span>(<span class="st">&quot;Vancouver&quot;</span>,<span class="st">&quot;CA21&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="fu">search_census_regions</span>(<span class="st">&quot;Vancouver&quot;</span>,<span class="st">&quot;CA21&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 7 × 8
 ##   region  name              level     pop municipal_status CMA_UID CD_UID PR_UID
 ##   &lt;chr&gt;   &lt;chr&gt;             &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt; 

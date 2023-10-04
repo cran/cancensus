@@ -27,22 +27,22 @@ datasets %>%
 ## ----message=FALSE, warning=FALSE---------------------------------------------
 list_census_vectors('CA21')
 
-## ---- warning=TRUE, message=TRUE----------------------------------------------
+## ----warning=TRUE, message=TRUE-----------------------------------------------
 find_census_vectors("Oji-cree", dataset = "CA16", type = "total", query_type = "exact")
 
-## ---- warning=TRUE, message=TRUE----------------------------------------------
+## ----warning=TRUE, message=TRUE-----------------------------------------------
 find_census_vectors("Ojib-cree", dataset = "CA16", type = "total", query_type = "exact")
 
-## ---- warning=TRUE, message=TRUE----------------------------------------------
+## ----warning=TRUE, message=TRUE-----------------------------------------------
 find_census_vectors('commute mode', dataset = 'CA16', type = 'female', query_type = 'keyword', interactive = FALSE)
 
 ## -----------------------------------------------------------------------------
 find_census_vectors("after tax incomes", dataset = "CA16", type = "total", query_type = "semantic")
 
-## ---- warning=TRUE, message=TRUE----------------------------------------------
+## ----warning=TRUE, message=TRUE-----------------------------------------------
 find_census_vectors("ojib cree", dataset = "CA16", type = "total", query_type = "exact")
 
-## ---- warning=TRUE, message=TRUE----------------------------------------------
+## ----warning=TRUE, message=TRUE-----------------------------------------------
 find_census_vectors('ojib cree', dataset = 'CA16', type = 'total', query_type = 'semantic')
 
 ## ----echo=FALSE---------------------------------------------------------------

@@ -2,7 +2,7 @@ Package: cancensus
 Type: Package
 Title: Access, Retrieve, and Work with Canadian Census Data and
         Geography
-Version: 0.5.5
+Version: 0.5.6
 Authors@R: c(
     person("Jens", "von Bergmann", email = "jens@mountainmath.ca", role = c("aut"), comment = "API creator and maintainer"),
     person("Dmitry", "Shkolnik", email = "shkolnikd@gmail.com", role = c("aut", "cre"), comment = "Package maintainer, responsible for correspondence"),
@@ -22,20 +22,20 @@ ByteCompile: yes
 NeedsCompilation: no
 Imports: digest (>= 0.1), dplyr (>= 0.7), httr (>= 1.0.0), jsonlite (>=
         1.0), rlang
-RoxygenNote: 7.2.1
-Suggests: knitr, ggplot2, leaflet, mapdeck, rmarkdown, readr, rgdal,
-        rgeos, scales, sp, sf, geojsonsf, tidyr, lwgeom, xml2
+RoxygenNote: 7.2.3
+Suggests: knitr, ggplot2, leaflet, mapdeck, rmarkdown, readr, scales,
+        sp, sf, geojsonsf, tidyr, lwgeom, xml2
 VignetteBuilder: knitr
 URL: https://github.com/mountainMath/cancensus,
         https://mountainmath.github.io/cancensus/,
         https://censusmapper.ca/api
 BugReports: https://github.com/mountainMath/cancensus/issues
 Depends: R (>= 2.10)
-Packaged: 2023-01-23 04:04:12 UTC; jens
+Packaged: 2023-10-04 16:14:39 UTC; jens
 Author: Jens von Bergmann [aut] (API creator and maintainer),
   Dmitry Shkolnik [aut, cre] (Package maintainer, responsible for
     correspondence),
   Aaron Jacobs [aut]
 Maintainer: Dmitry Shkolnik <shkolnikd@gmail.com>
 Repository: CRAN
-Date/Publication: 2023-01-23 08:40:06 UTC
+Date/Publication: 2023-10-04 19:50:02 UTC

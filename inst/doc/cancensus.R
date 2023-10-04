@@ -6,24 +6,27 @@ knitr::opts_chunk$set(
 )
 library(cancensus)
 library(dplyr)
-# set_api_key(<your_api_key>, install = TRUE)
+# set_cancensus_api_key(<your_api_key>', install = TRUE)
+# set_cancensus_cache_path(<local cache path>, install = TRUE)
 
 ## ----load_package_cran, echo=TRUE, message=FALSE, warning=FALSE, eval = FALSE----
 #  install.packages("cancensus")
 #  
 #  library(cancensus)
-#  
-#  options(cancensus.api_key = "your_api_key")
-#  options(cancensus.cache_path = "custom cache path")
 
 ## ----load_package_git, echo=TRUE, message=FALSE, warning=FALSE, eval = FALSE----
 #  # install.packages("devtools")
-#  devtools::install_github("mountainmath/cancensus")
+#  remotes::install_github("mountainmath/cancensus")
 #  
 #  library(cancensus)
 #  
 #  options(cancensus.api_key = "your_api_key")
 #  options(cancensus.cache_path = "custom cache path")
+
+## ----install_api_key_and_cache_path, echo=TRUE, message=FALSE, warning=FALSE, eval = FALSE----
+#  # Only need to install api key can cache path once
+#  set_cancensus_api_key('<your_api_key>', install = TRUE)
+#  set_cancensus_cache_path('<local cache path>', install = TRUE)
 
 ## ----get_census example, echo=TRUE, warning=FALSE, message=FALSE--------------
 # Returns a data frame with data only
@@ -47,7 +50,7 @@ list_census_datasets()
 ## ----list regions, message=FALSE, warning=FALSE-------------------------------
 list_census_regions("CA21")
 
-## ---- message=FALSE, warning=FALSE--------------------------------------------
+## ----message=FALSE, warning=FALSE---------------------------------------------
 # Retrieves Vancouver and Toronto
 list_census_regions('CA21') %>% 
   filter(level == "CMA", name %in% c("Vancouver","Toronto"))

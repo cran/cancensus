@@ -7,7 +7,7 @@ knitr::opts_chunk$set(
 
 mb_token <- Sys.getenv("MB_TOKEN")
 
-## ---- message = FALSE, warning = FALSE----------------------------------------
+## ----message = FALSE, warning = FALSE-----------------------------------------
 library(cancensus)
 library(sf)
 # retrieve sf dataframe
@@ -40,7 +40,7 @@ ggplot(toronto) + geom_sf(aes(fill = median_hh_income), colour = "grey") +
 if(Sys.getenv("COMPILE_VIG")!="TRUE") {
   knitr::opts_chunk$set(eval = FALSE)}
 
-## ---- message = FALSE---------------------------------------------------------
+## ----message = FALSE----------------------------------------------------------
 library(leaflet)
 leaflet(toronto) %>% 
   addProviderTiles(providers$CartoDB.Positron) %>%
