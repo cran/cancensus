@@ -12,7 +12,7 @@
 #' @param level The census aggregation level to retrieve, defaults to \code{"Regions"}. One of \code{"Regions"}, \code{"PR"}, \code{"CMA"}, \code{"CD"}, \code{"CSD"}, \code{"CT"}, \code{"DA"}, \code{"EA"} (for 1996), or \code{"DB"} (for 2001-2016).
 #' @param vectors An R vector containing the CensusMapper variable names of the census variables to download. If no vectors are specified only geographic data will get downloaded.
 #' @param geo_format By default is set to \code{NA} and appends no geographic information. To include geographic information with census data, specify one of either \code{"sf"} to return an \code{\link[sf]{sf}} object (requires the \code{sf} package) or \code{"sp"} to return a \code{\link[sp]{SpatialPolygonsDataFrame-class}} object (requires the \code{rgdal} package). If user requests geo-spatial data and neither package is available, a context menu will prompt to install the \code{sf} package.
-#' @param resolution Resolution of the geographic data. {cancensus} will download simplified geometries by default. For lower level geometries like DB or DA this will be very close to the high resolution data.
+#' @param resolution Resolution of the geographic data. By default simplified geometries will be download. For lower level geometries like DB or DA this will be very close to the high resolution data.
 #' Simplification generally increases as the geographic aggregation level increases.
 #' If high resolution geometries are required
 #' then this option can be set to 'high'. By default this setting is set to \code{'simplified'}.
@@ -141,7 +141,7 @@ get_census <- function (dataset, regions, level=NA, vectors=c(), geo_format = NA
     meta_file <- paste0(data_file, ".meta")
     if (!use_cache || !file.exists(data_file)) {
       if (!have_api_key) {
-        stop(paste("No API key set. Use set_api_key('<your API ket>`) to set one, or set_api_key('<your API ket>`, install = TRUE) to save is permanently in our .Renviron."))
+        stop(paste("No API key set. Use set_cancensus_api_key('<your API ket>`) to set one, or set_cancensus_api_key('<your API ket>`, install = TRUE) to save is permanently in our .Renviron."))
       }
       url <- paste0(base_url, "data.csv")
       response <- if (!quiet) {
@@ -206,7 +206,7 @@ get_census <- function (dataset, regions, level=NA, vectors=c(), geo_format = NA
     meta_file <- paste0(geo_file, ".meta")
     if (!use_cache || !file.exists(geo_file)) {
       if (!have_api_key) {
-        stop(paste("No API key set. Use set_api_key('<your API ket>`) to set one, or set_api_key('<your API ket>`, install = TRUE) to save is permanently in our .Renviron."))
+        stop(paste("No API key set. Use set_cancensus_api_key('<your API ket>`) to set one, or set_cancensus_api_key('<your API ket>`, install = TRUE) to save is permanently in our .Renviron."))
       }
       url <- paste0(base_url, "geo.geojson")
       response <- if (!quiet) {

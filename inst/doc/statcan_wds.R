@@ -14,7 +14,10 @@ library(tidyr)
 library(ggplot2)
 
 ## -----------------------------------------------------------------------------
-metadata <- get_statcan_wds_metadata("2021","FED")
+fed_version = "1.3"
+
+## -----------------------------------------------------------------------------
+metadata <- get_statcan_wds_metadata("2021","FED",version=fed_version)
 
 characteristics <- metadata |> 
   filter(`Codelist en`=="Characteristic") |>
@@ -35,7 +38,8 @@ dguids <- metadata |>
   pull(ID)
 
 ## -----------------------------------------------------------------------------
-data <- get_statcan_wds_data(dguids,members=selected_characteristics$ID,gender="Total")
+data <- get_statcan_wds_data(dguids,members=selected_characteristics$ID,
+                             gender="Total",version=fed_version)
 
 ## -----------------------------------------------------------------------------
 plot_data <- data |> 
@@ -49,7 +53,7 @@ plot_data |> slice_max(Share,n=20) |>
   geom_bar(stat="identity",fill="steelblue") +
   scale_x_continuous(labels=scales::percent) +
   labs(title="Ukrainian ethnic origin",
-       y="Federal electoral district",
+       y="Federal electoral district (2013 Represenation Order)",
        x="Share of population in private households",
        caption="StatCan Census 2021")
 
@@ -63,7 +67,7 @@ fed_geos |>
   geom_sf() +
   scale_fill_viridis_c(labels=scales::percent) +
   coord_sf(datum=NA) +
-  labs(title="Ukrainian ethnic origin by Federal Electoral District",
+  labs(title="Ukrainian ethnic origin by (2013) Federal Electoral District",
        fill="Share of\npopulation",
        caption="StatCan Census 2021")
 
