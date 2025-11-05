@@ -31,7 +31,7 @@ station_city <-  get_census("CA16", regions = station_city_ids, vectors = variab
 station_cts <-   get_census("CA16", regions = station_ct_ids, vectors = variables, 
                             geo_format = 'sf', quiet=TRUE)
 
-## -----------------------------------------------------------------------------
+## ----fig.alt="CTs within City of Vancouver skytrain station catchments"-------
 ggplot(station_city) +
   geom_sf(fill=NA) +
   geom_sf(data=station_cts,aes(fill=((walk+transit)/mode_base))) +
@@ -42,7 +42,7 @@ ggplot(station_city) +
        fill="Walk or\ntransit\nto work",
        caption="StatCan Census 2016")
 
-## -----------------------------------------------------------------------------
+## ----fig.alt="DAs within City of Vancouver skytrain station catchments"-------
 station_das <-   get_intersecting_geometries("CA16", level = "DA", geometry = cov_station_buffers,
                                              quiet=TRUE) %>% 
   get_census("CA16", regions = ., vectors=variables, geo_format = 'sf', quiet=TRUE)
@@ -58,7 +58,7 @@ ggplot(station_city) +
        caption="StatCan Census 2016")
 
 
-## -----------------------------------------------------------------------------
+## ----fig.alt="DAs within City of Vancouver skytrain station catchments (alternative method)"----
 station_das2 <- get_census("CA16", regions = station_ct_ids, vectors=variables, 
                            geo_format = 'sf', level="DA", quiet=TRUE) %>%
   sf::st_filter(cov_station_buffers)

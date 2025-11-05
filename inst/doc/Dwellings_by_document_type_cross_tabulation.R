@@ -34,7 +34,7 @@ census_data <- get_census("CA16xSD",regions=list(CSD="3520005"), vectors = varia
   pivot_longer(cols = all_of(dwelling_types)) %>%
   mutate(share=value/`Total dwellings`)
 
-## -----------------------------------------------------------------------------
+## ----fig.alt="Toronto dwelling units by structural type"----------------------
 ggplot(census_data,aes(x=reorder(name,share),y=share)) +
   geom_bar(stat="identity",fill="steelblue") +
   coord_flip() +
@@ -42,7 +42,7 @@ ggplot(census_data,aes(x=reorder(name,share),y=share)) +
   labs(title="City of Toronto dwelling units by structural type",
        x=NULL,y=NULL,caption=attribution)
 
-## -----------------------------------------------------------------------------
+## ----fig.alt="Toronto dwellings unoccupied on census day"---------------------
 # Use explore_census_vectors() to browse and select variables of interest
 vars <- c(Total="v_CA16xSD_1", Unoccupied="v_CA16xSD_28")
 

@@ -1,11 +1,17 @@
 ## ----setup, include = FALSE---------------------------------------------------
-knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  warning = FALSE, 
+  message = FALSE,
+  comment = "#>",
+  eval = nzchar(Sys.getenv("COMPILE_VIG"))
+)
 library(cancensus)
 
 ## -----------------------------------------------------------------------------
 list_census_datasets()
 
-## ----echo=FALSE---------------------------------------------------------------
+## ----echo=FALSE, fig.alt="Total number of unique variable vectors by Census dataset"----
 library(ggplot2)
 library(dplyr)
 datasets <- c("CA1996","CA01","CA06","CA11","CA16","CA21")

@@ -41,7 +41,7 @@ plot_data <- years %>%
   bind_rows() %>%
   mutate(share=`CFLIM-AT`/Families)
 
-## -----------------------------------------------------------------------------
+## ----fig.alt="Share of census families in low income"-------------------------
 ggplot(plot_data,aes(fill=share)) +
   geom_sf(size=0.1,color="white") +
   facet_wrap("Year") +
@@ -51,7 +51,7 @@ ggplot(plot_data,aes(fill=share)) +
   labs(title="Share of census families in low income",fill="Share",
        caption=attribution)
 
-## -----------------------------------------------------------------------------
+## ----fig.alt="Change in share of census families in low income 2006-2011"-----
 change_data <- plot_data %>% 
   filter(Year==2006) %>% 
   select(GeoUID,`2006`=share) %>%

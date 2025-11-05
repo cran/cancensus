@@ -15,18 +15,18 @@ toronto <- get_census(dataset='CA21', regions=list(CMA="35535"),
                          vectors=c("median_hh_income"="v_CA21_906"), level='CSD', quiet = TRUE, 
                          geo_format = 'sf', labels = 'short')
 
-## -----------------------------------------------------------------------------
+## ----fig.alt="Toronto Household Income by CSD in 2020"------------------------
 plot(toronto["median_hh_income"], main = "Toronto Household Income by CSD in 2020")
 
-## -----------------------------------------------------------------------------
+## ----fig.alt="Toronto CSDs with Median HH Income > $125,000 in 2020"----------
 plot(st_geometry(toronto), col = NA, main = "Toronto CSDs with Median HH Income > $125,000 in 2020", lty = 3)
 plot(st_geometry(toronto[toronto$median_hh_income > 125000,]), col = "red", add = TRUE)
 
-## -----------------------------------------------------------------------------
+## ----fig.alt="Toronto CSDs with Median HH Income > $125,000 in 2020"----------
 library(ggplot2)
 ggplot(toronto) + geom_sf(aes(fill = median_hh_income))
 
-## -----------------------------------------------------------------------------
+## ----fig.alt="Toronto Median Household Income in 2020"------------------------
 ggplot(toronto) + geom_sf(aes(fill = median_hh_income), colour = "grey") +
   scale_fill_viridis_c("Median HH Income", labels = scales::dollar) + theme_minimal() +
   theme(panel.grid = element_blank(),

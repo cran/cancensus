@@ -10,23 +10,20 @@ library(dplyr)
 # set_cancensus_cache_path(<local cache path>, install = TRUE)
 
 ## ----load_package_cran, echo=TRUE, message=FALSE, warning=FALSE, eval = FALSE----
-#  install.packages("cancensus")
-#  
-#  library(cancensus)
+# install.packages("cancensus")
+# 
+# library(cancensus)
 
 ## ----load_package_git, echo=TRUE, message=FALSE, warning=FALSE, eval = FALSE----
-#  # install.packages("devtools")
-#  remotes::install_github("mountainmath/cancensus")
-#  
-#  library(cancensus)
-#  
-#  options(cancensus.api_key = "your_api_key")
-#  options(cancensus.cache_path = "custom cache path")
+# # install.packages("devtools")
+# remotes::install_github("mountainmath/cancensus")
+# 
+# library(cancensus)
 
 ## ----install_api_key_and_cache_path, echo=TRUE, message=FALSE, warning=FALSE, eval = FALSE----
-#  # Only need to install api key can cache path once
-#  set_cancensus_api_key('<your_api_key>', install = TRUE)
-#  set_cancensus_cache_path('<local cache path>', install = TRUE)
+# # Only need to install api key can cache path once
+# set_cancensus_api_key('<your_api_key>', install = TRUE)
+# set_cancensus_cache_path('<local cache path>', install = TRUE)
 
 ## ----get_census example, echo=TRUE, warning=FALSE, message=FALSE--------------
 # Returns a data frame with data only

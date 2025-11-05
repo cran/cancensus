@@ -49,6 +49,7 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -387,15 +388,15 @@ Github using `remotes``.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># install.packages(&quot;devtools&quot;)</span></span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;mountainmath/cancensus&quot;</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="fu">library</span>(cancensus)</span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="fu">options</span>(<span class="at">cancensus.api_key =</span> <span class="st">&quot;your_api_key&quot;</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="fu">options</span>(<span class="at">cancensus.cache_path =</span> <span class="st">&quot;custom cache path&quot;</span>)</span></code></pre></div>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="fu">library</span>(cancensus)</span></code></pre></div>
 <p>If you have not already done so, you can install the API keys and the
 data cache path. You can get your free API key when you sign up for a <a href="https://censusmapper.ca/">CensusMapper account</a> and check your
 profile. Additionally we recommend you set a permanent data cache path
-so that census data you query is stored persistently across
-sessions.</p>
+so that census data you query is stored persistently across sessions.
+<strong>Make sure to replace the filler text
+<code>&lt;your_api_key&gt;</code> and
+<code>&lt;local cache path&gt;</code> with your actual API key and local
+cache path.</strong></p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Only need to install api key can cache path once</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">set_cancensus_api_key</span>(<span class="st">&#39;&lt;your_api_key&gt;&#39;</span>, <span class="at">install =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="fu">set_cancensus_cache_path</span>(<span class="st">&#39;&lt;local cache path&gt;&#39;</span>, <span class="at">install =</span> <span class="cn">TRUE</span>)</span></code></pre></div>

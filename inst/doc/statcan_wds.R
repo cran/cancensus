@@ -21,7 +21,7 @@ metadata <- get_statcan_wds_metadata("2021","FED",version=fed_version)
 
 characteristics <- metadata |> 
   filter(`Codelist en`=="Characteristic") |>
-  mutate(across(matches("ID"),as.integer))
+  mutate(across(c(ID,`Parent ID`),as.integer))
 
 ethnic_base <- characteristics |> 
   filter(grepl("Total - Ethnic",en))
@@ -47,7 +47,7 @@ plot_data <- data |>
   pivot_wider() |>
   mutate(Share=Ukrainian/`Total - Ethnic or cultural origin for the population in private households - 25% sample data`)
 
-## ----fig.height=4.5, fig.width=6----------------------------------------------
+## ----fig.height=4.5, fig.width=6, fig.alt="Ukrainian ethnic origin"-----------
 plot_data |> slice_max(Share,n=20) |>
   ggplot(aes(y=reorder(Name,Share),x=Share)) +
   geom_bar(stat="identity",fill="steelblue") +
@@ -60,7 +60,7 @@ plot_data |> slice_max(Share,n=20) |>
 ## -----------------------------------------------------------------------------
 fed_geos <- get_statcan_geographies("2021","FED")
 
-## ----fig.height=4.5, fig.width=6----------------------------------------------
+## ----fig.height=4.5, fig.width=6, fig.alt="Ukrainian ethnic origin by (2013) Federal Electoral District"----
 fed_geos |>
   left_join(plot_data,by="DGUID") |>
   ggplot(aes(fill=Share)) +
