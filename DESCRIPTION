@@ -2,7 +2,7 @@ Package: cancensus
 Type: Package
 Title: Access, Retrieve, and Work with Canadian Census Data and
         Geography
-Version: 0.6.0
+Version: 0.6.1
 Authors@R: c(
     person("Jens", "von Bergmann", email = "jens@mountainmath.ca", role = c("aut"), comment = "API creator and maintainer"),
     person("Dmitry", "Shkolnik", email = "shkolnikd@gmail.com", role = c("aut", "cre"), comment = "Package maintainer, responsible for correspondence"),
@@ -22,7 +22,6 @@ ByteCompile: yes
 NeedsCompilation: no
 Imports: digest (>= 0.1), dplyr (>= 1.0), httr (>= 1.0.0), jsonlite (>=
         1.0), sf, geojsonsf, rlang, readr
-RoxygenNote: 7.3.3
 Suggests: knitr, ggplot2, leaflet, mapdeck, rmarkdown, scales, sp,
         tidyr, lwgeom, xml2, testthat (>= 3.0.0), microbenchmark
 VignetteBuilder: knitr
@@ -31,11 +30,12 @@ URL: https://github.com/mountainMath/cancensus,
         https://censusmapper.ca/api
 BugReports: https://github.com/mountainMath/cancensus/issues
 Depends: R (>= 4.1)
-Packaged: 2026-04-14 04:18:43 UTC; jens
+Config/roxygen2/version: 8.0.0
+Packaged: 2026-06-17 23:11:34 UTC; jens
 Author: Jens von Bergmann [aut] (API creator and maintainer),
   Dmitry Shkolnik [aut, cre] (Package maintainer, responsible for
     correspondence),
   Aaron Jacobs [aut]
 Maintainer: Dmitry Shkolnik <shkolnikd@gmail.com>
 Repository: CRAN
-Date/Publication: 2026-04-14 04:50:02 UTC
+Date/Publication: 2026-06-19 06:50:08 UTC

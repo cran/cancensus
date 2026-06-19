@@ -1632,18 +1632,18 @@ available for the 2001, 2006, 2011, and 2016 Census years at all levels
 starting with census tract.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">list_census_datasets</span>()</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 29 × 6</span></span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co">#&gt;    dataset description           geo_dataset attribution reference reference_url</span></span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;                 &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;        </span></span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">#&gt;  1 CA1996  1996 Canada Census    CA1996      StatCan 19… 92-351-U  https://www1…</span></span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">#&gt;  2 CA01    2001 Canada Census    CA01        StatCan 20… 92-378-X  https://www1…</span></span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co">#&gt;  3 CA06    2006 Canada Census    CA06        StatCan 20… 92-566-X  https://www1…</span></span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co">#&gt;  4 CA11    2011 Canada Census a… CA11        StatCan 20… 98-301-X… https://www1…</span></span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">#&gt;  5 CA16    2016 Canada Census    CA16        StatCan 20… 98-301-X  https://www1…</span></span>
-<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="co">#&gt;  6 CA21    2021 Canada Census    CA21        StatCan 20… 98-301-X  https://www1…</span></span>
-<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="co">#&gt;  7 CA01xSD 2001 Canada Census x… CA01        StatCan 20… 92-378-X  https://www1…</span></span>
-<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co">#&gt;  8 CA06xSD 2006 Canada Census x… CA06        StatCan 20… 92-566-X  https://www1…</span></span>
-<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="co">#&gt;  9 CA11xSD 2011 Canada Census x… CA11        StatCan 20… 98-301-X  https://www1…</span></span>
-<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="co">#&gt; 10 CA16xSD 2016 Canada Census x… CA16        StatCan 20… 98-301-X  https://www1…</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co">#&gt;    dataset description           attribution reference reference_url geo_dataset</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;                 &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;         &lt;chr&gt;      </span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">#&gt;  1 CA1996  1996 Canada Census    StatCan 19… 92-351-U  https://www1… CA1996     </span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">#&gt;  2 CA01    2001 Canada Census    StatCan 20… 92-378-X  https://www1… CA01       </span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co">#&gt;  3 CA06    2006 Canada Census    StatCan 20… 92-566-X  https://www1… CA06       </span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co">#&gt;  4 CA11    2011 Canada Census a… StatCan 20… 98-301-X… https://www1… CA11       </span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">#&gt;  5 CA16    2016 Canada Census    StatCan 20… 98-301-X  https://www1… CA16       </span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="co">#&gt;  6 CA21    2021 Canada Census    StatCan 20… 98-301-X  https://www1… CA21       </span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="co">#&gt;  7 CA01xSD 2001 Canada Census x… StatCan 20… 92-378-X  https://www1… CA01       </span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co">#&gt;  8 CA06xSD 2006 Canada Census x… StatCan 20… 92-566-X  https://www1… CA06       </span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="co">#&gt;  9 CA11xSD 2011 Canada Census x… StatCan 20… 98-301-X  https://www1… CA11       </span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="co">#&gt; 10 CA16xSD 2016 Canada Census x… StatCan 20… 98-301-X  https://www1… CA16       </span></span>
 <span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="co">#&gt; # ℹ 19 more rows</span></span></code></pre></div>
 <p>The <code>list_census_datasets()</code> function also provides
 additional background like series reference code, catalogue reference,
@@ -1761,20 +1761,20 @@ queries and vector details into n-grams and finds matches using
 approximate string distances based on the generalized Levenshtein
 distance.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">find_census_vectors</span>(<span class="st">&quot;after tax incomes&quot;</span>, <span class="at">dataset =</span> <span class="st">&quot;CA16&quot;</span>, <span class="at">type =</span> <span class="st">&quot;total&quot;</span>, <span class="at">query_type =</span> <span class="st">&quot;semantic&quot;</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 56 × 4</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 243 × 4</span></span>
 <span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co">#&gt;    vector      type  label                                               details</span></span>
 <span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;       &lt;fct&gt; &lt;chr&gt;                                               &lt;chr&gt;  </span></span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt;  1 v_CA16_2210 Total Number of after-tax income recipients aged 15 year… Income…</span></span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt;  2 v_CA16_2213 Total Median after-tax income in 2015 among recipients (… Income…</span></span>
-<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt;  3 v_CA16_2306 Total Percentage with after-tax income                    Income…</span></span>
-<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt;  4 v_CA16_2297 Total Total - After-tax income groups in 2015 for the po… Income…</span></span>
-<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt;  5 v_CA16_2300 Total Without after-tax income                            Income…</span></span>
-<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt;  6 v_CA16_2303 Total With after-tax income                               Income…</span></span>
-<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt;  7 v_CA16_2309 Total Under $10,000 (including loss)                      Income…</span></span>
-<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt;  8 v_CA16_2312 Total $10,000 to $19,999                                  Income…</span></span>
-<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt;  9 v_CA16_2315 Total $20,000 to $29,999                                  Income…</span></span>
-<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; 10 v_CA16_2318 Total $30,000 to $39,999                                  Income…</span></span>
-<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; # ℹ 46 more rows</span></span></code></pre></div>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt;  1 v_CA16_454  Total Married or living common law                        Census…</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt;  2 v_CA16_457  Total Married                                             Census…</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt;  3 v_CA16_460  Total Living common law                                   Census…</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt;  4 v_CA16_463  Total Not married and not living common law               Census…</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt;  5 v_CA16_466  Total Never married                                       Census…</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt;  6 v_CA16_469  Total Separated                                           Census…</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt;  7 v_CA16_472  Total Divorced                                            Census…</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt;  8 v_CA16_475  Total Widowed                                             Census…</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt;  9 v_CA16_487  Total Common-law couples                                  Census…</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; 10 v_CA16_2201 Total Total - Income statistics in 2015 for the populati… Income…</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; # ℹ 233 more rows</span></span></code></pre></div>
 <p>Semantic search is more robust to spelling and punctuation issues
 that may come up with exact search. For example, while this throws a
 warning:</p>
@@ -1786,13 +1786,20 @@ warning:</p>
 <p>This will find the correct Census vector.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">find_census_vectors</span>(<span class="st">&#39;ojib cree&#39;</span>, <span class="at">dataset =</span> <span class="st">&#39;CA16&#39;</span>, <span class="at">type =</span> <span class="st">&#39;total&#39;</span>, <span class="at">query_type =</span> <span class="st">&#39;semantic&#39;</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co">#&gt; Multiple possible matches. Results ordered by closeness.</span></span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 × 4</span></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt;   vector      type  label    details                                            </span></span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;       &lt;fct&gt; &lt;chr&gt;    &lt;chr&gt;                                              </span></span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; 1 v_CA16_626  Total Oji-Cree Language; Total - Mother tongue for the total popu…</span></span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; 2 v_CA16_1433 Total Oji-Cree Language; Total - Language spoken most often at ho…</span></span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; 3 v_CA16_2676 Total Oji-Cree 25% Data; Total - Knowledge of languages for the p…</span></span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; 4 v_CA16_5930 Total Oji-Cree 25% Data; Work; Total - Language used most often a…</span></span></code></pre></div>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt; # A tibble: 57 × 4</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt;    vector     type  label                     details                           </span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;      &lt;fct&gt; &lt;chr&gt;                     &lt;chr&gt;                             </span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt;  1 v_CA16_575 Total Cree-Montagnais languages Language; Total - Mother tongue f…</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt;  2 v_CA16_578 Total Atikamekw                 Language; Total - Mother tongue f…</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt;  3 v_CA16_581 Total Montagnais (Innu)         Language; Total - Mother tongue f…</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt;  4 v_CA16_584 Total Moose Cree                Language; Total - Mother tongue f…</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt;  5 v_CA16_587 Total Naskapi                   Language; Total - Mother tongue f…</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt;  6 v_CA16_590 Total Northern East Cree        Language; Total - Mother tongue f…</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt;  7 v_CA16_593 Total Plains Cree               Language; Total - Mother tongue f…</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt;  8 v_CA16_596 Total Southern East Cree        Language; Total - Mother tongue f…</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt;  9 v_CA16_599 Total Swampy Cree               Language; Total - Mother tongue f…</span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt; 10 v_CA16_602 Total Woods Cree                Language; Total - Mother tongue f…</span></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt; # ℹ 47 more rows</span></span></code></pre></div>
 <p>Results are ordered by string proximity if there are multiple
 possible matches.</p>
 </div>
