@@ -13,7 +13,7 @@ library(sf)
 # retrieve sf dataframe
 toronto <- get_census(dataset='CA21', regions=list(CMA="35535"),
                          vectors=c("median_hh_income"="v_CA21_906"), level='CSD', quiet = TRUE, 
-                         geo_format = 'sf', labels = 'short')
+                         geo_format = 'sf', labels = 'labelled')
 
 ## ----fig.alt="Toronto Household Income by CSD in 2020"------------------------
 plot(toronto["median_hh_income"], main = "Toronto Household Income by CSD in 2020")
@@ -35,6 +35,12 @@ ggplot(toronto) + geom_sf(aes(fill = median_hh_income), colour = "grey") +
   coord_sf(datum=NA) +
   labs(title = "Median Household Income in 2020", subtitle = "Toronto Census Subdivisions, 2021 Census")
 
+## ----fig.alt="Revenu total médian des ménages en 2020 par subdivision de recensement de Toronto"----
+toronto_fr <- get_census(dataset='CA21', regions=list(CMA="35535"),
+                         vectors=c("median_hh_income"="v_CA21_906"), level='CSD', quiet = TRUE,
+                         geo_format = 'sf', labels = 'labelled', language = 'fr')
+ggplot(toronto_fr) + geom_sf(aes(fill = median_hh_income))
+
 ## ----message=FALSE, warning=FALSE, include=FALSE------------------------------
 # This chunk disables leaflet and mapdeck output in remaining chunks for PDF vignettes
 if(Sys.getenv("COMPILE_VIG")!="TRUE") {
@@ -48,7 +54,7 @@ leaflet(toronto) %>%
 
 ## -----------------------------------------------------------------------------
 bins <- c(0, 30000,40000, 50000,60000, 70000,80000, 90000,100000, 110000, Inf)
-pal <- colorBin("RdYlBu", domain = toronto$v_CA16_2397, bins = bins)
+pal <- colorBin("RdYlBu", domain = toronto$median_hh_income, bins = bins)
 leaflet(toronto) %>% 
   addProviderTiles(providers$CartoDB.Positron) %>%
   addPolygons(fillColor = ~pal(median_hh_income),

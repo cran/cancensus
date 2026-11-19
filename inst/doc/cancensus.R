@@ -25,6 +25,12 @@ library(dplyr)
 # set_cancensus_api_key('<your_api_key>', install = TRUE)
 # set_cancensus_cache_path('<local cache path>', install = TRUE)
 
+## ----project_cache_path, echo=TRUE, eval = FALSE------------------------------
+# set_cancensus_cache_path(here::here("data/cancensus_cache"))
+
+## ----set_labels_option, echo=TRUE---------------------------------------------
+options(cancensus.labels = "labelled")
+
 ## ----get_census example, echo=TRUE, warning=FALSE, message=FALSE--------------
 # Returns a data frame with data only
 census_data <- get_census(dataset='CA21', regions=list(CMA="59933"),
@@ -40,6 +46,20 @@ census_data <- get_census(dataset='CA21', regions=list(CMA="59933"),
 census_data <- get_census(dataset='CA21', regions=list(CMA="59933"),
                           vectors=c("v_CA21_434","v_CA21_435","v_CA21_440"),
                           level='CSD', use_cache = FALSE, geo_format = 'sp', quiet = TRUE)
+
+## ----labelled_columns, echo=TRUE, warning=FALSE, message=FALSE----------------
+census_data <- get_census(dataset='CA21', regions=list(CMA="59933"),
+                          vectors=c(average_age="v_CA21_386","v_CA21_434"),
+                          level='CSD', quiet = TRUE)
+names(census_data)
+attr(census_data$Population, "label")
+attr(census_data$average_age, "label")
+attr(census_data$v_CA21_434, "label")
+
+## ----derived_columns, echo=TRUE-----------------------------------------------
+dwellings_per_person <- census_data$Dwellings / census_data$Population
+attr(dwellings_per_person, "label")
+attr(as.numeric(dwellings_per_person), "label")
 
 ## ----list datasets, message=FALSE, warning=FALSE------------------------------
 list_census_datasets()

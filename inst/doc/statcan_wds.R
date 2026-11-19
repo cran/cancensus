@@ -60,6 +60,10 @@ plot_data |> slice_max(Share,n=20) |>
 ## -----------------------------------------------------------------------------
 fed_geos <- get_statcan_geographies("2021","FED")
 
+## ----include = FALSE----------------------------------------------------------
+# Skip the remaining chunks if the download was blocked, e.g. on CI
+knitr::opts_chunk$set(eval = !is.null(fed_geos))
+
 ## ----fig.height=4.5, fig.width=6, fig.alt="Ukrainian ethnic origin by (2013) Federal Electoral District"----
 fed_geos |>
   left_join(plot_data,by="DGUID") |>

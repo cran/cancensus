@@ -2,7 +2,7 @@ Package: cancensus
 Type: Package
 Title: Access, Retrieve, and Work with Canadian Census Data and
         Geography
-Version: 0.6.1
+Version: 0.6.2
 Authors@R: c(
     person("Jens", "von Bergmann", email = "jens@mountainmath.ca", role = c("aut"), comment = "API creator and maintainer"),
     person("Dmitry", "Shkolnik", email = "shkolnikd@gmail.com", role = c("aut", "cre"), comment = "Package maintainer, responsible for correspondence"),
@@ -21,21 +21,22 @@ LazyData: yes
 ByteCompile: yes
 NeedsCompilation: no
 Imports: digest (>= 0.1), dplyr (>= 1.0), httr (>= 1.0.0), jsonlite (>=
-        1.0), sf, geojsonsf, rlang, readr
-Suggests: knitr, ggplot2, leaflet, mapdeck, rmarkdown, scales, sp,
-        tidyr, lwgeom, xml2, testthat (>= 3.0.0), microbenchmark
+        1.0), sf, geojsonsf, rlang (>= 1.0.0), readr (>= 2.0.0)
+Suggests: DBI, duckdb (>= 1.5.6), knitr, ggplot2, leaflet, mapdeck,
+        rmarkdown, scales, sp, tidyr, lwgeom, xml2, testthat (>=
+        3.0.0), microbenchmark
 VignetteBuilder: knitr
 URL: https://github.com/mountainMath/cancensus,
         https://mountainmath.github.io/cancensus/,
         https://censusmapper.ca/api
 BugReports: https://github.com/mountainMath/cancensus/issues
 Depends: R (>= 4.1)
-Config/roxygen2/version: 8.0.0
-Packaged: 2026-06-17 23:11:34 UTC; jens
+Config/roxygen2/version: 8.1.0
+Packaged: 2026-11-19 15:32:12 UTC; jens
 Author: Jens von Bergmann [aut] (API creator and maintainer),
   Dmitry Shkolnik [aut, cre] (Package maintainer, responsible for
     correspondence),
   Aaron Jacobs [aut]
 Maintainer: Dmitry Shkolnik <shkolnikd@gmail.com>
 Repository: CRAN
-Date/Publication: 2026-06-19 06:50:08 UTC
+Date/Publication: 2026-11-19 16:40:16 UTC

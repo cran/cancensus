@@ -26,10 +26,10 @@ station_ct_ids <- get_intersecting_geometries("CA16", level = "CT", geometry = c
 ## -----------------------------------------------------------------------------
 variables <- c(mode_base="v_CA16_5792",transit="v_CA16_5801",walk="v_CA16_5804")
 station_city <-  get_census("CA16", regions = station_city_ids, vectors = variables, 
-                            geo_format = 'sf', quiet=TRUE) %>% 
-  filter(name == "Vancouver (CY)")
+                            geo_format = 'sf', labels = "labelled", quiet=TRUE) %>% 
+  filter(Name == "Vancouver (CY)")
 station_cts <-   get_census("CA16", regions = station_ct_ids, vectors = variables, 
-                            geo_format = 'sf', quiet=TRUE)
+                            geo_format = 'sf', labels = "labelled", quiet=TRUE)
 
 ## ----fig.alt="CTs within City of Vancouver skytrain station catchments"-------
 ggplot(station_city) +
@@ -45,7 +45,7 @@ ggplot(station_city) +
 ## ----fig.alt="DAs within City of Vancouver skytrain station catchments"-------
 station_das <-   get_intersecting_geometries("CA16", level = "DA", geometry = cov_station_buffers,
                                              quiet=TRUE) %>% 
-  get_census("CA16", regions = ., vectors=variables, geo_format = 'sf', quiet=TRUE)
+  get_census("CA16", regions = ., vectors=variables, geo_format = 'sf', labels = "labelled", quiet=TRUE)
 
 ggplot(station_city) +
   geom_sf(fill=NA) +
@@ -60,7 +60,7 @@ ggplot(station_city) +
 
 ## ----fig.alt="DAs within City of Vancouver skytrain station catchments (alternative method)"----
 station_das2 <- get_census("CA16", regions = station_ct_ids, vectors=variables, 
-                           geo_format = 'sf', level="DA", quiet=TRUE) %>%
+                           geo_format = 'sf', level="DA", labels = "labelled", quiet=TRUE) %>%
   sf::st_filter(cov_station_buffers)
 
 ggplot(station_city) +
