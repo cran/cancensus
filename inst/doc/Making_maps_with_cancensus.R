@@ -24,22 +24,37 @@ plot(st_geometry(toronto[toronto$median_hh_income > 125000,]), col = "red", add 
 
 ## ----fig.alt="Toronto CSDs with Median HH Income > $125,000 in 2020"----------
 library(ggplot2)
-ggplot(toronto) + geom_sf(aes(fill = median_hh_income))
+ggplot(toronto) + 
+  geom_sf(aes(fill = median_hh_income))
 
 ## ----fig.alt="Toronto Median Household Income in 2020"------------------------
-ggplot(toronto) + geom_sf(aes(fill = median_hh_income), colour = "grey") +
-  scale_fill_viridis_c("Median HH Income", labels = scales::dollar) + theme_minimal() +
-  theme(panel.grid = element_blank(),
-        axis.text = element_blank(),
-        axis.ticks = element_blank()) + 
+ggplot(toronto) + 
+  geom_sf(aes(fill = median_hh_income), colour = "grey") +
+  scale_fill_viridis_c("Median HH Income", labels = scales::dollar) + 
+  theme_minimal() +
   coord_sf(datum=NA) +
-  labs(title = "Median Household Income in 2020", subtitle = "Toronto Census Subdivisions, 2021 Census")
+  labs(title = "Median Household Income in 2020", 
+       subtitle = "Toronto Census Subdivisions",
+       caption="StatCan Census 2021")
+
+## ----fig.alt="Toronto Median Household Income in 2020 with CensusMapper's base map of water, roads and place names"----
+ggplot(toronto) +
+  geom_sf(aes(fill = median_hh_income), colour = "grey") +
+  scale_fill_viridis_c("Median HH Income", labels = scales::dollar) +
+  geom_cm_context() +
+  theme_minimal() +
+  coord_sf(datum=NA) +
+  labs(title = "Median Household Income in 2020", 
+       subtitle = "Toronto Census Subdivisions",
+       caption="StatCan Census 2021")
 
 ## ----fig.alt="Revenu total médian des ménages en 2020 par subdivision de recensement de Toronto"----
 toronto_fr <- get_census(dataset='CA21', regions=list(CMA="35535"),
-                         vectors=c("median_hh_income"="v_CA21_906"), level='CSD', quiet = TRUE,
+                         vectors=c("median_hh_income"="v_CA21_906"), 
+                         level='CSD', quiet = TRUE,
                          geo_format = 'sf', labels = 'labelled', language = 'fr')
-ggplot(toronto_fr) + geom_sf(aes(fill = median_hh_income))
+ggplot(toronto_fr) + 
+  geom_sf(aes(fill = median_hh_income))
 
 ## ----message=FALSE, warning=FALSE, include=FALSE------------------------------
 # This chunk disables leaflet and mapdeck output in remaining chunks for PDF vignettes

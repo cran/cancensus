@@ -2,7 +2,7 @@ Package: cancensus
 Type: Package
 Title: Access, Retrieve, and Work with Canadian Census Data and
         Geography
-Version: 0.6.2
+Version: 0.6.3
 Authors@R: c(
     person("Jens", "von Bergmann", email = "jens@mountainmath.ca", role = c("aut"), comment = "API creator and maintainer"),
     person("Dmitry", "Shkolnik", email = "shkolnikd@gmail.com", role = c("aut", "cre"), comment = "Package maintainer, responsible for correspondence"),
@@ -14,7 +14,7 @@ Description: Integrated, convenient, and uniform access to Canadian
     keys are freely available with free registration at <https://censusmapper.ca/api>.
     Census data and boundary geometries are reproduced and distributed on an "as
     is" basis with the permission of Statistics Canada (Statistics Canada 1996; 2001; 2006;
-    2011; 2016; 2021).
+    2011; 2016; 2021; 2026).
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: yes
@@ -22,9 +22,10 @@ ByteCompile: yes
 NeedsCompilation: no
 Imports: digest (>= 0.1), dplyr (>= 1.0), httr (>= 1.0.0), jsonlite (>=
         1.0), sf, geojsonsf, rlang (>= 1.0.0), readr (>= 2.0.0)
-Suggests: DBI, duckdb (>= 1.5.6), knitr, ggplot2, leaflet, mapdeck,
-        rmarkdown, scales, sp, tidyr, lwgeom, xml2, testthat (>=
-        3.0.0), microbenchmark
+Suggests: DBI, duckdb (>= 1.5.6), knitr, ggplot2, grid, leaflet,
+        mapdeck, RColorBrewer, rmarkdown, safeconduct (>= 0.1.0),
+        scales, sp, transport, tricolore, viridisLite, systemfonts,
+        tidyr, lwgeom, xml2, testthat (>= 3.0.0), microbenchmark
 VignetteBuilder: knitr
 URL: https://github.com/mountainMath/cancensus,
         https://mountainmath.github.io/cancensus/,
@@ -32,11 +33,11 @@ URL: https://github.com/mountainMath/cancensus,
 BugReports: https://github.com/mountainMath/cancensus/issues
 Depends: R (>= 4.1)
 Config/roxygen2/version: 8.1.0
-Packaged: 2026-11-19 15:32:12 UTC; jens
+Packaged: 2026-11-25 03:40:58 UTC; jens
 Author: Jens von Bergmann [aut] (API creator and maintainer),
   Dmitry Shkolnik [aut, cre] (Package maintainer, responsible for
     correspondence),
   Aaron Jacobs [aut]
 Maintainer: Dmitry Shkolnik <shkolnikd@gmail.com>
 Repository: CRAN
-Date/Publication: 2026-11-19 16:40:16 UTC
+Date/Publication: 2026-11-25 10:00:02 UTC
